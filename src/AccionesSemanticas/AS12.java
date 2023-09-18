@@ -14,6 +14,7 @@ public class AS12 implements AccionSemantica{
             return 0;
         }
         else {
+            System.out.println("Palabra reservada: "+lexema);
             return pr;
         }
     }

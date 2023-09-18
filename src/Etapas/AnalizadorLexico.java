@@ -166,6 +166,7 @@ public class AnalizadorLexico {
         estado = matriz_estados.states_matrix[estado][id_columna];
         if (estado == MTE.ESTADO_FINAL){
             estado = 0;
+            lexema = "";
         }
         return id_token;
     }
