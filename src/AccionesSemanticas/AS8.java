@@ -9,13 +9,8 @@ public class AS8 implements AccionSemantica{
 
     @Override
     public int ejecutar(BufferedInputStream lector, String lexema) {
-        try {
-            char c = (char) lector.read();
-            AnalizadorLexico.lexema += c;
-            System.out.println(AnalizadorLexico.lexema);
-            return c;
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        System.out.println(AnalizadorLexico.lexema);
+        char token = lexema.charAt(0);
+        return token;
     }
 }

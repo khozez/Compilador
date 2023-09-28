@@ -13,8 +13,8 @@ public class AnalizadorLexico {
     public static final char MINUSCULA = 'm';
     public static final char PORCIENTO = '%';
     public static final int MAX_LONG_ID = 20;
-    public static final long MAX_SHORT_INT = (long) Math.pow(2, 7) - 1;
-    public static final long MIN_SHORT_INT = (long) -Math.pow(2, 7);
+    public static final int MAX_SHORT_INT = (int) Math.pow(2, 7) - 1;
+    public static final int MIN_SHORT_INT = (int) -Math.pow(2, 7);
     public static final long MAX_ULONG_INT = (long) Math.pow(2, 32) - 1;
     public static final double MIN_FLOAT_VALUE = 1.17549435E-38;
     public static final double MAX_FLOAT_VALUE = 3.40282347E+38;
@@ -49,7 +49,7 @@ public class AnalizadorLexico {
     public static int getPosicon() { return posicion;}
 
     private static char getTipo(char c){
-        int caracter = (int) c;
+        int caracter = c;
         if (caracter >= 48 && caracter <= 57){
             return DIGITO;
         }
@@ -161,9 +161,11 @@ public class AnalizadorLexico {
                 break;
         }
 
+        //System.out.println("Caracter:"+c+" - Estado:"+estado+" id_c:"+id_columna);
         AccionSemantica as = mas.action_matrix[estado][id_columna];
         int id_token = as.ejecutar(lector, lexema);
         estado = matriz_estados.states_matrix[estado][id_columna];
+        //System.out.println("Proximo estado:"+estado);
         if (estado == MTE.ESTADO_FINAL){
             estado = 0;
             lexema = "";

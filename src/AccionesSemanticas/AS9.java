@@ -11,7 +11,6 @@ public class AS9 implements AccionSemantica{
     public int ejecutar(BufferedInputStream lector, String lexema) {
         try {
             lector.read();
-            AnalizadorLexico.lexema = "";
         } catch (IOException e) {
             e.printStackTrace();
         }

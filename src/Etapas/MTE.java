@@ -1,7 +1,7 @@
 package Etapas;
 
 public class MTE {
-    public int[][] states_matrix = new int[17][29];
+    public int[][] states_matrix = new int[18][29];
     public static final int ERROR = -3;
     public static final int ESTADO_FINAL = -5;
 
@@ -66,22 +66,23 @@ public class MTE {
 
 
         //FILA 3
-        for (int i=0; i<=9; i++){
+        for (int i=0; i<=15; i++){
             states_matrix[3][i] = ERROR;
         }
-        states_matrix[0][10] = 4;
-        for (int i=11; i<=28; i++){
+        states_matrix[3][16] = 4;
+        states_matrix[3][17] = 4;
+        for (int i=18; i<=28; i++){
             states_matrix[3][i] = ERROR;
         }
 
 
         //FILA 4
         for (int i=0; i<=9; i++){
-            states_matrix[4][i] = ESTADO_FINAL;
+            states_matrix[4][i] = ERROR;
         }
-        states_matrix[4][10] = 4;
+        states_matrix[4][10] = 17;
         for (int i=11; i<=28; i++){
-            states_matrix[4][i] = ESTADO_FINAL;
+            states_matrix[4][i] = ERROR;
         }
 
 
@@ -182,11 +183,11 @@ public class MTE {
 
 
         //FILA 13
-        for (int i=0; i<=2; i++){
+        for (int i=0; i<=1; i++){
             states_matrix[13][i] = 13;
         }
-        states_matrix[13][3] = 0;
-        for (int i=4; i<=28; i++){
+        states_matrix[13][2] = 0;
+        for (int i=3; i<=28; i++){
             states_matrix[13][i] = 13;
         }
 
@@ -212,6 +213,16 @@ public class MTE {
         states_matrix[16][13] = ESTADO_FINAL;
         for (int i=14; i<=28; i++){
             states_matrix[16][i] = ERROR;
+        }
+
+
+        //FILA 17
+        for (int i=0; i<=9; i++){
+            states_matrix[17][i] = ESTADO_FINAL;
+        }
+        states_matrix[17][10] = 17;
+        for (int i=11; i<=28; i++){
+            states_matrix[17][i] = ESTADO_FINAL;
         }
     }
 

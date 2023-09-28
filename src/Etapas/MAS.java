@@ -3,7 +3,7 @@ package Etapas;
 import AccionesSemanticas.*;
 
 public class MAS {
-    public AccionSemantica[][] action_matrix = new AccionSemantica[17][29];
+    public AccionSemantica[][] action_matrix = new AccionSemantica[18][29];
 
     public MAS() {
         //FILA 0
@@ -13,12 +13,12 @@ public class MAS {
         for (int i=3; i<=13; i++){
             action_matrix[0][i]= new AS6();
         }
-        action_matrix[0][14] = new AS8();
+        action_matrix[0][14] = new AS13();
         action_matrix[0][15]= new AS6();
-        action_matrix[0][16] = new AS8();
+        action_matrix[0][16] = new AS13();
         action_matrix[0][17]= new AS6();
         for (int i=18; i<=23; i++){
-            action_matrix[0][i]= new AS8();
+            action_matrix[0][i]= new AS13();
         }
         for (int i=24; i<=27; i++){
             action_matrix[0][i]= new AS6();
@@ -31,7 +31,8 @@ public class MAS {
             action_matrix[1][i]= new ASf();
         }
         action_matrix[1][10]= new AS6();
-        for (int i=11; i<=23; i++){
+        action_matrix[1][11]= new AS6();
+        for (int i=12; i<=23; i++){
             action_matrix[1][i]= new ASf();
         }
         action_matrix[1][24]= new AS6();
@@ -49,28 +50,30 @@ public class MAS {
         for (int i=5; i<=9; i++){
             action_matrix[2][i]= new AS4();
         }
-        for (int i=10; i<=28; i++){
-            action_matrix[2][i]= new AS6();
+        action_matrix[2][10]= new AS6();
+        for (int i=11; i<=28; i++){
+            action_matrix[2][i]= new AS4();
         }
 
 
         //FILA 3
-        for (int i=0; i<=9; i++){
-            action_matrix[3][i]= new ASf();
+        for (int i=0; i<=15; i++){
+            action_matrix[3][i]= new ASx();
         }
-        action_matrix[3][10]= new AS6();
-        for (int i=11; i<=28; i++){
-            action_matrix[3][i]= new ASf();
+        action_matrix[3][16]= new AS6();
+        action_matrix[3][17]= new AS6();
+        for (int i=18; i<=28; i++){
+            action_matrix[3][i]= new ASx();
         }
 
 
         //FILA 4
         for (int i=0; i<=9; i++){
-            action_matrix[4][i]= new AS4();
+            action_matrix[4][i]= new ASf();
         }
         action_matrix[4][10]= new AS6();
         for (int i=11; i<=28; i++){
-            action_matrix[4][i]= new AS4();
+            action_matrix[4][i]= new ASf();
         }
 
 
@@ -79,7 +82,7 @@ public class MAS {
             action_matrix[5][i]= new ASe();
         }
         action_matrix[5][5]= new AS6();
-        action_matrix[5][6]= new AS5();
+        action_matrix[5][6]= new AS11();
         for (int i=7; i<=28; i++){
             action_matrix[5][i]= new ASe();
         }
@@ -89,9 +92,8 @@ public class MAS {
         for (int i=0; i<=6; i++){
             action_matrix[6][i]= new ASe();
         }
-        action_matrix[6][7]= new AS11();
-        action_matrix[6][8]= new AS11();
-        for (int i=9; i<=28; i++){
+        action_matrix[6][7]= new AS5();
+        for (int i=8; i<=28; i++){
             action_matrix[6][i]= new ASe();
         }
 
@@ -205,6 +207,16 @@ public class MAS {
         action_matrix[16][13]= new AS7();
         for (int i=14; i<=28; i++){
             action_matrix[16][i]= new ASc();
+        }
+
+
+        //FILA 17
+        for (int i=0; i<=9; i++){
+            action_matrix[17][i]= new AS4();
+        }
+        action_matrix[17][10]= new AS6();
+        for (int i=11; i<=28; i++){
+            action_matrix[17][i]= new AS4();
         }
     }
 }
