@@ -21,23 +21,16 @@ public class AnalizadorLexico {
     public static final double MIN_NEGATIVE_FLOAT_VALUE = -3.40282347E+38;
     public static final double MAX_NEGATIVE_FLOAT_VALUE = -1.17549435E-38;
     public static BufferedInputStream lector;
-    private static TablaPalabrasReservadas PR;
-    private static TablaSimbolos TS;
+    private static TablaPalabrasReservadas PR = new TablaPalabrasReservadas();
+    private static TablaSimbolos TS = new TablaSimbolos();
 
     private static int cant_lineas = 1;
     private static int posicion = 0;
     private char entry;
-    private static MTE matriz_estados;
-    private static MAS mas;
+    private static MTE matriz_estados = new MTE();
+    private static MAS mas = new MAS();
     public static String lexema = "";
     private static int estado = 0;
-
-    public AnalizadorLexico() {
-        matriz_estados = new MTE();
-        mas = new MAS();
-        PR = new TablaPalabrasReservadas();
-        TS = new TablaSimbolos();
-    }
 
     public static void newLine(){
         posicion = 0;
