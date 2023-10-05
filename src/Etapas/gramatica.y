@@ -8,7 +8,8 @@
 	import java.util.Stack;
 %}
 
-%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE DO RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS
+
+%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS
 %left '+' '-'
 %left '*' '/'
 
@@ -97,7 +98,7 @@ sentenciaWhile: WHILE '(' expresion comparador expresion ')' '{' listaEjecutable
 			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "Mal definida la condicion");}
 ;
 
-print: PRINT '%' CADENA '%'
+print: '%' CADENA '%'
 ;
 
 return: RETURN ';'
@@ -116,10 +117,11 @@ invocacionMetodo: ID '(' tipo ID ')'
 ;
 
 declaracion: tipo listaDeclaracion
+	    | tipo asignacion
 ;
 
 listaDeclaracion: ID ';' listaDeclaracion
-				| ID
+		| ID
 ;
 
 tipo: SHORT
@@ -169,6 +171,7 @@ void yyerror(String mensaje) {
 
 int yylex(){
     int IDtoken = 0; // IDtoken va a guardar el ID del token que genere el AL
+    AnalizadorLexico.estado = 0;
     BufferedInputStream lector = AnalizadorLexico.lector; // agarro el lector
     while (true) {
         try {
@@ -207,7 +210,7 @@ public static void imprimir(List<String> lista, String cabecera) {
         if (!lista.isEmpty()) {
                 System.out.println();
                 System.out.println(cabecera + ":");
-
+		System.out.println(lista.size());
                 for (String x: lista) {
                         System.out.println(x);
                 }

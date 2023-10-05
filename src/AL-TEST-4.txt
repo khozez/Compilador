@@ -4,3 +4,33 @@ MAL ESCRITA SIN CERRAR
 FLOAT f1 = 1.,
 FLOAT f2 = 1.6,
 FLOAT f3 = .6,
+
+
+
+
+
+{SHORT num1 = -128_s,
+SHORT num2 = 55_s,
+SHORT num3 = -129_s,                            **CONSTATE SHORT FUERA DE RANGO INFERIOR
+SHORT num4 = 129_s,                             **CONSTATE SHORT FUERA DE RANGO SUPERIOR
+ULONG num5 = 0_ul,
+ULONG num6 = 4294967295_ul,
+ULONG num7 = -2_ul,                             **CONSTATE LONG FUERA DE RANGO SUPERIOR
+ULONG num8 = 4294967296_ul,                     **CONSTATE LONG FUERA DE RANGO SUPERIOR
+
+FLOAT f1 = 1.,
+FLOAT f2 = 1.6,
+FLOAT f3 = .6,
+FLOAT f4 = 2.E+34,
+FLOAT f5 = 2.5e-1,
+FLOAT f6 = 3.50282347E+38,                      **CONSTATE FLOAT FUERA DE RANGO SUPERIOR
+FLOAT f7 = -3.60282347E+38,                     **CONSTATE FLOAT FUERA DE RANGO INFERIOR
+FLOAT f8 = 2.E35,                               **CONSTATE FLOAT SIN SIGNO EXP, LEXICO CONSIDERA POSITIVO
+
+%EJEMPLO DE CADENA
+MULTILINEA ESCRITA CORRECTAMENTE%
+
+SHORT _id_valido = 4_s,
+SHORT _identificador_no_valido = 9_s,
+SHORT identificador$NOVALIDO = 11_s,            **IDENTIFICADOR NO VALIDO CON MAYUSCULAS y $
+}

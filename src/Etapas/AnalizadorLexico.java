@@ -33,7 +33,7 @@ public class AnalizadorLexico {
     private static MTE matriz_estados = new MTE();
     private static MAS mas = new MAS();
     public static String lexema = "";
-    private static int estado = 0;
+    public static int estado = 0;
 
     public static void newLine(){
         posicion = 0;
@@ -162,10 +162,6 @@ public class AnalizadorLexico {
         int id_token = as.ejecutar(lector, lexema);
         estado = matriz_estados.states_matrix[estado][id_columna];
         //System.out.println("Proximo estado:"+estado);
-        if (estado == MTE.ESTADO_FINAL){
-            estado = 0;
-            lexema = "";
-        }
         return id_token;
     }
 }
