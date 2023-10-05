@@ -132,6 +132,8 @@ comparador: MAYORIGUAL
 
 %%
 
+public static final String ERROR = "Error";
+public static final String WARNING = "Warning";
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
 
@@ -166,26 +168,67 @@ int yylex(){
     }
     return 0; // 0 indica que se llego al EOF
 
-void anotarError (ArrayList<String> listaError, String error){ // Agrega un error encontrado, "error" es la descripcion
-    listaError.add(error + " Linea: " + AnalizadorLexico.getCantLineas() + " Posicion: " + AnalizadorLexico.getPosicion());
+void anotar (String tipo, String descripcion){ // Agrega un error encontrado, "error" es la descripcion
+    switch (tipo){
+    	case "Error":
+    		errorLexico.add(descripcion);
+    	case "Warning":
+    		errorSintactico.add(descripcion);
+    }
 }
 
 void comprobarRangoShort(valor) {
 	int short = - Integer.ParseInt(valor.image);
 	if (short < -32768){
-		anotarError(errorLexico, "Constante short fuera de rango")
+		anotarError(ERROR, "Constante short fuera de rango")
 
 void comprobarRangoFloat(Token token) {
     String float = token.image.toLowerCase(); // Convierte a minúsculas para manejar 'e' en mayúscula o minúscula
     double numero = - Double.parseDouble(valor);
     if !(numero >= -3.40282347E+38 && numero <= -1.17549435E-38) {
-        anotarError(errorLexico, "Constante short fuera de rango")
+        //anotarError(ERROR, "Constante short fuera de rango")
+        //NO DEBERIA SER WARNING? DEBE TRUNCAR Y MODIFICAR VALOR EN TABLA DE SIMBOLOS
     }
+}
+
+public static void imprimir(List<String> lista, String cabecera) {
+        if (!lista.isEmpty()) {
+                System.out.println();
+                System.out.println(cabecera + ":");
+
+                for (String x: lista) {
+                        System.out.println(x);
+                }
+        }
 }
 
 public static void main(String[] args) {
         if (args.length > 1) {
+                String archivo = args[0];
+		System.out.println("Compilando el archivo: " + archivo);
+                try {
+                	FileInputStream fis = new FileInputStream(archivo);
+                        BufferedInputStream lector = new BufferedInputStream(fis);
+                        AnalizadorLexico.lector = lector;
+                        Parser parser = new Parser();
+                        parser.run();
+                } catch (IOException excepcion) {
+                        excepcion.printStackTrace();
+                }
+                Parser.imprimir(errorLexico, "Errores Lexicos");
+                Parser.imprimir(errorSintactico, "Errores Sintacticos");
+                TablaSimbolos.imprimirTabla();
+        } else {
+                System.out.println("No se especifico el archivo a compilar");
+        }
+
+
+//BORRAR ESTO - REFERENCIA 2021
+/*
+public static void main(String[] args) {
+        if (args.length > 1) {
                 String archivo_a_leer = args[0];
+                System.out.println("Se esta compilando el siguiente archivo: " + archivo_a_leer);
 
                 try {
                         AnalizadorLexico.lector = new BufferedReader(new FileReader(archivo_a_leer));
@@ -194,7 +237,20 @@ public static void main(String[] args) {
                 } catch (IOException excepcion) {
                         excepcion.printStackTrace();
                 }
+
+                Parser.imprimirErrores(errores_lexicos, "Errores Lexicos");
+                Parser.imprimirErrores(errores_sintacticos, "Errores Sintacticos");
+
+                if (!errores_compilacion) {
+                        GeneradorCodigo.generarCodigo();
+                        FileHelper.writeProgram(args[1], GeneradorCodigo.codigo.toString());
+                }
+
+                Parser.imprimirErrores(errores_semanticos, "Errores Semanticos");
+                Parser.imprimirPolaca();
                 TablaSimbolos.imprimirTabla();
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }
+}
+*/

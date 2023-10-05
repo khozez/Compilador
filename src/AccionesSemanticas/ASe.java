@@ -14,7 +14,7 @@ public class ASe implements AccionSemantica{
             lector.mark(1);
             char value = (char) lector.read();
             lector.reset();
-            System.out.println("LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR, se esperaba 's' o 'ul' y se obtuvo '"+value+"'");
+            Parser.anotar(Parser.ERROR, "LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR, se esperaba 's' o 'ul' y se obtuvo '"+value+"'");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

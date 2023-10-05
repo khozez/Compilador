@@ -10,7 +10,7 @@ public class AS12 implements AccionSemantica{
     public int ejecutar(BufferedInputStream lector, String lexema) {
         int pr = TablaPalabrasReservadas.obtenerIdentificador(lexema);
         if (pr == -1){
-            System.out.println("LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR, '"+lexema+"' no es una palabra reservada");
+            Parser.anotar(Parser.ERROR, "LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR, '"+lexema+"' no es una palabra reservada");
             return 0;
         }
         else {

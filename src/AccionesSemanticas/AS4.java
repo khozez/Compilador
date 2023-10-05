@@ -12,12 +12,12 @@ public class AS4 implements AccionSemantica{
         double valor = Double.parseDouble(lexema);
         if (valor <= AnalizadorLexico.MIN_FLOAT_VALUE){
             //INFORMAR WARNING, SE TRUNCA AL MENOR VALOR.
-            System.out.println("WARNING: Constante"+lexema+" fue truncado ya que es inferior al valor minimo");
+            Parser.anotar(Parser.WARNING, "WARNING: Constante"+lexema+" fue truncado ya que es inferior al valor minimo");
             valor = AnalizadorLexico.MIN_FLOAT_VALUE;
 
         } else if (valor >= AnalizadorLexico.MAX_FLOAT_VALUE) {
             //INFORMAR WARNING, SE TRUNCA AL MENOR VALOR.
-            System.out.println("WARNING: Constante"+lexema+" fue truncado ya que supera el valor maximo");
+            Parser.anotar(Parser.WARNING, "WARNING: Constante"+lexema+" fue truncado ya que supera el valor maximo");
             valor = AnalizadorLexico.MAX_FLOAT_VALUE;
 
         }

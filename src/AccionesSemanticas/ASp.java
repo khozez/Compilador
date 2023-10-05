@@ -13,7 +13,7 @@ public class ASp implements AccionSemantica{
             lector.mark(1);
             char value = (char) lector.read();
             lector.reset();
-            System.out.println("LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR, se esperaba una letra y se obtuvo '"+value+"'");
+            Parser.anotar(Parser.ERROR, "LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR, se esperaba una letra y se obtuvo '"+value+"'");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

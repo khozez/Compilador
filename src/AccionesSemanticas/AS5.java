@@ -20,10 +20,10 @@ public class AS5 implements AccionSemantica{
             if (num > AnalizadorLexico.MAX_ULONG_INT){
                 num = AnalizadorLexico.MAX_ULONG_INT;
                 //INFORMAR WARNING, SE TRUNCA A MAXIMO LONG
-                System.out.println("WARNING: Constante"+AnalizadorLexico.lexema+" fue truncado ya que supera el valor maximo");
+                Parser.anotar(Parser.WARNING, "WARNING: Constante"+AnalizadorLexico.lexema+" fue truncado ya que supera el valor maximo");
             } else if (num < 0) {
                 num = 0;
-                System.out.println("WARNING: Constante"+AnalizadorLexico.lexema+" fue truncado ya que es inferior al valor minimo");
+                Parser.anotar(Parser.WARNING, "WARNING: Constante"+AnalizadorLexico.lexema+" fue truncado ya que es inferior al valor minimo");
             }
 
             lexema = Long.toString(num);

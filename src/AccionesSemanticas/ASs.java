@@ -13,7 +13,7 @@ public class ASs implements AccionSemantica{
             lector.mark(1);
             char value = (char) lector.read();
             lector.reset();
-            System.out.println("LINEA "+ AnalizadorLexico.getCantLineas()+": WARNING!: Falta signo, se considera positivo.");
+            Parser.anotar(Parser.WARNING, "LINEA "+ AnalizadorLexico.getCantLineas()+": WARNING!: Falta signo, se considera positivo.");
             AnalizadorLexico.lexema+='+';
         } catch (IOException e) {
             throw new RuntimeException(e);

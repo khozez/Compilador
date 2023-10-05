@@ -11,7 +11,7 @@ public class ASg implements AccionSemantica{
             lector.mark(1);
             char value = (char) lector.read();
             lector.reset();
-            System.out.println("LINEA "+ AnalizadorLexico.getCantLineas()+": Error lexico, no se puede comenzar con '"+value+"'");
+            Parser.anotar(Parser.ERROR, "LINEA "+ AnalizadorLexico.getCantLineas()+": Error lexico, no se puede comenzar con '"+value+"'");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
