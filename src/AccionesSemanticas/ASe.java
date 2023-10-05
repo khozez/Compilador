@@ -1,6 +1,6 @@
 package AccionesSemanticas;
 
-import Etapas.AnalizadorLexico;
+import Etapas.*;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -14,7 +14,7 @@ public class ASe implements AccionSemantica{
             lector.mark(1);
             char value = (char) lector.read();
             lector.reset();
-            Parser.anotar(Parser.ERROR, "LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR, se esperaba 's' o 'ul' y se obtuvo '"+value+"'");
+            Parser.anotar(Parser.ERROR_LEXICO, "LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR, se esperaba 's' o 'ul' y se obtuvo '"+value+"'");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

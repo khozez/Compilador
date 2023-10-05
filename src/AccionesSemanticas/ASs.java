@@ -1,6 +1,7 @@
 package AccionesSemanticas;
 
-import Etapas.AnalizadorLexico;
+import Etapas.*;
+
 import java.io.BufferedInputStream;
 import java.io.IOException;
 

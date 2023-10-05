@@ -1,16 +1,14 @@
 %{
-	package Compilador;
-
-	import AccionesSemanticas.AccionSemantica;
-
+	package Etapas;
 	import java.io.*;
+        import AccionesSemanticas.*;
 	import java.util.ArrayList;
 	import java.util.List;
 	import java.util.Map;
 	import java.util.Stack;
 %}
 
-%token ID CADENA VALOR CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE DO RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS
+%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE DO RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS
 %left '+' '-'
 %left '*' '/'
 
@@ -20,40 +18,49 @@
 %%
 
 programa: '{' cuerpoPrograma '}'
-		| '{' '}' {anotarError(errorSintactico, "Programa vacio")}
-		| cuerpoPrograma '}' {anotarError(errorSintactico, "Falta llave de apertura '{'")}
-		| '{' cuerpoPrograma {anotarError(errorSintactico, "Falta llave de cierre '}'")}
+		| '{' '}' {anotar(ERROR_SINTACTICO, "Programa vacio");}
+		| cuerpoPrograma '}' {anotar(ERROR_SINTACTICO, "Falta llave de apertura '{'");}
+		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "Falta llave de cierre '}'");}
+;
 
 cuerpoPrograma: cuerpoPrograma declaracionClase
 		|  cuerpoPrograma listaSentencias
 		| declaracionClase
 		| listaSentencias
+;
 
 declaracionClase: CLASS ID '{' cuerpoClase '}' ','
-				| CLASS ID '{' cuerpoClase '}' {anotarError(errorSintactico, "Falta coma al final de linea")}
+				| CLASS ID '{' cuerpoClase '}' {anotar(ERROR_SINTACTICO, "Falta coma al final de linea");}
 				| CLASS ID ','
-				| CLASS ID {anotarError(errorSintactico, "Falta coma (',')")}
+				| CLASS ID {anotar(ERROR_SINTACTICO, "Falta coma (',')");}
+;
 
 cuerpoClase: cuerpoClase seccionClase
 		| seccionClase
+;
 
 seccionClase: seccionAtributos
 			| seccionMetodos
+;
 
 seccionAtributos: tipo ID ';' listaAtributos
 				| tipo ID ','
-				| tipo ID {anotarError(errorSintactico, "Falta coma (',') al final de linea")}
+				| tipo ID {anotar(ERROR_SINTACTICO, "Falta coma (',') al final de linea");}
+;
 
 listaAtributos: ID ';' listaAtributos
 			| ID ','
-			| ID {anotarError(errorSintactico, "Falta coma (',') al final de linea")}
+			| ID {anotar(ERROR_SINTACTICO, "Falta coma (',') al final de linea");}
+;
 
 seccionMetodos: seccionMetodos ',' declaracionMetodo
 			| declaracionMetodo ','
+;
 
 listaEjecutables: listaEjecutables ',' sentenciaEjecutable
 			| sentenciaEjecutable ','
-			| sentenciaEjecutable '$' {anotarError(errorSintactico, "Falta coma (',') al final de linea")}
+			| sentenciaEjecutable '$' {anotar(ERROR_SINTACTICO, "Falta coma (',') al final de linea");}
+;
 
 sentenciaEjecutable: asignacion
     	| sentenciaIf
@@ -61,64 +68,82 @@ sentenciaEjecutable: asignacion
     	| print
     	| return
 	| invocacionMetodo
+;
 
 listaDeclarativa: listaDeclarativa ',' sentenciaDeclarativa
 				| sentenciaDeclarativa ','
-				| sentenciaDeclarativa '$' {anotarError(errorSintactico, "Falta coma (',') al final de linea")}
+				| sentenciaDeclarativa '$' {anotar(ERROR_SINTACTICO, "Falta coma (',') al final de linea");}
+;
 
 sentenciaDeclarativa: declaracionMetodo
 					| declaracion
+;
 
 listaSentencias: listaDeclarativa ',' listaEjecutables
 				| listaDeclarativa
 				| listaEjecutables
+;
 
 asignacion: ID '=' expresion
+;
 
 sentenciaIf: IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' {anotarError(errorSintactico, "Falta 'END_IF'")}
+			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "Falta 'END_IF'");}
 			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' END_IF
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' {anotarError(errorSintactico, "Falta 'END_IF'")}
+			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "Falta 'END_IF'");}
+;
 
 sentenciaWhile: WHILE '(' expresion comparador expresion ')' '{' listaEjecutables '}'
-			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotarError(errorSintactico, "Mal definida la condicion")}
+			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "Mal definida la condicion");}
+;
 
 print: PRINT '%' CADENA '%'
+;
 
 return: RETURN ';'
     		| RETURN expresion ';'
+;
 
 declaracionMetodo: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}'
 			| VOID ID '('')' '{' cuerpoMetodo '}'
+;
 
 cuerpoMetodo: listaSentencias
+;
 
 invocacionMetodo: ID '(' tipo ID ')'
 		  | ID '(' ')'
+;
 
 declaracion: tipo listaDeclaracion
+;
 
 listaDeclaracion: ID ';' listaDeclaracion
 				| ID
+;
 
 tipo: SHORT
     	| ULONG
 	| FLOAT
     	| ID
+;
 
 expresion: termino
     	| expresion '+' termino
     	| expresion '-' termino
+;
 
 termino: factor
     	| termino '*' factor
     	| termino '/' factor
+;
 
 factor: ID
 	| ID MENOSMENOS
     	| CTE
     	| '-' CTE
     	| '(' expresion ')'
+;
 
 comparador: MAYORIGUAL
 	    | MENORIGUAL
@@ -126,10 +151,12 @@ comparador: MAYORIGUAL
 	    | DISTINTO
             | '<'
 	    | '>'
+;
 
 %%
 
-public static final String ERROR = "Error";
+public static final String ERROR_LEXICO = "Error";
+public static final String ERROR_SINTACTICO = "Error_sintactico";
 public static final String WARNING = "Warning";
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
@@ -162,14 +189,16 @@ int yylex(){
                 throw new RuntimeException(e);
             }
         }
-    }
-    return 0; // 0 indica que se llego al EOF
+    return IDtoken;
+}
 
-void anotar (String tipo, String descripcion){ // Agrega un error encontrado, "error" es la descripcion
+public static void anotar (String tipo, String descripcion){ // Agrega un error encontrado, "error" es la descripcion
     switch (tipo){
-    	case "Error":
+    	case "Error_lexico":
     		errorLexico.add(descripcion);
     	case "Warning":
+    		errorSintactico.add(descripcion);
+    	case "Error_sintactico":
     		errorSintactico.add(descripcion);
     }
 }
@@ -204,6 +233,7 @@ public static void main(String[] args) {
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }
+}
 
 //BORRAR ESTO - REFERENCIA 2021
 /*

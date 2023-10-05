@@ -1,8 +1,6 @@
 package AccionesSemanticas;
 import java.io.BufferedInputStream;
-import Etapas.AnalizadorLexico;
-import Etapas.TablaPalabrasReservadas;
-import Etapas.TablaSimbolos;
+import Etapas.*;
 
 public class AS1 implements AccionSemantica{
     /*

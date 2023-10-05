@@ -1,6 +1,6 @@
 package AccionesSemanticas;
 
-import Etapas.AnalizadorLexico;
+import Etapas.*;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 
@@ -11,7 +11,7 @@ public class ASg implements AccionSemantica{
             lector.mark(1);
             char value = (char) lector.read();
             lector.reset();
-            Parser.anotar(Parser.ERROR, "LINEA "+ AnalizadorLexico.getCantLineas()+": Error lexico, no se puede comenzar con '"+value+"'");
+            Parser.anotar(Parser.ERROR_LEXICO, "LINEA "+ AnalizadorLexico.getCantLineas()+": Error lexico, no se puede comenzar con '"+value+"'");
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
