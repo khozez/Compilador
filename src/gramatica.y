@@ -116,11 +116,8 @@ termino: factor
 
 factor: ID
 	| ID MENOSMENOS
-    	| SHORT
-    	| ULONG
-	| FLOAT
-	| '-' SHORT {comprobarRangoShort($2)}
-	| '-' FLOAT {comprobarRangoFloat($2)}
+    	| CTE
+    	| '-' CTE
     	| '(' expresion ')'
 
 comparador: MAYORIGUAL
@@ -157,7 +154,7 @@ int yylex(){
             lector.reset();
             IDtoken = AnalizadorLexico.getToken(lector, c); // pido el token
             if (IDtoken != -1){ // si AL no define un token entonces sigue probando con los proximos caracteres
-                yylval = new ParserVal(AnalizadorLexico.lexema.toString());
+                yylval = new ParserVal(AnalizadorLexico.lexema);
                 AnalizadorLexico.lexema= ""; // borro lexema porque no lo necesito mas
                 return IDtoken; // devuelvo el ID del token
             }
@@ -174,20 +171,6 @@ void anotar (String tipo, String descripcion){ // Agrega un error encontrado, "e
     		errorLexico.add(descripcion);
     	case "Warning":
     		errorSintactico.add(descripcion);
-    }
-}
-
-void comprobarRangoShort(valor) {
-	int short = - Integer.ParseInt(valor.image);
-	if (short < -32768){
-		anotarError(ERROR, "Constante short fuera de rango")
-
-void comprobarRangoFloat(Token token) {
-    String float = token.image.toLowerCase(); // Convierte a minúsculas para manejar 'e' en mayúscula o minúscula
-    double numero = - Double.parseDouble(valor);
-    if !(numero >= -3.40282347E+38 && numero <= -1.17549435E-38) {
-        //anotarError(ERROR, "Constante short fuera de rango")
-        //NO DEBERIA SER WARNING? DEBE TRUNCAR Y MODIFICAR VALOR EN TABLA DE SIMBOLOS
     }
 }
 
@@ -221,7 +204,6 @@ public static void main(String[] args) {
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }
-
 
 //BORRAR ESTO - REFERENCIA 2021
 /*
