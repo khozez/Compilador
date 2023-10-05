@@ -3,7 +3,7 @@ import java.io.*;
 
 public class Main {
     public static void main(String[] args) throws FileNotFoundException {
-        FileInputStream fis = new FileInputStream("src\\codigo.txt");
+        FileInputStream fis = new FileInputStream("src\\AL-TEST-1.txt");
         BufferedInputStream lector = new BufferedInputStream(fis);
         AnalizadorLexico Alexico = new AnalizadorLexico();
         Alexico.lector = lector;

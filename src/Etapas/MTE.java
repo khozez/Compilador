@@ -66,7 +66,11 @@ public class MTE {
 
 
         //FILA 3
-        for (int i=0; i<=15; i++){
+        for (int i=0; i<=9; i++){
+            states_matrix[3][i] = ERROR;
+        }
+        states_matrix[3][10] = 4;
+        for (int i=11; i<=15; i++){
             states_matrix[3][i] = ERROR;
         }
         states_matrix[3][16] = 4;

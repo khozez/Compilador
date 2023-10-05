@@ -14,7 +14,6 @@ public class ASx implements AccionSemantica{
             char value = (char) lector.read();
             lector.reset();
             System.out.println("LINEA "+ AnalizadorLexico.getCantLineas()+": ERROR: Se esperaba el signo del exponente, se obtuvo: "+value);
-            AnalizadorLexico.lexema+='+';
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

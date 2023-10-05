@@ -30,7 +30,7 @@ public class AnalizadorLexico {
     private static MTE matriz_estados;
     private static MAS mas;
     public static String lexema = "";
-    private int estado = 0;
+    private static int estado = 0;
 
     public AnalizadorLexico() {
         matriz_estados = new MTE();
@@ -68,7 +68,7 @@ public class AnalizadorLexico {
         return c;
     }
 
-    public int getToken(BufferedInputStream lector, char c){
+    public static int getToken(BufferedInputStream lector, char c){
         posicion+=1;
         int id_columna;
         switch (getTipo(c)){

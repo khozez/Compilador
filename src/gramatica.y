@@ -10,7 +10,7 @@
 	import java.util.Stack;
 %}
 
-%token ID CADENA VALOR CLASS IF ELSE END_IF PRINT VOID SHORT ULONG WHILE DO RETURN MAYOR MENOR MAYORIGUAL MENORIGUAL IGUAL DISTINTO ASIGN MENOSMENOS
+%token ID CADENA VALOR CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE DO RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS
 %left '+' '-'
 %left '*' '/'
 
@@ -25,7 +25,7 @@ programa: '{' cuerpoPrograma '}'
 		| '{' cuerpoPrograma {anotarError(errorSintactico, "Falta llave de cierre '}'")}
 
 cuerpoPrograma: cuerpoPrograma declaracionClase
-		|  cuerpoPrograma listaSentencias 
+		|  cuerpoPrograma listaSentencias
 		| declaracionClase
 		| listaSentencias
 
@@ -56,24 +56,24 @@ listaEjecutables: listaEjecutables ',' sentenciaEjecutable
 			| sentenciaEjecutable '$' {anotarError(errorSintactico, "Falta coma (',') al final de linea")}
 
 sentenciaEjecutable: asignacion
-    | sentenciaIf
-    | sentenciaWhile
-    | print
-    | return
+    	| sentenciaIf
+    	| sentenciaWhile
+    	| print
+    	| return
 	| invocacionMetodo
-	
+
 listaDeclarativa: listaDeclarativa ',' sentenciaDeclarativa
 				| sentenciaDeclarativa ','
 				| sentenciaDeclarativa '$' {anotarError(errorSintactico, "Falta coma (',') al final de linea")}
-				
+
 sentenciaDeclarativa: declaracionMetodo
 					| declaracion
-					
+
 listaSentencias: listaDeclarativa ',' listaEjecutables
 				| listaDeclarativa
 				| listaEjecutables
 
-asignacion: ID ASIGN expresion
+asignacion: ID '=' expresion
 
 sentenciaIf: IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF
 			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' {anotarError(errorSintactico, "Falta 'END_IF'")}
@@ -85,17 +85,16 @@ sentenciaWhile: WHILE '(' expresion comparador expresion ')' '{' listaEjecutable
 
 print: PRINT '%' CADENA '%'
 
-return:
-    RETURN ';'
-    | RETURN expresion ';'
+return: RETURN ';'
+    		| RETURN expresion ';'
 
 declaracionMetodo: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}'
 			| VOID ID '('')' '{' cuerpoMetodo '}'
-			
+
 cuerpoMetodo: listaSentencias
 
 invocacionMetodo: ID '(' tipo ID ')'
-				| ID '(' ')'
+		  | ID '(' ')'
 
 declaracion: tipo listaDeclaracion
 
@@ -103,29 +102,33 @@ listaDeclaracion: ID ';' listaDeclaracion
 				| ID
 
 tipo: SHORT
-    | ULONG
-    | ID 
+    	| ULONG
+	| FLOAT
+    	| ID
 
 expresion: termino
-    | expresion '+' termino
-    | expresion '-' termino
+    	| expresion '+' termino
+    	| expresion '-' termino
 
 termino: factor
-    | termino '*' factor
-    | termino '/' factor
+    	| termino '*' factor
+    	| termino '/' factor
 
 factor: ID
-	| ID MENOSMENOS 
-    | SHORT
-    | ULONG
-    | '(' expresion ')'
+	| ID MENOSMENOS
+    	| SHORT
+    	| ULONG
+	| FLOAT
+	| '-' SHORT {comprobarRangoShort($2)}
+	| '-' FLOAT {comprobarRangoFloat($2)}
+    	| '(' expresion ')'
 
-comparador: MAYOR
-		| MENOR
-		| MAYORIGUAL
-		| MENORIGUAL
-		| IGUAL
-		| DISTINTO
+comparador: MAYORIGUAL
+	    | MENORIGUAL
+	    | IGUAL
+	    | DISTINTO
+            | '<'
+	    | '>'
 
 %%
 
@@ -165,6 +168,19 @@ int yylex(){
 
 void anotarError (ArrayList<String> listaError, String error){ // Agrega un error encontrado, "error" es la descripcion
     listaError.add(error + " Linea: " + AnalizadorLexico.getCantLineas() + " Posicion: " + AnalizadorLexico.getPosicion());
+}
+
+void comprobarRangoShort(valor) {
+	int short = - Integer.ParseInt(valor.image);
+	if (short < -32768){
+		anotarError(errorLexico, "Constante short fuera de rango")
+
+void comprobarRangoFloat(Token token) {
+    String float = token.image.toLowerCase(); // Convierte a minúsculas para manejar 'e' en mayúscula o minúscula
+    double numero = - Double.parseDouble(valor);
+    if !(numero >= -3.40282347E+38 && numero <= -1.17549435E-38) {
+        anotarError(errorLexico, "Constante short fuera de rango")
+    }
 }
 
 public static void main(String[] args) {

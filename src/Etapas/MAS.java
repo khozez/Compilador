@@ -57,7 +57,11 @@ public class MAS {
 
 
         //FILA 3
-        for (int i=0; i<=15; i++){
+        for (int i=0; i<=9; i++){
+            action_matrix[3][i]= new ASx();
+        }
+        action_matrix[3][10]= new ASs();
+        for (int i=11; i<=15; i++){
             action_matrix[3][i]= new ASx();
         }
         action_matrix[3][16]= new AS6();
