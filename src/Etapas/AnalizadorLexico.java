@@ -12,6 +12,9 @@ public class AnalizadorLexico {
     public static final char MAYUSCULA = 'M';
     public static final char MINUSCULA = 'm';
     public static final char PORCIENTO = '%';
+    public static final int IDENTIFICADOR = 257;
+    public static final int CONSTANTE = 258;
+    public static final int CADENA = 259;
     public static final int MAX_LONG_ID = 20;
     public static final int MAX_SHORT_INT = (int) Math.pow(2, 7) - 1;
     public static final int MIN_SHORT_INT = (int) -Math.pow(2, 7);

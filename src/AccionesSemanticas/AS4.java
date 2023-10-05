@@ -29,6 +29,6 @@ public class AS4 implements AccionSemantica{
 
         //RETORNAMOS EL ID DEL TOKEN DE UNA CONSTANTE
         System.out.println("Constante float: "+lexema);
-        return 259;
+        return AnalizadorLexico.CONSTANTE;
     }
 }

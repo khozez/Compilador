@@ -37,6 +37,6 @@ public class AS5 implements AccionSemantica{
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        return 259;
+        return AnalizadorLexico.CONSTANTE;
     }
 }

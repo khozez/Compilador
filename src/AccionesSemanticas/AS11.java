@@ -35,6 +35,6 @@ public class AS11 implements AccionSemantica{
             throw new RuntimeException(e);
         }
 
-        return 259;
+        return AnalizadorLexico.CONSTANTE;
     }
 }

@@ -1,5 +1,6 @@
 package AccionesSemanticas;
 
+import Etapas.AnalizadorLexico;
 import Etapas.TablaSimbolos;
 
 import java.io.BufferedInputStream;
@@ -20,6 +21,6 @@ public class AS10 implements AccionSemantica{
         if (TablaSimbolos.obtenerSimbolo(lexema_sin_saltos) != TablaSimbolos.NO_ENCONTRADO) {
             TablaSimbolos.agregarSimbolo(lexema_sin_saltos);
         }
-        return 258;
+        return AnalizadorLexico.CADENA;
     }
 }

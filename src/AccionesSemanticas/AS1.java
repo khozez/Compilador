@@ -15,6 +15,6 @@ public class AS1 implements AccionSemantica{
             Parser.anotar(Parser.WARNING, "WARNING: Identificador en linea"+AnalizadorLexico.getCantLineas()+" fue truncado ya que supera la longitud maxima.");
         }
         System.out.println("Identificador: "+lexema);
-        return 257;
+        return AnalizadorLexico.IDENTIFICADOR;
     }
 }

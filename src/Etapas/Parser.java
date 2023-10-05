@@ -572,6 +572,28 @@ public static void main(String[] args) {
                 TablaSimbolos.imprimirTabla();
 }
 
+/* MAIN PARA CUANDO EJECUTEMOS POR CONSOLA
+public static void main(String[] args) {
+        if (args.length > 1) {
+                String archivo = args[0];
+		System.out.println("Compilando el archivo: " + archivo);
+                try {
+                	FileInputStream fis = new FileInputStream(archivo);
+                        BufferedInputStream lector = new BufferedInputStream(fis);
+                        AnalizadorLexico.lector = lector;
+                        Parser parser = new Parser();
+                        parser.run();
+                } catch (IOException excepcion) {
+                        excepcion.printStackTrace();
+                }
+                Parser.imprimir(errorLexico, "Errores Lexicos");
+                Parser.imprimir(errorSintactico, "Errores Sintacticos");
+                TablaSimbolos.imprimirTabla();
+        } else {
+                System.out.println("No se especifico el archivo a compilar");
+        }
+} */
+
 //BORRAR ESTO - REFERENCIA 2021
 /*
 public static void main(String[] args) {
@@ -603,7 +625,7 @@ public static void main(String[] args) {
         }
 }
 */
-//#line 539 "Parser.java"
+//#line 557 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -805,7 +827,7 @@ case 48:
 //#line 97 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "Mal definida la condicion");}
 break;
-//#line 736 "Parser.java"
+//#line 754 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
