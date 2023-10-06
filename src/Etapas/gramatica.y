@@ -199,10 +199,13 @@ public static void anotar (String tipo, String descripcion){ // Agrega un error 
     switch (tipo){
     	case "Error_lexico":
     		errorLexico.add(descripcion);
+    		break;
     	case "Warning":
-    		errorSintactico.add(descripcion);
+    		errorLexico.add(descripcion);
+    		break;
     	case "Error_sintactico":
     		errorSintactico.add(descripcion);
+    		break;
     }
 }
 
@@ -210,7 +213,6 @@ public static void imprimir(List<String> lista, String cabecera) {
         if (!lista.isEmpty()) {
                 System.out.println();
                 System.out.println(cabecera + ":");
-		System.out.println(lista.size());
                 for (String x: lista) {
                         System.out.println(x);
                 }
