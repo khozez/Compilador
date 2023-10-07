@@ -23,7 +23,7 @@ public class TablaSimbolos {
 
 
     public static boolean agregarSimbolo(String simbolo_nuevo) {
-        if (obtenerSimbolo(simbolo_nuevo) != NO_ENCONTRADO) {
+        if (obtenerSimbolo(simbolo_nuevo) == NO_ENCONTRADO) {
             Map<String, String> atributos = new HashMap<>();
             atributos.put(LEXEMA, simbolo_nuevo);
             simbolos.put(identificador_siguiente, atributos);

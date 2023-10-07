@@ -25,7 +25,7 @@ public class AnalizadorLexico {
     public static final double MAX_NEGATIVE_FLOAT_VALUE = -1.17549435E-38;
     public static BufferedInputStream lector;
     private static TablaPalabrasReservadas PR = new TablaPalabrasReservadas();
-    private static TablaSimbolos TS = new TablaSimbolos();
+    public static TablaSimbolos TS = new TablaSimbolos();
 
     private static int cant_lineas = 1;
     private static int posicion = 0;

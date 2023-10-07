@@ -16,7 +16,6 @@ public class AS10 implements AccionSemantica{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         String lexema_sin_saltos = lexema.replaceAll("\\n", "");
         if (TablaSimbolos.obtenerSimbolo(lexema_sin_saltos) != TablaSimbolos.NO_ENCONTRADO) {
             TablaSimbolos.agregarSimbolo(lexema_sin_saltos);

@@ -14,6 +14,10 @@ public class AS1 implements AccionSemantica{
             lexema = lexema.substring(0, AnalizadorLexico.MAX_LONG_ID);
             Parser.anotar(Parser.WARNING, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Identificador fue truncado ya que supera la longitud maxima.");
         }
+        boolean simbolo_encontrado = TablaSimbolos.obtenerSimbolo(lexema) != TablaSimbolos.NO_ENCONTRADO;
+        if (!simbolo_encontrado) {
+            AnalizadorLexico.TS.agregarSimbolo(lexema);
+        }
         System.out.println("Identificador: "+lexema);
         return AnalizadorLexico.IDENTIFICADOR;
     }

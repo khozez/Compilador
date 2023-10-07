@@ -19,9 +19,9 @@
 %%
 
 programa: '{' cuerpoPrograma '}'
-		| '{' '}' {anotar(ERROR_SINTACTICO, "Programa vacio");}
-		| cuerpoPrograma '}' {anotar(ERROR_SINTACTICO, "Falta llave de apertura '{'");}
-		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "Falta llave de cierre '}'");}
+		| '{' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Programa vacio");}
+		| cuerpoPrograma '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta llave de apertura '{'");}
+		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta llave de cierre '}'");}
 ;
 
 cuerpoPrograma: cuerpoPrograma declaracionClase
@@ -31,9 +31,9 @@ cuerpoPrograma: cuerpoPrograma declaracionClase
 ;
 
 declaracionClase: CLASS ID '{' cuerpoClase '}' ','
-				| CLASS ID '{' cuerpoClase '}' {anotar(ERROR_SINTACTICO, "Falta coma al final de linea");}
+				| CLASS ID '{' cuerpoClase '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma al final de linea");}
 				| CLASS ID ','
-				| CLASS ID {anotar(ERROR_SINTACTICO, "Falta coma (',')");}
+				| CLASS ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',')");}
 ;
 
 cuerpoClase: cuerpoClase seccionClase
@@ -46,12 +46,12 @@ seccionClase: seccionAtributos
 
 seccionAtributos: tipo ID ';' listaAtributos
 				| tipo ID ','
-				| tipo ID {anotar(ERROR_SINTACTICO, "Falta coma (',') al final de linea");}
+				| tipo ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
 ;
 
 listaAtributos: ID ';' listaAtributos
 			| ID ','
-			| ID {anotar(ERROR_SINTACTICO, "Falta coma (',') al final de linea");}
+			| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
 ;
 
 seccionMetodos: seccionMetodos ',' declaracionMetodo
@@ -60,20 +60,20 @@ seccionMetodos: seccionMetodos ',' declaracionMetodo
 
 listaEjecutables: listaEjecutables ',' sentenciaEjecutable
 			| sentenciaEjecutable ','
-			| sentenciaEjecutable '$' {anotar(ERROR_SINTACTICO, "Falta coma (',') al final de linea");}
+			| sentenciaEjecutable '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
 ;
 
 sentenciaEjecutable: asignacion
     	| sentenciaIf
     	| sentenciaWhile
-    	| print
+    	| CADENA
     	| return
 	| invocacionMetodo
 ;
 
 listaDeclarativa: listaDeclarativa ',' sentenciaDeclarativa
 				| sentenciaDeclarativa ','
-				| sentenciaDeclarativa '$' {anotar(ERROR_SINTACTICO, "Falta coma (',') al final de linea");}
+				| sentenciaDeclarativa '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
 ;
 
 sentenciaDeclarativa: declaracionMetodo
@@ -83,22 +83,21 @@ sentenciaDeclarativa: declaracionMetodo
 listaSentencias: listaDeclarativa ',' listaEjecutables
 				| listaDeclarativa
 				| listaEjecutables
+				| CADENA
 ;
 
 asignacion: ID '=' expresion
+	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Una asignación no se debe realizar con ==");}
 ;
 
 sentenciaIf: IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "Falta 'END_IF'");}
+			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta 'END_IF'");}
 			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' END_IF
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "Falta 'END_IF'");}
+			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta 'END_IF'");}
 ;
 
 sentenciaWhile: WHILE '(' expresion comparador expresion ')' '{' listaEjecutables '}'
-			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "Mal definida la condicion");}
-;
-
-print: '%' CADENA '%'
+			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Mal definida la condicion");}
 ;
 
 return: RETURN ';'

@@ -97,7 +97,7 @@ public class MTE {
         states_matrix[5][5] = 6;
         states_matrix[5][6] = ESTADO_FINAL;
         for (int i=7; i<=28; i++){
-            states_matrix[6][i] = ERROR;
+            states_matrix[5][i] = ERROR;
         }
 
 
@@ -107,7 +107,7 @@ public class MTE {
         }
         states_matrix[6][7] = ESTADO_FINAL;
         for (int i=7; i<=28; i++){
-            states_matrix[7][i] = ERROR;
+            states_matrix[6][i] = ERROR;
         }
 
 
