@@ -37,6 +37,9 @@ ELSE
     PRINT %CONSTANTES NO TRUNCADAS%,
 END_IF,
 
+WHILE (num1 !! 45_s) DO
+    num1 = num1+1_s,
+
 func1(num1),
 func1(b = 4_s),                                 **MAL INVOCACION DE FUNCION, CON UNA ASIGNACIÓN
 func1(SHORT c = 59_s),                          **MAL INVOCACION DE FUNCION, CON UNA DECLARACIÓN

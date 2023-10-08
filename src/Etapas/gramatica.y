@@ -9,7 +9,7 @@
 %}
 
 
-%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS
+%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS DO
 %left '+' '-'
 %left '*' '/'
 
@@ -98,8 +98,9 @@ sentenciaIf: IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' 
 			| IF '(' expresion comparador expresion ')' ',' END_IF
 ;
 
-sentenciaWhile: WHILE '(' expresion comparador expresion ')' '{' listaEjecutables '}'
-			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
+sentenciaWhile: WHILE '(' expresion comparador expresion ')' DO '{' listaEjecutables '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
+               | WHILE '(' expresion comparador expresion ')' DO sentenciaEjecutable {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
+	       | WHILE '(' expresion comparador ')' DO '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
 ;
 
 print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");}
