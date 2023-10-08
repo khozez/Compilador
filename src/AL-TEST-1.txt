@@ -1,4 +1,5 @@
-{SHORT num1;num2;num3;num4,
+{
+SHORT num1;num2;num3;num4,
 ULONG num5;num6;num7;num8,
 
 num1 = -128_s,
@@ -9,7 +10,7 @@ num5 = 0_ul,
 num6 = 4294967295_ul,
 num7 = -2_ul,                             **CONSTATE LONG FUERA DE RANGO INFERIOR
 num8 = 4294967296_ul,                     **CONSTATE LONG FUERA DE RANGO SUPERIOR
-num11 = num8,
+ULONG num11 = num8,
 
 FLOAT f1 = 1.,
 FLOAT f2 = 1.6,
@@ -23,12 +24,16 @@ FLOAT f8 = 2.E35,                               **CONSTATE FLOAT SIN SIGNO EXP, 
 PRINT %EJEMPLO DE CADENA
 MULTILINEA ESCRITA CORRECTAMENTE%,
 
-    VOID func1 (SHORT x)
+VOID func1 (SHORT x)
     {
         SHORT y = 11_s,
         x = y,
         RETURN,
     }
+
+func1(num1),
+func1(b = 4_s),                                 **MAL INVOCACION DE FUNCION, CON UNA ASIGNACIÓN
+func1(SHORT c = 59_s),                          **MAL INVOCACION DE FUNCION, CON UNA DECLARACIÓN
 
 SHORT numero == 11_s,                           **ASIGNACION NO VALIDA CON ==
 

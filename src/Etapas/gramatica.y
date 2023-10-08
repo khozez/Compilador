@@ -19,9 +19,9 @@
 %%
 
 programa: '{' cuerpoPrograma '}'
-		| '{' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Programa vacio");}
-		| cuerpoPrograma '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta llave de apertura '{'");}
-		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta llave de cierre '}'");}
+		| '{' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Programa vacio");}
+		| cuerpoPrograma '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de apertura '{'");}
+		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de cierre '}'");}
 ;
 
 cuerpoPrograma: cuerpoPrograma declaracionClase
@@ -31,9 +31,9 @@ cuerpoPrograma: cuerpoPrograma declaracionClase
 ;
 
 declaracionClase: CLASS ID '{' cuerpoClase '}' ','
-				| CLASS ID '{' cuerpoClase '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma al final de linea");}
+				| CLASS ID '{' cuerpoClase '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma al final de linea");}
 				| CLASS ID ','
-				| CLASS ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',')");}
+				| CLASS ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',')");}
 ;
 
 cuerpoClase: cuerpoClase seccionClase
@@ -46,12 +46,12 @@ seccionClase: seccionAtributos
 
 seccionAtributos: tipo ID ';' listaAtributos
 				| tipo ID ','
-				| tipo ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
+				| tipo ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
 listaAtributos: ID ';' listaAtributos
 			| ID ','
-			| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
+			| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
 seccionMetodos: seccionMetodos ',' declaracionMetodo
@@ -60,7 +60,7 @@ seccionMetodos: seccionMetodos ',' declaracionMetodo
 
 listaEjecutables: listaEjecutables ',' sentenciaEjecutable
 			| sentenciaEjecutable ','
-			| sentenciaEjecutable '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
+			| sentenciaEjecutable '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
 sentenciaEjecutable: asignacion
@@ -73,7 +73,7 @@ sentenciaEjecutable: asignacion
 
 listaDeclarativa: listaDeclarativa ',' sentenciaDeclarativa
 				| sentenciaDeclarativa
-				| sentenciaDeclarativa '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
+				| sentenciaDeclarativa '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
 sentenciaDeclarativa: declaracionMetodo
@@ -86,36 +86,38 @@ listaSentencias: listaDeclarativa ',' listaEjecutables
 				| CADENA
 ;
 
-asignacion: ID '=' expresion
-	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Una asignación no se debe realizar con ==");}
+asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");}
+	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 ;
 
 sentenciaIf: IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta 'END_IF'");}
+			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": ERROR! Falta 'END_IF'");}
 			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' END_IF
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta 'END_IF'");}
+			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": ERROR! Falta 'END_IF'");}
 ;
 
 sentenciaWhile: WHILE '(' expresion comparador expresion ')' '{' listaEjecutables '}'
-			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Mal definida la condicion");}
+			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
 ;
 
-print: PRINT CADENA
+print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");}
 ;
 
 return: RETURN
 ;
 
-declaracionMetodo: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}'
-			| VOID ID '('')' '{' cuerpoMetodo '}'
+declaracionMetodo: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
+			| VOID ID '('')' '{' cuerpoMetodo '}'   {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
 ;
 
 cuerpoMetodo: cuerpoMetodo listaSentencias
 	     | listaSentencias
 ;
 
-invocacionMetodo: ID '(' tipo ID ')'
-		  | ID '(' ')'
+invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo");}
+		  | ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo");}
+		  | ID '(' asignacion ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una asignación como parametro.");}
+		  | ID '(' tipo asignacion ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una declaración como parametro.");}
 ;
 
 declaracion: tipo listaDeclaracion
@@ -159,9 +161,8 @@ comparador: MAYORIGUAL
 
 %%
 
-public static final String ERROR_LEXICO = "Error";
+public static final String ERROR_LEXICO = "Error_lexico";
 public static final String ERROR_SINTACTICO = "Error_sintactico";
-public static final String WARNING = "Warning";
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
 
@@ -185,7 +186,7 @@ public static void comprobarRango(String valor){
             //LA CONSTANTE FUE TRUNCADA, RECUPERAMOS VALOR ORIGINAL
             int numero = -Integer.parseInt(original);
             if (numero < AnalizadorLexico.MIN_SHORT_INT){
-                anotar(WARNING, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante entera negativa -"+original+"_s por ser inferior al valor minimo.");
+                anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante entera negativa -"+original+"_s por ser inferior al valor minimo.");
                 numero = AnalizadorLexico.MIN_SHORT_INT;
             }
             agregado = TablaSimbolos.agregarSimbolo(Integer.toString(numero)+"_s");
@@ -207,7 +208,7 @@ public static void comprobarRango(String valor){
 	}
 
     if (tipo.equals("long")){
-        anotar(WARNING, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
+        anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
         valor = "0_ul";
         agregado = TablaSimbolos.agregarSimbolo(valor);
         modificar_referencias(agregado, valor, "long");
@@ -263,9 +264,6 @@ int yylex(){
 public static void anotar (String tipo, String descripcion){ // Agrega un error encontrado, "error" es la descripcion
     switch (tipo){
     	case "Error_lexico":
-    		errorLexico.add(descripcion);
-    		break;
-    	case "Warning":
     		errorLexico.add(descripcion);
     		break;
     	case "Error_sintactico":

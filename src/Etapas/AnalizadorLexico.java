@@ -36,13 +36,10 @@ public class AnalizadorLexico {
     public static int estado = 0;
 
     public static void newLine(){
-        posicion = 0;
         cant_lineas += 1;
     }
 
     public static int getCantLineas(){ return cant_lineas;}
-
-    public static int getPosicon() { return posicion;}
 
     private static char getTipo(char c){
         int caracter = c;

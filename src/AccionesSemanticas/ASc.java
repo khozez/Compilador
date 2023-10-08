@@ -14,7 +14,7 @@ public class ASc implements AccionSemantica{
             lector.mark(1);
             char value = (char) lector.read();
             lector.reset();
-            Parser.anotar(Parser.WARNING, "WARNING "+ AnalizadorLexico.getCantLineas()+": Se esperaba otro '!' y se obtuvo '"+value+"', se agrego.");
+            Parser.anotar(Parser.ERROR_LEXICO, "WARNING "+ AnalizadorLexico.getCantLineas()+": Se esperaba otro '!' y se obtuvo '"+value+"', se agrego.");
             lexema+='!';
             return TablaPalabrasReservadas.obtenerIdentificador(lexema);
         } catch (IOException e) {

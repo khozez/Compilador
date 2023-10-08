@@ -10,7 +10,11 @@ public class AS6 implements AccionSemantica{
     @Override
     public int ejecutar(BufferedInputStream lector, String lexema) {
         try {
-            AnalizadorLexico.lexema += (char) lector.read();
+            char c = (char) lector.read();
+            AnalizadorLexico.lexema += c;
+
+            if (c == AnalizadorLexico.NUEVA_LINEA)
+                AnalizadorLexico.newLine();
         } catch (IOException e) {
             e.printStackTrace();
         }
