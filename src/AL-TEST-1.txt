@@ -31,6 +31,12 @@ VOID func1 (SHORT x)
         RETURN,
     }
 
+IF (num1 == num3)
+    PRINT %CONSTANTES TRUNCADAS%,
+ELSE
+    PRINT %CONSTANTES NO TRUNCADAS%,
+END_IF,
+
 func1(num1),
 func1(b = 4_s),                                 **MAL INVOCACION DE FUNCION, CON UNA ASIGNACIÓN
 func1(SHORT c = 59_s),                          **MAL INVOCACION DE FUNCION, CON UNA DECLARACIÓN
