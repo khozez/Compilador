@@ -72,12 +72,12 @@ sentenciaEjecutable: asignacion
 ;
 
 listaDeclarativa: listaDeclarativa ',' sentenciaDeclarativa
-				| sentenciaDeclarativa ','
+				| sentenciaDeclarativa
 				| sentenciaDeclarativa '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Falta coma (',') al final de linea");}
 ;
 
 sentenciaDeclarativa: declaracionMetodo
-					| declaracion
+					| declaracion ','
 ;
 
 listaSentencias: listaDeclarativa ',' listaEjecutables
@@ -103,15 +103,15 @@ sentenciaWhile: WHILE '(' expresion comparador expresion ')' '{' listaEjecutable
 print: PRINT CADENA
 ;
 
-return: RETURN ';'
-    		| RETURN expresion ';'
+return: RETURN
 ;
 
 declaracionMetodo: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}'
 			| VOID ID '('')' '{' cuerpoMetodo '}'
 ;
 
-cuerpoMetodo: listaSentencias
+cuerpoMetodo: cuerpoMetodo listaSentencias
+	     | listaSentencias
 ;
 
 invocacionMetodo: ID '(' tipo ID ')'

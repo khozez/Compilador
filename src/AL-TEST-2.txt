@@ -1,1 +1,9 @@
-short num99 = 44_s,                 **PALABRA RESERVADA ESCRITA EN MINUSCULAS
+{
+VOID func1 (SHORT x)
+    {
+        SHORT y = 11_s,
+        x = y,
+        RETURN,
+    }
+SHORT a = 1_s,
+}

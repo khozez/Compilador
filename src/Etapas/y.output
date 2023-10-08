@@ -44,11 +44,11 @@
   33                      | invocacionMetodo
 
   34  listaDeclarativa : listaDeclarativa ',' sentenciaDeclarativa
-  35                   | sentenciaDeclarativa ','
+  35                   | sentenciaDeclarativa
   36                   | sentenciaDeclarativa '$'
 
   37  sentenciaDeclarativa : declaracionMetodo
-  38                       | declaracion
+  38                       | declaracion ','
 
   39  listaSentencias : listaDeclarativa ',' listaEjecutables
   40                  | listaDeclarativa
@@ -68,13 +68,13 @@
 
   51  print : PRINT CADENA
 
-  52  return : RETURN ';'
-  53         | RETURN expresion ';'
+  52  return : RETURN
 
-  54  declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}'
-  55                    | VOID ID '(' ')' '{' cuerpoMetodo '}'
+  53  declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}'
+  54                    | VOID ID '(' ')' '{' cuerpoMetodo '}'
 
-  56  cuerpoMetodo : listaSentencias
+  55  cuerpoMetodo : cuerpoMetodo listaSentencias
+  56               | listaSentencias
 
   57  invocacionMetodo : ID '(' tipo ID ')'
   58                   | ID '(' ')'
@@ -194,8 +194,8 @@ state 5
 
 
 state 6
-	declaracionMetodo : VOID . ID '(' tipo ID ')' '{' cuerpoMetodo '}'  (54)
-	declaracionMetodo : VOID . ID '(' ')' '{' cuerpoMetodo '}'  (55)
+	declaracionMetodo : VOID . ID '(' tipo ID ')' '{' cuerpoMetodo '}'  (53)
+	declaracionMetodo : VOID . ID '(' ')' '{' cuerpoMetodo '}'  (54)
 
 	ID  shift 36
 	.  error
@@ -228,19 +228,9 @@ state 10
 
 
 state 11
-	return : RETURN . ';'  (52)
-	return : RETURN . expresion ';'  (53)
+	return : RETURN .  (52)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	';'  shift 41
-	'('  shift 42
-	.  error
-
-	expresion  goto 43
-	termino  goto 44
-	factor  goto 45
+	.  reduce 52
 
 
 state 12
@@ -259,10 +249,10 @@ state 12
 	FLOAT  shift 9
 	WHILE  shift 10
 	RETURN  shift 11
-	'}'  shift 46
+	'}'  shift 38
 	.  error
 
-	cuerpoPrograma  goto 47
+	cuerpoPrograma  goto 39
 	declaracionClase  goto 15
 	listaSentencias  goto 16
 	tipo  goto 17
@@ -302,11 +292,11 @@ state 14
 	FLOAT  shift 9
 	WHILE  shift 10
 	RETURN  shift 11
-	'}'  shift 48
+	'}'  shift 40
 	.  error
 
-	declaracionClase  goto 49
-	listaSentencias  goto 50
+	declaracionClase  goto 41
+	listaSentencias  goto 42
 	tipo  goto 17
 	declaracionMetodo  goto 18
 	listaEjecutables  goto 19
@@ -338,11 +328,11 @@ state 17
 	declaracion : tipo . listaDeclaracion  (59)
 	declaracion : tipo . asignacion  (60)
 
-	ID  shift 51
+	ID  shift 43
 	.  error
 
-	asignacion  goto 52
-	listaDeclaracion  goto 53
+	asignacion  goto 44
+	listaDeclaracion  goto 45
 
 
 state 18
@@ -355,7 +345,7 @@ state 19
 	listaEjecutables : listaEjecutables . ',' sentenciaEjecutable  (25)
 	listaSentencias : listaEjecutables .  (41)
 
-	','  shift 54
+	','  shift 46
 	$end  reduce 41
 	ID  reduce 41
 	CADENA  reduce 41
@@ -375,8 +365,8 @@ state 20
 	listaEjecutables : sentenciaEjecutable . ','  (26)
 	listaEjecutables : sentenciaEjecutable . '$'  (27)
 
-	','  shift 55
-	'$'  shift 56
+	','  shift 47
+	'$'  shift 48
 	.  error
 
 
@@ -421,7 +411,7 @@ state 27
 	listaSentencias : listaDeclarativa . ',' listaEjecutables  (39)
 	listaSentencias : listaDeclarativa .  (40)
 
-	','  shift 57
+	','  shift 49
 	$end  reduce 40
 	ID  reduce 40
 	CADENA  reduce 40
@@ -438,60 +428,73 @@ state 27
 
 
 state 28
-	listaDeclarativa : sentenciaDeclarativa . ','  (35)
+	listaDeclarativa : sentenciaDeclarativa .  (35)
 	listaDeclarativa : sentenciaDeclarativa . '$'  (36)
 
-	','  shift 58
-	'$'  shift 59
-	.  error
+	'$'  shift 50
+	$end  reduce 35
+	ID  reduce 35
+	CADENA  reduce 35
+	CLASS  reduce 35
+	IF  reduce 35
+	PRINT  reduce 35
+	VOID  reduce 35
+	SHORT  reduce 35
+	ULONG  reduce 35
+	FLOAT  reduce 35
+	WHILE  reduce 35
+	RETURN  reduce 35
+	'}'  reduce 35
+	','  reduce 35
 
 
 state 29
-	sentenciaDeclarativa : declaracion .  (38)
+	sentenciaDeclarativa : declaracion . ','  (38)
 
-	.  reduce 38
+	','  shift 51
+	.  error
 
 
 state 30
 	asignacion : ID IGUAL . expresion  (44)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
 	.  error
 
-	expresion  goto 60
-	termino  goto 44
-	factor  goto 45
+	expresion  goto 56
+	termino  goto 57
+	factor  goto 58
 
 
 state 31
 	asignacion : ID '=' . expresion  (43)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
 	.  error
 
-	expresion  goto 61
-	termino  goto 44
-	factor  goto 45
+	expresion  goto 59
+	termino  goto 57
+	factor  goto 58
 
 
 state 32
 	invocacionMetodo : ID '(' . tipo ID ')'  (57)
 	invocacionMetodo : ID '(' . ')'  (58)
 
-	ID  shift 62
+	ID  shift 60
 	SHORT  shift 7
 	ULONG  shift 8
 	FLOAT  shift 9
-	')'  shift 63
+	')'  shift 61
 	.  error
 
-	tipo  goto 64
+	tipo  goto 62
 
 
 state 33
@@ -500,8 +503,8 @@ state 33
 	declaracionClase : CLASS ID . ','  (11)
 	declaracionClase : CLASS ID .  (12)
 
-	'{'  shift 65
-	','  shift 66
+	'{'  shift 63
+	','  shift 64
 	$end  reduce 12
 	ID  reduce 12
 	CADENA  reduce 12
@@ -523,15 +526,15 @@ state 34
 	sentenciaIf : IF '(' . expresion comparador expresion ')' '{' listaEjecutables '}' END_IF  (47)
 	sentenciaIf : IF '(' . expresion comparador expresion ')' '{' listaEjecutables '}'  (48)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
 	.  error
 
-	expresion  goto 67
-	termino  goto 44
-	factor  goto 45
+	expresion  goto 65
+	termino  goto 57
+	factor  goto 58
 
 
 state 35
@@ -541,10 +544,10 @@ state 35
 
 
 state 36
-	declaracionMetodo : VOID ID . '(' tipo ID ')' '{' cuerpoMetodo '}'  (54)
-	declaracionMetodo : VOID ID . '(' ')' '{' cuerpoMetodo '}'  (55)
+	declaracionMetodo : VOID ID . '(' tipo ID ')' '{' cuerpoMetodo '}'  (53)
+	declaracionMetodo : VOID ID . '(' ')' '{' cuerpoMetodo '}'  (54)
 
-	'('  shift 68
+	'('  shift 66
 	.  error
 
 
@@ -552,22 +555,179 @@ state 37
 	sentenciaWhile : WHILE '(' . expresion comparador expresion ')' '{' listaEjecutables '}'  (49)
 	sentenciaWhile : WHILE '(' . expresion comparador ')' '{' listaEjecutables '}'  (50)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
 	.  error
 
-	expresion  goto 69
-	termino  goto 44
-	factor  goto 45
+	expresion  goto 67
+	termino  goto 57
+	factor  goto 58
 
 
 state 38
+	programa : '{' '}' .  (2)
+
+	.  reduce 2
+
+
+state 39
+	programa : '{' cuerpoPrograma . '}'  (1)
+	programa : '{' cuerpoPrograma .  (4)
+	cuerpoPrograma : cuerpoPrograma . declaracionClase  (5)
+	cuerpoPrograma : cuerpoPrograma . listaSentencias  (6)
+
+	ID  shift 1
+	CADENA  shift 2
+	CLASS  shift 3
+	IF  shift 4
+	PRINT  shift 5
+	VOID  shift 6
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	WHILE  shift 10
+	RETURN  shift 11
+	'}'  shift 68
+	$end  reduce 4
+
+	declaracionClase  goto 41
+	listaSentencias  goto 42
+	tipo  goto 17
+	declaracionMetodo  goto 18
+	listaEjecutables  goto 19
+	sentenciaEjecutable  goto 20
+	asignacion  goto 21
+	sentenciaIf  goto 22
+	sentenciaWhile  goto 23
+	print  goto 24
+	return  goto 25
+	invocacionMetodo  goto 26
+	listaDeclarativa  goto 27
+	sentenciaDeclarativa  goto 28
+	declaracion  goto 29
+
+
+state 40
+	programa : cuerpoPrograma '}' .  (3)
+
+	.  reduce 3
+
+
+state 41
+	cuerpoPrograma : cuerpoPrograma declaracionClase .  (5)
+
+	.  reduce 5
+
+
+state 42
+	cuerpoPrograma : cuerpoPrograma listaSentencias .  (6)
+
+	.  reduce 6
+
+
+state 43
+	asignacion : ID . '=' expresion  (43)
+	asignacion : ID . IGUAL expresion  (44)
+	listaDeclaracion : ID . ';' listaDeclaracion  (61)
+	listaDeclaracion : ID .  (62)
+
+	IGUAL  shift 30
+	';'  shift 69
+	'='  shift 31
+	','  reduce 62
+
+
+state 44
+	declaracion : tipo asignacion .  (60)
+
+	.  reduce 60
+
+
+state 45
+	declaracion : tipo listaDeclaracion .  (59)
+
+	.  reduce 59
+
+
+state 46
+	listaEjecutables : listaEjecutables ',' . sentenciaEjecutable  (25)
+
+	ID  shift 70
+	IF  shift 4
+	PRINT  shift 5
+	WHILE  shift 10
+	RETURN  shift 11
+	.  error
+
+	sentenciaEjecutable  goto 71
+	asignacion  goto 21
+	sentenciaIf  goto 22
+	sentenciaWhile  goto 23
+	print  goto 24
+	return  goto 25
+	invocacionMetodo  goto 26
+
+
+state 47
+	listaEjecutables : sentenciaEjecutable ',' .  (26)
+
+	.  reduce 26
+
+
+state 48
+	listaEjecutables : sentenciaEjecutable '$' .  (27)
+
+	.  reduce 27
+
+
+state 49
+	listaDeclarativa : listaDeclarativa ',' . sentenciaDeclarativa  (34)
+	listaSentencias : listaDeclarativa ',' . listaEjecutables  (39)
+
+	ID  shift 1
+	IF  shift 4
+	PRINT  shift 5
+	VOID  shift 6
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	WHILE  shift 10
+	RETURN  shift 11
+	.  error
+
+	tipo  goto 17
+	declaracionMetodo  goto 18
+	listaEjecutables  goto 72
+	sentenciaEjecutable  goto 20
+	asignacion  goto 21
+	sentenciaIf  goto 22
+	sentenciaWhile  goto 23
+	print  goto 24
+	return  goto 25
+	invocacionMetodo  goto 26
+	sentenciaDeclarativa  goto 73
+	declaracion  goto 29
+
+
+state 50
+	listaDeclarativa : sentenciaDeclarativa '$' .  (36)
+
+	.  reduce 36
+
+
+state 51
+	sentenciaDeclarativa : declaracion ',' .  (38)
+
+	.  reduce 38
+
+
+state 52
 	factor : ID .  (73)
 	factor : ID . MENOSMENOS  (74)
 
-	MENOSMENOS  shift 70
+	MENOSMENOS  shift 74
 	$end  reduce 73
 	ID  reduce 73
 	CADENA  reduce 73
@@ -590,64 +750,70 @@ state 38
 	'/'  reduce 73
 	'}'  reduce 73
 	','  reduce 73
-	';'  reduce 73
 	'$'  reduce 73
 	')'  reduce 73
 	'<'  reduce 73
 	'>'  reduce 73
 
 
-state 39
+state 53
 	factor : CTE .  (75)
 
 	.  reduce 75
 
 
-state 40
+state 54
 	factor : '-' . CTE  (76)
 
-	CTE  shift 71
+	CTE  shift 75
 	.  error
 
 
-state 41
-	return : RETURN ';' .  (52)
-
-	.  reduce 52
-
-
-state 42
+state 55
 	factor : '(' . expresion ')'  (77)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
 	.  error
 
-	expresion  goto 72
-	termino  goto 44
-	factor  goto 45
+	expresion  goto 76
+	termino  goto 57
+	factor  goto 58
 
 
-state 43
-	return : RETURN expresion . ';'  (53)
+state 56
+	asignacion : ID IGUAL expresion .  (44)
 	expresion : expresion . '+' termino  (68)
 	expresion : expresion . '-' termino  (69)
 
-	'+'  shift 73
-	'-'  shift 74
-	';'  shift 75
-	.  error
+	'+'  shift 77
+	'-'  shift 78
+	$end  reduce 44
+	ID  reduce 44
+	CADENA  reduce 44
+	CLASS  reduce 44
+	IF  reduce 44
+	PRINT  reduce 44
+	VOID  reduce 44
+	SHORT  reduce 44
+	ULONG  reduce 44
+	FLOAT  reduce 44
+	WHILE  reduce 44
+	RETURN  reduce 44
+	'}'  reduce 44
+	','  reduce 44
+	'$'  reduce 44
 
 
-state 44
+state 57
 	expresion : termino .  (67)
 	termino : termino . '*' factor  (71)
 	termino : termino . '/' factor  (72)
 
-	'*'  shift 76
-	'/'  shift 77
+	'*'  shift 79
+	'/'  shift 80
 	$end  reduce 67
 	ID  reduce 67
 	CADENA  reduce 67
@@ -668,221 +834,25 @@ state 44
 	'-'  reduce 67
 	'}'  reduce 67
 	','  reduce 67
-	';'  reduce 67
 	'$'  reduce 67
 	')'  reduce 67
 	'<'  reduce 67
 	'>'  reduce 67
 
 
-state 45
+state 58
 	termino : factor .  (70)
 
 	.  reduce 70
 
 
-state 46
-	programa : '{' '}' .  (2)
-
-	.  reduce 2
-
-
-state 47
-	programa : '{' cuerpoPrograma . '}'  (1)
-	programa : '{' cuerpoPrograma .  (4)
-	cuerpoPrograma : cuerpoPrograma . declaracionClase  (5)
-	cuerpoPrograma : cuerpoPrograma . listaSentencias  (6)
-
-	ID  shift 1
-	CADENA  shift 2
-	CLASS  shift 3
-	IF  shift 4
-	PRINT  shift 5
-	VOID  shift 6
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	WHILE  shift 10
-	RETURN  shift 11
-	'}'  shift 78
-	$end  reduce 4
-
-	declaracionClase  goto 49
-	listaSentencias  goto 50
-	tipo  goto 17
-	declaracionMetodo  goto 18
-	listaEjecutables  goto 19
-	sentenciaEjecutable  goto 20
-	asignacion  goto 21
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	return  goto 25
-	invocacionMetodo  goto 26
-	listaDeclarativa  goto 27
-	sentenciaDeclarativa  goto 28
-	declaracion  goto 29
-
-
-state 48
-	programa : cuerpoPrograma '}' .  (3)
-
-	.  reduce 3
-
-
-state 49
-	cuerpoPrograma : cuerpoPrograma declaracionClase .  (5)
-
-	.  reduce 5
-
-
-state 50
-	cuerpoPrograma : cuerpoPrograma listaSentencias .  (6)
-
-	.  reduce 6
-
-
-state 51
-	asignacion : ID . '=' expresion  (43)
-	asignacion : ID . IGUAL expresion  (44)
-	listaDeclaracion : ID . ';' listaDeclaracion  (61)
-	listaDeclaracion : ID .  (62)
-
-	IGUAL  shift 30
-	';'  shift 79
-	'='  shift 31
-	$end  reduce 62
-	ID  reduce 62
-	CADENA  reduce 62
-	CLASS  reduce 62
-	IF  reduce 62
-	PRINT  reduce 62
-	VOID  reduce 62
-	SHORT  reduce 62
-	ULONG  reduce 62
-	FLOAT  reduce 62
-	WHILE  reduce 62
-	RETURN  reduce 62
-	'}'  reduce 62
-	','  reduce 62
-	'$'  reduce 62
-
-
-state 52
-	declaracion : tipo asignacion .  (60)
-
-	.  reduce 60
-
-
-state 53
-	declaracion : tipo listaDeclaracion .  (59)
-
-	.  reduce 59
-
-
-state 54
-	listaEjecutables : listaEjecutables ',' . sentenciaEjecutable  (25)
-
-	ID  shift 80
-	IF  shift 4
-	PRINT  shift 5
-	WHILE  shift 10
-	RETURN  shift 11
-	.  error
-
-	sentenciaEjecutable  goto 81
-	asignacion  goto 21
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	return  goto 25
-	invocacionMetodo  goto 26
-
-
-state 55
-	listaEjecutables : sentenciaEjecutable ',' .  (26)
-
-	.  reduce 26
-
-
-state 56
-	listaEjecutables : sentenciaEjecutable '$' .  (27)
-
-	.  reduce 27
-
-
-state 57
-	listaDeclarativa : listaDeclarativa ',' . sentenciaDeclarativa  (34)
-	listaSentencias : listaDeclarativa ',' . listaEjecutables  (39)
-
-	ID  shift 1
-	IF  shift 4
-	PRINT  shift 5
-	VOID  shift 6
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	WHILE  shift 10
-	RETURN  shift 11
-	.  error
-
-	tipo  goto 17
-	declaracionMetodo  goto 18
-	listaEjecutables  goto 82
-	sentenciaEjecutable  goto 20
-	asignacion  goto 21
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	return  goto 25
-	invocacionMetodo  goto 26
-	sentenciaDeclarativa  goto 83
-	declaracion  goto 29
-
-
-state 58
-	listaDeclarativa : sentenciaDeclarativa ',' .  (35)
-
-	.  reduce 35
-
-
 state 59
-	listaDeclarativa : sentenciaDeclarativa '$' .  (36)
-
-	.  reduce 36
-
-
-state 60
-	asignacion : ID IGUAL expresion .  (44)
-	expresion : expresion . '+' termino  (68)
-	expresion : expresion . '-' termino  (69)
-
-	'+'  shift 73
-	'-'  shift 74
-	$end  reduce 44
-	ID  reduce 44
-	CADENA  reduce 44
-	CLASS  reduce 44
-	IF  reduce 44
-	PRINT  reduce 44
-	VOID  reduce 44
-	SHORT  reduce 44
-	ULONG  reduce 44
-	FLOAT  reduce 44
-	WHILE  reduce 44
-	RETURN  reduce 44
-	'}'  reduce 44
-	','  reduce 44
-	'$'  reduce 44
-
-
-state 61
 	asignacion : ID '=' expresion .  (43)
 	expresion : expresion . '+' termino  (68)
 	expresion : expresion . '-' termino  (69)
 
-	'+'  shift 73
-	'-'  shift 74
+	'+'  shift 77
+	'-'  shift 78
 	$end  reduce 43
 	ID  reduce 43
 	CADENA  reduce 43
@@ -900,51 +870,51 @@ state 61
 	'$'  reduce 43
 
 
-state 62
+state 60
 	tipo : ID .  (66)
 
 	.  reduce 66
 
 
-state 63
+state 61
 	invocacionMetodo : ID '(' ')' .  (58)
 
 	.  reduce 58
 
 
-state 64
+state 62
 	invocacionMetodo : ID '(' tipo . ID ')'  (57)
 
-	ID  shift 84
+	ID  shift 81
 	.  error
 
 
-state 65
+state 63
 	declaracionClase : CLASS ID '{' . cuerpoClase '}' ','  (9)
 	declaracionClase : CLASS ID '{' . cuerpoClase '}'  (10)
 
-	ID  shift 62
+	ID  shift 60
 	VOID  shift 6
 	SHORT  shift 7
 	ULONG  shift 8
 	FLOAT  shift 9
 	.  error
 
-	cuerpoClase  goto 85
-	seccionClase  goto 86
-	seccionAtributos  goto 87
-	seccionMetodos  goto 88
-	tipo  goto 89
-	declaracionMetodo  goto 90
+	cuerpoClase  goto 82
+	seccionClase  goto 83
+	seccionAtributos  goto 84
+	seccionMetodos  goto 85
+	tipo  goto 86
+	declaracionMetodo  goto 87
 
 
-state 66
+state 64
 	declaracionClase : CLASS ID ',' .  (11)
 
 	.  reduce 11
 
 
-state 67
+state 65
 	sentenciaIf : IF '(' expresion . comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion . comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}'  (46)
 	sentenciaIf : IF '(' expresion . comparador expresion ')' '{' listaEjecutables '}' END_IF  (47)
@@ -952,147 +922,68 @@ state 67
 	expresion : expresion . '+' termino  (68)
 	expresion : expresion . '-' termino  (69)
 
-	MAYORIGUAL  shift 91
-	MENORIGUAL  shift 92
-	IGUAL  shift 93
-	DISTINTO  shift 94
-	'+'  shift 73
-	'-'  shift 74
-	'<'  shift 95
-	'>'  shift 96
+	MAYORIGUAL  shift 88
+	MENORIGUAL  shift 89
+	IGUAL  shift 90
+	DISTINTO  shift 91
+	'+'  shift 77
+	'-'  shift 78
+	'<'  shift 92
+	'>'  shift 93
+	.  error
+
+	comparador  goto 94
+
+
+state 66
+	declaracionMetodo : VOID ID '(' . tipo ID ')' '{' cuerpoMetodo '}'  (53)
+	declaracionMetodo : VOID ID '(' . ')' '{' cuerpoMetodo '}'  (54)
+
+	ID  shift 60
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	')'  shift 95
+	.  error
+
+	tipo  goto 96
+
+
+state 67
+	sentenciaWhile : WHILE '(' expresion . comparador expresion ')' '{' listaEjecutables '}'  (49)
+	sentenciaWhile : WHILE '(' expresion . comparador ')' '{' listaEjecutables '}'  (50)
+	expresion : expresion . '+' termino  (68)
+	expresion : expresion . '-' termino  (69)
+
+	MAYORIGUAL  shift 88
+	MENORIGUAL  shift 89
+	IGUAL  shift 90
+	DISTINTO  shift 91
+	'+'  shift 77
+	'-'  shift 78
+	'<'  shift 92
+	'>'  shift 93
 	.  error
 
 	comparador  goto 97
 
 
 state 68
-	declaracionMetodo : VOID ID '(' . tipo ID ')' '{' cuerpoMetodo '}'  (54)
-	declaracionMetodo : VOID ID '(' . ')' '{' cuerpoMetodo '}'  (55)
-
-	ID  shift 62
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	')'  shift 98
-	.  error
-
-	tipo  goto 99
-
-
-state 69
-	sentenciaWhile : WHILE '(' expresion . comparador expresion ')' '{' listaEjecutables '}'  (49)
-	sentenciaWhile : WHILE '(' expresion . comparador ')' '{' listaEjecutables '}'  (50)
-	expresion : expresion . '+' termino  (68)
-	expresion : expresion . '-' termino  (69)
-
-	MAYORIGUAL  shift 91
-	MENORIGUAL  shift 92
-	IGUAL  shift 93
-	DISTINTO  shift 94
-	'+'  shift 73
-	'-'  shift 74
-	'<'  shift 95
-	'>'  shift 96
-	.  error
-
-	comparador  goto 100
-
-
-state 70
-	factor : ID MENOSMENOS .  (74)
-
-	.  reduce 74
-
-
-state 71
-	factor : '-' CTE .  (76)
-
-	.  reduce 76
-
-
-state 72
-	expresion : expresion . '+' termino  (68)
-	expresion : expresion . '-' termino  (69)
-	factor : '(' expresion . ')'  (77)
-
-	'+'  shift 73
-	'-'  shift 74
-	')'  shift 101
-	.  error
-
-
-state 73
-	expresion : expresion '+' . termino  (68)
-
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
-	.  error
-
-	termino  goto 102
-	factor  goto 45
-
-
-state 74
-	expresion : expresion '-' . termino  (69)
-
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
-	.  error
-
-	termino  goto 103
-	factor  goto 45
-
-
-state 75
-	return : RETURN expresion ';' .  (53)
-
-	.  reduce 53
-
-
-state 76
-	termino : termino '*' . factor  (71)
-
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
-	.  error
-
-	factor  goto 104
-
-
-state 77
-	termino : termino '/' . factor  (72)
-
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
-	.  error
-
-	factor  goto 105
-
-
-state 78
 	programa : '{' cuerpoPrograma '}' .  (1)
 
 	.  reduce 1
 
 
-state 79
+state 69
 	listaDeclaracion : ID ';' . listaDeclaracion  (61)
 
-	ID  shift 106
+	ID  shift 98
 	.  error
 
-	listaDeclaracion  goto 107
+	listaDeclaracion  goto 99
 
 
-state 80
+state 70
 	asignacion : ID . '=' expresion  (43)
 	asignacion : ID . IGUAL expresion  (44)
 	invocacionMetodo : ID . '(' tipo ID ')'  (57)
@@ -1104,17 +995,17 @@ state 80
 	.  error
 
 
-state 81
+state 71
 	listaEjecutables : listaEjecutables ',' sentenciaEjecutable .  (25)
 
 	.  reduce 25
 
 
-state 82
+state 72
 	listaEjecutables : listaEjecutables . ',' sentenciaEjecutable  (25)
 	listaSentencias : listaDeclarativa ',' listaEjecutables .  (39)
 
-	','  shift 54
+	','  shift 46
 	$end  reduce 39
 	ID  reduce 39
 	CADENA  reduce 39
@@ -1130,56 +1021,129 @@ state 82
 	'}'  reduce 39
 
 
-state 83
+state 73
 	listaDeclarativa : listaDeclarativa ',' sentenciaDeclarativa .  (34)
 
 	.  reduce 34
 
 
-state 84
-	invocacionMetodo : ID '(' tipo ID . ')'  (57)
+state 74
+	factor : ID MENOSMENOS .  (74)
 
-	')'  shift 108
+	.  reduce 74
+
+
+state 75
+	factor : '-' CTE .  (76)
+
+	.  reduce 76
+
+
+state 76
+	expresion : expresion . '+' termino  (68)
+	expresion : expresion . '-' termino  (69)
+	factor : '(' expresion . ')'  (77)
+
+	'+'  shift 77
+	'-'  shift 78
+	')'  shift 100
 	.  error
 
 
-state 85
+state 77
+	expresion : expresion '+' . termino  (68)
+
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
+	.  error
+
+	termino  goto 101
+	factor  goto 58
+
+
+state 78
+	expresion : expresion '-' . termino  (69)
+
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
+	.  error
+
+	termino  goto 102
+	factor  goto 58
+
+
+state 79
+	termino : termino '*' . factor  (71)
+
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
+	.  error
+
+	factor  goto 103
+
+
+state 80
+	termino : termino '/' . factor  (72)
+
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
+	.  error
+
+	factor  goto 104
+
+
+state 81
+	invocacionMetodo : ID '(' tipo ID . ')'  (57)
+
+	')'  shift 105
+	.  error
+
+
+state 82
 	declaracionClase : CLASS ID '{' cuerpoClase . '}' ','  (9)
 	declaracionClase : CLASS ID '{' cuerpoClase . '}'  (10)
 	cuerpoClase : cuerpoClase . seccionClase  (13)
 
-	ID  shift 62
+	ID  shift 60
 	VOID  shift 6
 	SHORT  shift 7
 	ULONG  shift 8
 	FLOAT  shift 9
-	'}'  shift 109
+	'}'  shift 106
 	.  error
 
-	seccionClase  goto 110
-	seccionAtributos  goto 87
-	seccionMetodos  goto 88
-	tipo  goto 89
-	declaracionMetodo  goto 90
+	seccionClase  goto 107
+	seccionAtributos  goto 84
+	seccionMetodos  goto 85
+	tipo  goto 86
+	declaracionMetodo  goto 87
 
 
-state 86
+state 83
 	cuerpoClase : seccionClase .  (14)
 
 	.  reduce 14
 
 
-state 87
+state 84
 	seccionClase : seccionAtributos .  (15)
 
 	.  reduce 15
 
 
-state 88
+state 85
 	seccionClase : seccionMetodos .  (16)
 	seccionMetodos : seccionMetodos . ',' declaracionMetodo  (23)
 
-	','  shift 111
+	','  shift 108
 	ID  reduce 16
 	VOID  reduce 16
 	SHORT  reduce 16
@@ -1188,118 +1152,132 @@ state 88
 	'}'  reduce 16
 
 
-state 89
+state 86
 	seccionAtributos : tipo . ID ';' listaAtributos  (17)
 	seccionAtributos : tipo . ID ','  (18)
 	seccionAtributos : tipo . ID  (19)
 
-	ID  shift 112
+	ID  shift 109
 	.  error
 
 
-state 90
+state 87
 	seccionMetodos : declaracionMetodo . ','  (24)
 
-	','  shift 113
+	','  shift 110
 	.  error
 
 
-state 91
+state 88
 	comparador : MAYORIGUAL .  (78)
 
 	.  reduce 78
 
 
-state 92
+state 89
 	comparador : MENORIGUAL .  (79)
 
 	.  reduce 79
 
 
-state 93
+state 90
 	comparador : IGUAL .  (80)
 
 	.  reduce 80
 
 
-state 94
+state 91
 	comparador : DISTINTO .  (81)
 
 	.  reduce 81
 
 
-state 95
+state 92
 	comparador : '<' .  (82)
 
 	.  reduce 82
 
 
-state 96
+state 93
 	comparador : '>' .  (83)
 
 	.  reduce 83
 
 
-state 97
+state 94
 	sentenciaIf : IF '(' expresion comparador . expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador . expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}'  (46)
 	sentenciaIf : IF '(' expresion comparador . expresion ')' '{' listaEjecutables '}' END_IF  (47)
 	sentenciaIf : IF '(' expresion comparador . expresion ')' '{' listaEjecutables '}'  (48)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
 	.  error
 
-	expresion  goto 114
-	termino  goto 44
-	factor  goto 45
+	expresion  goto 111
+	termino  goto 57
+	factor  goto 58
 
 
-state 98
-	declaracionMetodo : VOID ID '(' ')' . '{' cuerpoMetodo '}'  (55)
+state 95
+	declaracionMetodo : VOID ID '(' ')' . '{' cuerpoMetodo '}'  (54)
 
-	'{'  shift 115
-	.  error
-
-
-state 99
-	declaracionMetodo : VOID ID '(' tipo . ID ')' '{' cuerpoMetodo '}'  (54)
-
-	ID  shift 116
+	'{'  shift 112
 	.  error
 
 
-state 100
+state 96
+	declaracionMetodo : VOID ID '(' tipo . ID ')' '{' cuerpoMetodo '}'  (53)
+
+	ID  shift 113
+	.  error
+
+
+state 97
 	sentenciaWhile : WHILE '(' expresion comparador . expresion ')' '{' listaEjecutables '}'  (49)
 	sentenciaWhile : WHILE '(' expresion comparador . ')' '{' listaEjecutables '}'  (50)
 
-	ID  shift 38
-	CTE  shift 39
-	'-'  shift 40
-	'('  shift 42
-	')'  shift 117
+	ID  shift 52
+	CTE  shift 53
+	'-'  shift 54
+	'('  shift 55
+	')'  shift 114
 	.  error
 
-	expresion  goto 118
-	termino  goto 44
-	factor  goto 45
+	expresion  goto 115
+	termino  goto 57
+	factor  goto 58
 
 
-state 101
+state 98
+	listaDeclaracion : ID . ';' listaDeclaracion  (61)
+	listaDeclaracion : ID .  (62)
+
+	';'  shift 69
+	','  reduce 62
+
+
+state 99
+	listaDeclaracion : ID ';' listaDeclaracion .  (61)
+
+	.  reduce 61
+
+
+state 100
 	factor : '(' expresion ')' .  (77)
 
 	.  reduce 77
 
 
-state 102
+state 101
 	expresion : expresion '+' termino .  (68)
 	termino : termino . '*' factor  (71)
 	termino : termino . '/' factor  (72)
 
-	'*'  shift 76
-	'/'  shift 77
+	'*'  shift 79
+	'/'  shift 80
 	$end  reduce 68
 	ID  reduce 68
 	CADENA  reduce 68
@@ -1320,20 +1298,19 @@ state 102
 	'-'  reduce 68
 	'}'  reduce 68
 	','  reduce 68
-	';'  reduce 68
 	'$'  reduce 68
 	')'  reduce 68
 	'<'  reduce 68
 	'>'  reduce 68
 
 
-state 103
+state 102
 	expresion : expresion '-' termino .  (69)
 	termino : termino . '*' factor  (71)
 	termino : termino . '/' factor  (72)
 
-	'*'  shift 76
-	'/'  shift 77
+	'*'  shift 79
+	'/'  shift 80
 	$end  reduce 69
 	ID  reduce 69
 	CADENA  reduce 69
@@ -1354,64 +1331,35 @@ state 103
 	'-'  reduce 69
 	'}'  reduce 69
 	','  reduce 69
-	';'  reduce 69
 	'$'  reduce 69
 	')'  reduce 69
 	'<'  reduce 69
 	'>'  reduce 69
 
 
-state 104
+state 103
 	termino : termino '*' factor .  (71)
 
 	.  reduce 71
 
 
-state 105
+state 104
 	termino : termino '/' factor .  (72)
 
 	.  reduce 72
 
 
-state 106
-	listaDeclaracion : ID . ';' listaDeclaracion  (61)
-	listaDeclaracion : ID .  (62)
-
-	';'  shift 79
-	$end  reduce 62
-	ID  reduce 62
-	CADENA  reduce 62
-	CLASS  reduce 62
-	IF  reduce 62
-	PRINT  reduce 62
-	VOID  reduce 62
-	SHORT  reduce 62
-	ULONG  reduce 62
-	FLOAT  reduce 62
-	WHILE  reduce 62
-	RETURN  reduce 62
-	'}'  reduce 62
-	','  reduce 62
-	'$'  reduce 62
-
-
-state 107
-	listaDeclaracion : ID ';' listaDeclaracion .  (61)
-
-	.  reduce 61
-
-
-state 108
+state 105
 	invocacionMetodo : ID '(' tipo ID ')' .  (57)
 
 	.  reduce 57
 
 
-state 109
+state 106
 	declaracionClase : CLASS ID '{' cuerpoClase '}' . ','  (9)
 	declaracionClase : CLASS ID '{' cuerpoClase '}' .  (10)
 
-	','  shift 119
+	','  shift 116
 	$end  reduce 10
 	ID  reduce 10
 	CADENA  reduce 10
@@ -1427,28 +1375,28 @@ state 109
 	'}'  reduce 10
 
 
-state 110
+state 107
 	cuerpoClase : cuerpoClase seccionClase .  (13)
 
 	.  reduce 13
 
 
-state 111
+state 108
 	seccionMetodos : seccionMetodos ',' . declaracionMetodo  (23)
 
 	VOID  shift 6
 	.  error
 
-	declaracionMetodo  goto 120
+	declaracionMetodo  goto 117
 
 
-state 112
+state 109
 	seccionAtributos : tipo ID . ';' listaAtributos  (17)
 	seccionAtributos : tipo ID . ','  (18)
 	seccionAtributos : tipo ID .  (19)
 
-	','  shift 121
-	';'  shift 122
+	','  shift 118
+	';'  shift 119
 	ID  reduce 19
 	VOID  reduce 19
 	SHORT  reduce 19
@@ -1457,13 +1405,13 @@ state 112
 	'}'  reduce 19
 
 
-state 113
+state 110
 	seccionMetodos : declaracionMetodo ',' .  (24)
 
 	.  reduce 24
 
 
-state 114
+state 111
 	sentenciaIf : IF '(' expresion comparador expresion . ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion . ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}'  (46)
 	sentenciaIf : IF '(' expresion comparador expresion . ')' '{' listaEjecutables '}' END_IF  (47)
@@ -1471,14 +1419,14 @@ state 114
 	expresion : expresion . '+' termino  (68)
 	expresion : expresion . '-' termino  (69)
 
-	'+'  shift 73
-	'-'  shift 74
-	')'  shift 123
+	'+'  shift 77
+	'-'  shift 78
+	')'  shift 120
 	.  error
 
 
-state 115
-	declaracionMetodo : VOID ID '(' ')' '{' . cuerpoMetodo '}'  (55)
+state 112
+	declaracionMetodo : VOID ID '(' ')' '{' . cuerpoMetodo '}'  (54)
 
 	ID  shift 1
 	CADENA  shift 2
@@ -1492,7 +1440,7 @@ state 115
 	RETURN  shift 11
 	.  error
 
-	listaSentencias  goto 124
+	listaSentencias  goto 121
 	tipo  goto 17
 	declaracionMetodo  goto 18
 	listaEjecutables  goto 19
@@ -1506,102 +1454,128 @@ state 115
 	listaDeclarativa  goto 27
 	sentenciaDeclarativa  goto 28
 	declaracion  goto 29
-	cuerpoMetodo  goto 125
+	cuerpoMetodo  goto 122
 
 
-state 116
-	declaracionMetodo : VOID ID '(' tipo ID . ')' '{' cuerpoMetodo '}'  (54)
+state 113
+	declaracionMetodo : VOID ID '(' tipo ID . ')' '{' cuerpoMetodo '}'  (53)
 
-	')'  shift 126
+	')'  shift 123
 	.  error
 
 
-state 117
+state 114
 	sentenciaWhile : WHILE '(' expresion comparador ')' . '{' listaEjecutables '}'  (50)
 
-	'{'  shift 127
+	'{'  shift 124
 	.  error
 
 
-state 118
+state 115
 	sentenciaWhile : WHILE '(' expresion comparador expresion . ')' '{' listaEjecutables '}'  (49)
 	expresion : expresion . '+' termino  (68)
 	expresion : expresion . '-' termino  (69)
 
-	'+'  shift 73
-	'-'  shift 74
-	')'  shift 128
+	'+'  shift 77
+	'-'  shift 78
+	')'  shift 125
 	.  error
 
 
-state 119
+state 116
 	declaracionClase : CLASS ID '{' cuerpoClase '}' ',' .  (9)
 
 	.  reduce 9
 
 
-state 120
+state 117
 	seccionMetodos : seccionMetodos ',' declaracionMetodo .  (23)
 
 	.  reduce 23
 
 
-state 121
+state 118
 	seccionAtributos : tipo ID ',' .  (18)
 
 	.  reduce 18
 
 
-state 122
+state 119
 	seccionAtributos : tipo ID ';' . listaAtributos  (17)
 
-	ID  shift 129
+	ID  shift 126
 	.  error
 
-	listaAtributos  goto 130
+	listaAtributos  goto 127
 
 
-state 123
+state 120
 	sentenciaIf : IF '(' expresion comparador expresion ')' . '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion ')' . '{' listaEjecutables '}' ELSE '{' listaEjecutables '}'  (46)
 	sentenciaIf : IF '(' expresion comparador expresion ')' . '{' listaEjecutables '}' END_IF  (47)
 	sentenciaIf : IF '(' expresion comparador expresion ')' . '{' listaEjecutables '}'  (48)
+
+	'{'  shift 128
+	.  error
+
+
+state 121
+	cuerpoMetodo : listaSentencias .  (56)
+
+	.  reduce 56
+
+
+state 122
+	declaracionMetodo : VOID ID '(' ')' '{' cuerpoMetodo . '}'  (54)
+	cuerpoMetodo : cuerpoMetodo . listaSentencias  (55)
+
+	ID  shift 1
+	CADENA  shift 2
+	IF  shift 4
+	PRINT  shift 5
+	VOID  shift 6
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	WHILE  shift 10
+	RETURN  shift 11
+	'}'  shift 129
+	.  error
+
+	listaSentencias  goto 130
+	tipo  goto 17
+	declaracionMetodo  goto 18
+	listaEjecutables  goto 19
+	sentenciaEjecutable  goto 20
+	asignacion  goto 21
+	sentenciaIf  goto 22
+	sentenciaWhile  goto 23
+	print  goto 24
+	return  goto 25
+	invocacionMetodo  goto 26
+	listaDeclarativa  goto 27
+	sentenciaDeclarativa  goto 28
+	declaracion  goto 29
+
+
+state 123
+	declaracionMetodo : VOID ID '(' tipo ID ')' . '{' cuerpoMetodo '}'  (53)
 
 	'{'  shift 131
 	.  error
 
 
 state 124
-	cuerpoMetodo : listaSentencias .  (56)
-
-	.  reduce 56
-
-
-state 125
-	declaracionMetodo : VOID ID '(' ')' '{' cuerpoMetodo . '}'  (55)
-
-	'}'  shift 132
-	.  error
-
-
-state 126
-	declaracionMetodo : VOID ID '(' tipo ID ')' . '{' cuerpoMetodo '}'  (54)
-
-	'{'  shift 133
-	.  error
-
-
-state 127
 	sentenciaWhile : WHILE '(' expresion comparador ')' '{' . listaEjecutables '}'  (50)
 
-	ID  shift 80
+	ID  shift 70
 	IF  shift 4
 	PRINT  shift 5
 	WHILE  shift 10
 	RETURN  shift 11
 	.  error
 
-	listaEjecutables  goto 134
+	listaEjecutables  goto 132
 	sentenciaEjecutable  goto 20
 	asignacion  goto 21
 	sentenciaIf  goto 22
@@ -1611,20 +1585,20 @@ state 127
 	invocacionMetodo  goto 26
 
 
-state 128
+state 125
 	sentenciaWhile : WHILE '(' expresion comparador expresion ')' . '{' listaEjecutables '}'  (49)
 
-	'{'  shift 135
+	'{'  shift 133
 	.  error
 
 
-state 129
+state 126
 	listaAtributos : ID . ';' listaAtributos  (20)
 	listaAtributos : ID . ','  (21)
 	listaAtributos : ID .  (22)
 
-	','  shift 136
-	';'  shift 137
+	','  shift 134
+	';'  shift 135
 	ID  reduce 22
 	VOID  reduce 22
 	SHORT  reduce 22
@@ -1633,26 +1607,26 @@ state 129
 	'}'  reduce 22
 
 
-state 130
+state 127
 	seccionAtributos : tipo ID ';' listaAtributos .  (17)
 
 	.  reduce 17
 
 
-state 131
+state 128
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' . listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' . listaEjecutables '}' ELSE '{' listaEjecutables '}'  (46)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' . listaEjecutables '}' END_IF  (47)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' . listaEjecutables '}'  (48)
 
-	ID  shift 80
+	ID  shift 70
 	IF  shift 4
 	PRINT  shift 5
 	WHILE  shift 10
 	RETURN  shift 11
 	.  error
 
-	listaEjecutables  goto 138
+	listaEjecutables  goto 136
 	sentenciaEjecutable  goto 20
 	asignacion  goto 21
 	sentenciaIf  goto 22
@@ -1662,14 +1636,20 @@ state 131
 	invocacionMetodo  goto 26
 
 
-state 132
-	declaracionMetodo : VOID ID '(' ')' '{' cuerpoMetodo '}' .  (55)
+state 129
+	declaracionMetodo : VOID ID '(' ')' '{' cuerpoMetodo '}' .  (54)
+
+	.  reduce 54
+
+
+state 130
+	cuerpoMetodo : cuerpoMetodo listaSentencias .  (55)
 
 	.  reduce 55
 
 
-state 133
-	declaracionMetodo : VOID ID '(' tipo ID ')' '{' . cuerpoMetodo '}'  (54)
+state 131
+	declaracionMetodo : VOID ID '(' tipo ID ')' '{' . cuerpoMetodo '}'  (53)
 
 	ID  shift 1
 	CADENA  shift 2
@@ -1683,7 +1663,7 @@ state 133
 	RETURN  shift 11
 	.  error
 
-	listaSentencias  goto 124
+	listaSentencias  goto 121
 	tipo  goto 17
 	declaracionMetodo  goto 18
 	listaEjecutables  goto 19
@@ -1697,29 +1677,29 @@ state 133
 	listaDeclarativa  goto 27
 	sentenciaDeclarativa  goto 28
 	declaracion  goto 29
-	cuerpoMetodo  goto 139
+	cuerpoMetodo  goto 137
 
 
-state 134
+state 132
 	listaEjecutables : listaEjecutables . ',' sentenciaEjecutable  (25)
 	sentenciaWhile : WHILE '(' expresion comparador ')' '{' listaEjecutables . '}'  (50)
 
-	'}'  shift 140
-	','  shift 54
+	'}'  shift 138
+	','  shift 46
 	.  error
 
 
-state 135
+state 133
 	sentenciaWhile : WHILE '(' expresion comparador expresion ')' '{' . listaEjecutables '}'  (49)
 
-	ID  shift 80
+	ID  shift 70
 	IF  shift 4
 	PRINT  shift 5
 	WHILE  shift 10
 	RETURN  shift 11
 	.  error
 
-	listaEjecutables  goto 141
+	listaEjecutables  goto 139
 	sentenciaEjecutable  goto 20
 	asignacion  goto 21
 	sentenciaIf  goto 22
@@ -1729,69 +1709,95 @@ state 135
 	invocacionMetodo  goto 26
 
 
-state 136
+state 134
 	listaAtributos : ID ',' .  (21)
 
 	.  reduce 21
 
 
-state 137
+state 135
 	listaAtributos : ID ';' . listaAtributos  (20)
 
-	ID  shift 129
+	ID  shift 126
 	.  error
 
-	listaAtributos  goto 142
+	listaAtributos  goto 140
 
 
-state 138
+state 136
 	listaEjecutables : listaEjecutables . ',' sentenciaEjecutable  (25)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables . '}' ELSE '{' listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables . '}' ELSE '{' listaEjecutables '}'  (46)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables . '}' END_IF  (47)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables . '}'  (48)
 
-	'}'  shift 143
-	','  shift 54
+	'}'  shift 141
+	','  shift 46
 	.  error
 
 
-state 139
-	declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo . '}'  (54)
+state 137
+	declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo . '}'  (53)
+	cuerpoMetodo : cuerpoMetodo . listaSentencias  (55)
 
-	'}'  shift 144
+	ID  shift 1
+	CADENA  shift 2
+	IF  shift 4
+	PRINT  shift 5
+	VOID  shift 6
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	WHILE  shift 10
+	RETURN  shift 11
+	'}'  shift 142
 	.  error
 
+	listaSentencias  goto 130
+	tipo  goto 17
+	declaracionMetodo  goto 18
+	listaEjecutables  goto 19
+	sentenciaEjecutable  goto 20
+	asignacion  goto 21
+	sentenciaIf  goto 22
+	sentenciaWhile  goto 23
+	print  goto 24
+	return  goto 25
+	invocacionMetodo  goto 26
+	listaDeclarativa  goto 27
+	sentenciaDeclarativa  goto 28
+	declaracion  goto 29
 
-state 140
+
+state 138
 	sentenciaWhile : WHILE '(' expresion comparador ')' '{' listaEjecutables '}' .  (50)
 
 	.  reduce 50
 
 
-state 141
+state 139
 	listaEjecutables : listaEjecutables . ',' sentenciaEjecutable  (25)
 	sentenciaWhile : WHILE '(' expresion comparador expresion ')' '{' listaEjecutables . '}'  (49)
 
-	'}'  shift 145
-	','  shift 54
+	'}'  shift 143
+	','  shift 46
 	.  error
 
 
-state 142
+state 140
 	listaAtributos : ID ';' listaAtributos .  (20)
 
 	.  reduce 20
 
 
-state 143
+state 141
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' . ELSE '{' listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' . ELSE '{' listaEjecutables '}'  (46)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' . END_IF  (47)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' .  (48)
 
-	ELSE  shift 146
-	END_IF  shift 147
+	ELSE  shift 144
+	END_IF  shift 145
 	$end  reduce 48
 	ID  reduce 48
 	CADENA  reduce 48
@@ -1809,44 +1815,44 @@ state 143
 	'$'  reduce 48
 
 
-state 144
-	declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' .  (54)
+state 142
+	declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' .  (53)
 
-	.  reduce 54
+	.  reduce 53
 
 
-state 145
+state 143
 	sentenciaWhile : WHILE '(' expresion comparador expresion ')' '{' listaEjecutables '}' .  (49)
 
 	.  reduce 49
 
 
-state 146
+state 144
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE . '{' listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE . '{' listaEjecutables '}'  (46)
 
-	'{'  shift 148
+	'{'  shift 146
 	.  error
 
 
-state 147
+state 145
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' END_IF .  (47)
 
 	.  reduce 47
 
 
-state 148
+state 146
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' . listaEjecutables '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' . listaEjecutables '}'  (46)
 
-	ID  shift 80
+	ID  shift 70
 	IF  shift 4
 	PRINT  shift 5
 	WHILE  shift 10
 	RETURN  shift 11
 	.  error
 
-	listaEjecutables  goto 149
+	listaEjecutables  goto 147
 	sentenciaEjecutable  goto 20
 	asignacion  goto 21
 	sentenciaIf  goto 22
@@ -1856,21 +1862,21 @@ state 148
 	invocacionMetodo  goto 26
 
 
-state 149
+state 147
 	listaEjecutables : listaEjecutables . ',' sentenciaEjecutable  (25)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables . '}' END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables . '}'  (46)
 
-	'}'  shift 150
-	','  shift 54
+	'}'  shift 148
+	','  shift 46
 	.  error
 
 
-state 150
+state 148
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' . END_IF  (45)
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' .  (46)
 
-	END_IF  shift 151
+	END_IF  shift 149
 	$end  reduce 46
 	ID  reduce 46
 	CADENA  reduce 46
@@ -1888,11 +1894,11 @@ state 150
 	'$'  reduce 46
 
 
-state 151
+state 149
 	sentenciaIf : IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF .  (45)
 
 	.  reduce 45
 
 
 35 terminals, 29 nonterminals
-84 grammar rules, 152 states
+84 grammar rules, 150 states

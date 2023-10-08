@@ -23,6 +23,13 @@ FLOAT f8 = 2.E35,                               **CONSTATE FLOAT SIN SIGNO EXP, 
 PRINT %EJEMPLO DE CADENA
 MULTILINEA ESCRITA CORRECTAMENTE%,
 
+    VOID func1 (SHORT x)
+    {
+        SHORT y = 11_s,
+        x = y,
+        RETURN,
+    }
+
 SHORT numero == 11_s,                           **ASIGNACION NO VALIDA CON ==
 
 SHORT ELNUMERO = 49_s,                          **IDENTIFICADOR NO VALIDO EN MAYUSUCULAS
