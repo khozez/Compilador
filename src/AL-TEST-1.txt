@@ -7,9 +7,9 @@ num3 = -129_s,                            **CONSTATE SHORT FUERA DE RANGO INFERI
 num4 = 129_s,                             **CONSTATE SHORT FUERA DE RANGO SUPERIOR
 num5 = 0_ul,
 num6 = 4294967295_ul,
-num7 = -2_ul,                             **CONSTATE LONG FUERA DE RANGO SUPERIOR
+num7 = -2_ul,                             **CONSTATE LONG FUERA DE RANGO INFERIOR
 num8 = 4294967296_ul,                     **CONSTATE LONG FUERA DE RANGO SUPERIOR
-
+num11 = num8,
 
 FLOAT f1 = 1.,
 FLOAT f2 = 1.6,
@@ -20,10 +20,10 @@ FLOAT f6 = 3.50282347E+38,                      **CONSTATE FLOAT FUERA DE RANGO 
 FLOAT f7 = -3.60282347E+38,                     **CONSTATE FLOAT FUERA DE RANGO INFERIOR
 FLOAT f8 = 2.E35,                               **CONSTATE FLOAT SIN SIGNO EXP, LEXICO CONSIDERA POSITIVO
 
-%EJEMPLO DE CADENA
-MULTILINEA ESCRITA CORRECTAMENTE%
+PRINT %EJEMPLO DE CADENA
+MULTILINEA ESCRITA CORRECTAMENTE%,
 
-SHORT numero == 11_s,            **ASIGNACION NO VALIDA CON ==
+SHORT numero == 11_s,                           **ASIGNACION NO VALIDA CON ==
 
-SHORT ELNUMERO = 49_s,             **IDENTIFICADOR NO VALIDO EN MAYUSUCULAS
+SHORT ELNUMERO = 49_s,                          **IDENTIFICADOR NO VALIDO EN MAYUSUCULAS
 }

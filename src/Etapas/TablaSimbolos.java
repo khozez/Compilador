@@ -56,6 +56,22 @@ public class TablaSimbolos {
         }
     }
 
+    public static void eliminarAtributo(int clave, String atributo)
+    {
+        if (simbolos.containsKey(clave)) {
+            Map<String, String> atributos = simbolos.get(clave);
+            atributos.remove(atributo);
+        }
+    }
+
+    public static void modificarAtributo(int clave, String atributo, String nuevo)
+    {
+        if (simbolos.containsKey(clave)) {
+            Map<String, String> atributos = simbolos.get(clave);
+            atributos.put(atributo, nuevo);
+        }
+    }
+
     public static String obtenerAtributo(int clave, String atributo) {
         if (simbolos.containsKey(clave)) {
             Map<String, String> atributos = simbolos.get(clave);

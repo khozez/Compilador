@@ -66,7 +66,7 @@ listaEjecutables: listaEjecutables ',' sentenciaEjecutable
 sentenciaEjecutable: asignacion
     	| sentenciaIf
     	| sentenciaWhile
-    	| CADENA
+    	| print
     	| return
 	| invocacionMetodo
 ;
@@ -98,6 +98,9 @@ sentenciaIf: IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' 
 
 sentenciaWhile: WHILE '(' expresion comparador expresion ')' '{' listaEjecutables '}'
 			| WHILE '(' expresion comparador ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": Mal definida la condicion");}
+;
+
+print: PRINT CADENA
 ;
 
 return: RETURN ';'
@@ -142,7 +145,7 @@ termino: factor
 factor: ID
 	| ID MENOSMENOS
     	| CTE
-    	| '-' CTE
+    	| '-' CTE {comprobarRango($2.sval);}
     	| '(' expresion ')'
 ;
 
@@ -166,6 +169,69 @@ public static List<String> errorSintactico = new ArrayList<>();
 void yyerror(String mensaje) {
         // funcion utilizada para imprimir errores que produce yacc
         System.out.println("Error yacc: " + mensaje);
+}
+
+public static void comprobarRango(String valor){
+    int id = TablaSimbolos.obtenerSimbolo(valor);
+	String tipo = TablaSimbolos.obtenerAtributo(id, "tipo");
+    int referencias = Integer.parseInt(TablaSimbolos.obtenerAtributo(id, "referencias"));
+    TablaSimbolos.modificarAtributo(id, "referencias", Integer.toString(referencias-1));
+    boolean agregado;
+	if (tipo.equals("short")){
+        // Controlamos rango negativo de SHORT (el cual pudo haber sido truncado)
+        String original = TablaSimbolos.obtenerAtributo(id, "valor_original");
+        if (original != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
+        {
+            //LA CONSTANTE FUE TRUNCADA, RECUPERAMOS VALOR ORIGINAL
+            int numero = -Integer.parseInt(original);
+            if (numero < AnalizadorLexico.MIN_SHORT_INT){
+                anotar(WARNING, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante entera negativa -"+original+"_s por ser inferior al valor minimo.");
+                numero = AnalizadorLexico.MIN_SHORT_INT;
+            }
+            agregado = TablaSimbolos.agregarSimbolo(Integer.toString(numero)+"_s");
+            modificar_referencias(agregado, Integer.toString(numero)+"_s", "short");
+            TablaSimbolos.eliminarAtributo(id, "valor_original");
+        }
+        else
+        {
+            valor = "-"+valor+"_s";
+            agregado = TablaSimbolos.agregarSimbolo(valor);
+            modificar_referencias(agregado, valor, "short");
+        }
+	}
+
+	if (tipo.equals("float")){
+		valor = "-"+valor;
+        agregado = TablaSimbolos.agregarSimbolo(valor);
+        modificar_referencias(agregado, valor, "float");
+	}
+
+    if (tipo.equals("long")){
+        anotar(WARNING, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
+        valor = "0_ul";
+        agregado = TablaSimbolos.agregarSimbolo(valor);
+        modificar_referencias(agregado, valor, "long");
+    }
+
+    if (!(referencias-1 > 0))
+    {
+        TablaSimbolos.eliminarSimbolo(id);
+    }
+}
+
+private static void modificar_referencias(boolean agregado, String numero, String tipo)
+{
+    if (agregado)
+    {
+        TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerSimbolo(numero), "tipo", tipo);
+        TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerSimbolo(numero), "referencias", "1");
+    }
+    else
+    {
+        int ref = Integer.parseInt(TablaSimbolos.obtenerAtributo(TablaSimbolos.obtenerSimbolo(numero), "referencias"));
+        TablaSimbolos.modificarAtributo(TablaSimbolos.obtenerSimbolo(numero), "referencias", Integer.toString(ref+1));
+    }
+
 }
 
 int yylex(){

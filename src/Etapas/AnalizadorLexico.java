@@ -19,8 +19,8 @@ public class AnalizadorLexico {
     public static final int MAX_SHORT_INT = (int) Math.pow(2, 7) - 1;
     public static final int MIN_SHORT_INT = (int) -Math.pow(2, 7);
     public static final long MAX_ULONG_INT = (long) Math.pow(2, 32) - 1;
-    public static final double MIN_FLOAT_VALUE = 1.17549435E-38;
-    public static final double MAX_FLOAT_VALUE = 3.40282347E+38;
+    public static final String MIN_FLOAT_VALUE = "1.17549435E-38";
+    public static final String MAX_FLOAT_VALUE = "3.40282347E+38";
     public static final double MIN_NEGATIVE_FLOAT_VALUE = -3.40282347E+38;
     public static final double MAX_NEGATIVE_FLOAT_VALUE = -1.17549435E-38;
     public static BufferedInputStream lector;

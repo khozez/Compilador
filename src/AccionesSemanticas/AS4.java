@@ -9,26 +9,30 @@ public class AS4 implements AccionSemantica{
     @Override
     public int ejecutar(BufferedInputStream lector, String lexema) {
         double valor = Double.parseDouble(lexema);
-        if (valor <= AnalizadorLexico.MIN_FLOAT_VALUE){
+        if (valor <= Double.parseDouble(AnalizadorLexico.MIN_FLOAT_VALUE)){
             //INFORMAR WARNING, SE TRUNCA AL MENOR VALOR.
             Parser.anotar(Parser.WARNING, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Constante "+lexema+" fue truncado ya que es inferior al valor minimo");
-            valor = AnalizadorLexico.MIN_FLOAT_VALUE;
+            AnalizadorLexico.lexema = AnalizadorLexico.MIN_FLOAT_VALUE;
 
-        } else if (valor >= AnalizadorLexico.MAX_FLOAT_VALUE) {
+        } else if (valor >= Double.parseDouble(AnalizadorLexico.MAX_FLOAT_VALUE)) {
             //INFORMAR WARNING, SE TRUNCA AL MENOR VALOR.
             Parser.anotar(Parser.WARNING, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Constante "+lexema+" fue truncado ya que supera el valor maximo");
-            valor = AnalizadorLexico.MAX_FLOAT_VALUE;
+            AnalizadorLexico.lexema = AnalizadorLexico.MAX_FLOAT_VALUE;
 
         }
-
-        lexema = Double.toString(valor);
-        if (TablaSimbolos.agregarSimbolo(lexema)){
-            int id = TablaSimbolos.obtenerSimbolo(lexema);
+        boolean agregado = TablaSimbolos.agregarSimbolo(AnalizadorLexico.lexema);
+        int id = TablaSimbolos.obtenerSimbolo(AnalizadorLexico.lexema);
+        if (agregado){
             TablaSimbolos.agregarAtributo(id, "tipo", "float");
+            TablaSimbolos.agregarAtributo(id, "referencias", "1");
+        }
+        else {
+            int ref = Integer.parseInt(TablaSimbolos.obtenerAtributo(id, "referencias"));
+            TablaSimbolos.modificarAtributo(id, "referencias", Integer.toString(ref+1));
         }
 
         //RETORNAMOS EL ID DEL TOKEN DE UNA CONSTANTE
-        System.out.println("Constante float: "+lexema);
+        System.out.println("Constante float: "+AnalizadorLexico.lexema);
         return AnalizadorLexico.CONSTANTE;
     }
 }

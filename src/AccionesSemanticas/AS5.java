@@ -25,15 +25,20 @@ public class AS5 implements AccionSemantica{
                 Parser.anotar(Parser.WARNING, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Constante "+AnalizadorLexico.lexema+" fue truncado ya que es inferior al valor minimo");
             }
 
-            lexema = Long.toString(num);
-            lexema += '_';
-            lexema += 'u';
-            lexema += 'l';
-            if (TablaSimbolos.agregarSimbolo(lexema)){
-                int id = TablaSimbolos.obtenerSimbolo(lexema);
+            AnalizadorLexico.lexema = Long.toString(num);
+            AnalizadorLexico.lexema += "_ul";
+            boolean agregado = TablaSimbolos.agregarSimbolo(AnalizadorLexico.lexema);
+            int id = TablaSimbolos.obtenerSimbolo(AnalizadorLexico.lexema);
+            if (agregado)
+            {
                 TablaSimbolos.agregarAtributo(id, "tipo", "long");
+                TablaSimbolos.agregarAtributo(id, "referencias", "1");
             }
-            System.out.println("Constante entera: "+lexema);
+            else {
+                int ref = Integer.parseInt(TablaSimbolos.obtenerAtributo(id, "referencias"));
+                TablaSimbolos.modificarAtributo(id, "referencias", Integer.toString(ref+1));
+            }
+            System.out.println("Constante entera long: "+AnalizadorLexico.lexema);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

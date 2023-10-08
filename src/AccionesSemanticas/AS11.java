@@ -10,6 +10,7 @@ public class AS11 implements AccionSemantica{
     @Override
     public int ejecutar(BufferedInputStream lector, String lexema) {
         try {
+            boolean truncada = false;
             AnalizadorLexico.lexema += (char) lector.read();
             String valor_numerico = AnalizadorLexico.lexema;
             valor_numerico = valor_numerico.replace("_", "");
@@ -17,20 +18,30 @@ public class AS11 implements AccionSemantica{
 
             int num = Integer.parseInt(valor_numerico);
             if (num > AnalizadorLexico.MAX_SHORT_INT){
+                truncada = true;
                 num = AnalizadorLexico.MAX_SHORT_INT;
-
-                //INFORMAR WARNING, SE TRUNCA A MAXIMO LONG
+                //INFORMAR WARNING, SE TRUNCA A MAXIMO SHORT
                 Parser.anotar(Parser.WARNING, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Constante "+AnalizadorLexico.lexema+" fue truncado ya que supera el valor maximo");
             }
 
-            lexema = Integer.toString(num);
-            lexema += '_';
-            lexema += 's';
-            if (TablaSimbolos.agregarSimbolo(lexema)){
-                int id = TablaSimbolos.obtenerSimbolo(lexema);
+            AnalizadorLexico.lexema = Integer.toString(num);
+            AnalizadorLexico.lexema += "_s";
+            boolean agregado = TablaSimbolos.agregarSimbolo(AnalizadorLexico.lexema);
+            int id = TablaSimbolos.obtenerSimbolo(AnalizadorLexico.lexema);
+            if (agregado)
+            {
                 TablaSimbolos.agregarAtributo(id, "tipo", "short");
+                TablaSimbolos.agregarAtributo(id, "referencias", "1");
             }
-            System.out.println("Constante entera: "+lexema);
+            else {
+                int ref = Integer.parseInt(TablaSimbolos.obtenerAtributo(id, "referencias"));
+                TablaSimbolos.modificarAtributo(id, "referencias", Integer.toString(ref+1));
+            }
+            if (truncada)
+            {
+                TablaSimbolos.agregarAtributo(id, "valor_original", valor_numerico);
+            }
+            System.out.println("Constante entera: "+AnalizadorLexico.lexema);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
