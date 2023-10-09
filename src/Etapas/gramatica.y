@@ -30,9 +30,9 @@ cuerpoPrograma: cuerpoPrograma declaracionClase
 		| listaSentencias
 ;
 
-declaracionClase: CLASS ID '{' cuerpoClase '}' ','
+declaracionClase: CLASS ID '{' cuerpoClase '}' ','  {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
 				| CLASS ID '{' cuerpoClase '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma al final de linea");}
-				| CLASS ID ','
+				| CLASS ID ',' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
 				| CLASS ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',')");}
 ;
 
@@ -44,7 +44,13 @@ seccionClase: seccionAtributos
 			| seccionMetodos
 ;
 
+referenciaClase: ID '.' referenciaClase
+		| ID '.' asignacion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Referencia a atributo de clase.");}
+		| ID '.' invocacionMetodo {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocacion de metodo de clase");}
+;
+
 seccionAtributos: tipo ID ';' listaAtributos
+				| ID ','
 				| tipo ID ','
 				| tipo ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
@@ -69,6 +75,7 @@ sentenciaEjecutable: asignacion
     	| print
     	| return
 	| invocacionMetodo
+	| referenciaClase
 ;
 
 listaDeclarativa: listaDeclarativa ',' sentenciaDeclarativa

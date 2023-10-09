@@ -3,7 +3,7 @@ package Etapas;
 import AccionesSemanticas.*;
 
 public class MAS {
-    public AccionSemantica[][] action_matrix = new AccionSemantica[18][29];
+    public AccionSemantica[][] action_matrix = new AccionSemantica[19][29];
 
     public MAS() {
         //FILA 0
@@ -221,6 +221,21 @@ public class MAS {
         action_matrix[17][10]= new AS6();
         for (int i=11; i<=28; i++){
             action_matrix[17][i]= new AS4();
+        }
+
+
+        //FILA 18
+        for (int i=0; i<=2; i++){
+            action_matrix[18][i]= new AS8();
+        }
+        action_matrix[18][3]= new AS6();
+        action_matrix[18][4]= new AS6();
+        for (int i=5; i<=9; i++){
+            action_matrix[18][i]= new AS8();
+        }
+        action_matrix[18][10]= new AS6();
+        for (int i=11; i<=28; i++){
+            action_matrix[18][i]= new AS8();
         }
     }
 }

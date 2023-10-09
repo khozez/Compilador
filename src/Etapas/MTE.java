@@ -1,7 +1,7 @@
 package Etapas;
 
 public class MTE {
-    public int[][] states_matrix = new int[18][29];
+    public int[][] states_matrix = new int[19][29];
     public static final int ERROR = -3;
     public static final int ESTADO_FINAL = -5;
 
@@ -28,7 +28,7 @@ public class MTE {
         {
             states_matrix[0][i] = ESTADO_FINAL;
         }
-        states_matrix[0][24] = 2;
+        states_matrix[0][24] = 18;
         states_matrix[0][25] = 15;
         states_matrix[0][26] = 15;
         states_matrix[0][27] = 14;
@@ -227,6 +227,21 @@ public class MTE {
         states_matrix[17][10] = 17;
         for (int i=11; i<=28; i++){
             states_matrix[17][i] = ESTADO_FINAL;
+        }
+
+
+        //FILA 18
+        for (int i=0; i<=2; i++){
+            states_matrix[18][i] = ESTADO_FINAL;
+        }
+        states_matrix[18][3] = 3;
+        states_matrix[18][4] = 3;
+        for (int i=5; i<=9; i++){
+            states_matrix[18][i] = ESTADO_FINAL;
+        }
+        states_matrix[18][10] = 2;
+        for (int i=11; i<=28; i++){
+            states_matrix[18][i] = ESTADO_FINAL;
         }
     }
 

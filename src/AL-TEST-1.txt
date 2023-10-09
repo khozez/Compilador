@@ -40,6 +40,35 @@ END_IF,
 WHILE (num1 !! 45_s) DO
     num1 = num1+1_s,
 
+CLASS ca {
+    INT a;c,
+    VOID m()
+    {
+        PRINT %LLAMADO A METODO m%,
+    },
+}
+
+CLASS cb {
+    FLOAT b,
+    FLOAT a,
+    VOID n()
+    {
+        PRINT %LLAMADO A METODO n%,
+    },
+    ca,
+}
+
+ca a1; a2,
+cb b1; b2; b3,
+
+a1.a = 3_s,
+b1.ca.a = 3_s,
+b1.a = 2.3,
+b1.b = 1.2,
+b1.ca.c = 1_s,
+b1.ca.m(),
+b1.n(),
+
 func1(num1),
 func1(b = 4_s),                                 **MAL INVOCACION DE FUNCION, CON UNA ASIGNACIÓN
 func1(SHORT c = 59_s),                          **MAL INVOCACION DE FUNCION, CON UNA DECLARACIÓN
