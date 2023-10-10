@@ -18,30 +18,33 @@
 
 %%
 
-programa: '{' cuerpoPrograma '}'
+programa: '{' cuerpoPrograma '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de programa");}
 		| '{' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Programa vacio");}
 		| cuerpoPrograma '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de apertura '{'");}
 		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de cierre '}'");}
 ;
 
-cuerpoPrograma: cuerpoPrograma declaracionClase
-		|  cuerpoPrograma listaSentencias
-		| declaracionClase
-		| listaSentencias
+cuerpoPrograma: listaSentencias
 ;
 
-declaracionClase: CLASS ID '{' cuerpoClase '}' ','  {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
-				| CLASS ID '{' cuerpoClase '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma al final de linea");}
-				| CLASS ID ',' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
-				| CLASS ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',')");}
+listaSentencias: listaSentencias sentenciaDeclarativa
+		| listaSentencias sentenciaEjecutable ','
+		| sentenciaDeclarativa
+		| sentenciaEjecutable ','
 ;
 
-cuerpoClase: cuerpoClase seccionClase
-		| seccionClase
+declaracionClase: CLASS ID '{' cuerpoClase '}'  {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
+		 | CLASS ID ',' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
+		 | CLASS ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
-seccionClase: seccionAtributos
-			| seccionMetodos
+cuerpoClase: seccionClase
+;
+
+seccionClase: seccionClase seccionAtributos
+	     | seccionClase declaracionMetodo ','
+	     | declaracionMetodo ','
+	     | seccionAtributos
 ;
 
 referenciaClase: ID '.' referenciaClase
@@ -52,80 +55,81 @@ referenciaClase: ID '.' referenciaClase
 seccionAtributos: tipo ID ';' listaAtributos
 				| ID ','
 				| tipo ID ','
-				| tipo ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
+				| tipo ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la definición de variable.");}
 ;
 
 listaAtributos: ID ';' listaAtributos
 			| ID ','
-			| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
+			| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la lista de variables.");}
 ;
 
-seccionMetodos: seccionMetodos ',' declaracionMetodo
-			| declaracionMetodo ','
-;
-
-listaEjecutables: listaEjecutables ',' sentenciaEjecutable
-			| sentenciaEjecutable ','
-			| sentenciaEjecutable '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
-;
 
 sentenciaEjecutable: asignacion
     	| sentenciaIf
     	| sentenciaWhile
     	| print
-    	| return
 	| invocacionMetodo
 	| referenciaClase
 ;
 
-listaDeclarativa: listaDeclarativa ',' sentenciaDeclarativa
-				| sentenciaDeclarativa
-				| sentenciaDeclarativa '$' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
+sentenciaDeclarativa: declaracionFuncion
+			| declaracion ','
+			| declaracionClase
 ;
 
-sentenciaDeclarativa: declaracionMetodo
-					| declaracion ','
-;
-
-listaSentencias: listaDeclarativa ',' listaEjecutables
-				| listaDeclarativa
-				| listaEjecutables
-				| CADENA
+sentenciaDeclarativaMetodo: declaracionFuncion
+			| declaracion ','
 ;
 
 asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");}
 	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 ;
 
-sentenciaIf: IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' ELSE '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": ERROR! Falta 'END_IF'");}
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' expresion comparador expresion ')' '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas()+1)+": ERROR! Falta 'END_IF'");}
+sentenciaIf: IF '(' expresion comparador expresion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' expresion comparador expresion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
+			| IF '(' expresion comparador expresion ')' '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' expresion comparador expresion ')' '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
 			| IF '(' expresion comparador expresion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' expresion comparador expresion ')' sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 			| IF '(' expresion comparador expresion ')' ',' END_IF
 ;
 
-sentenciaWhile: WHILE '(' expresion comparador expresion ')' DO '{' listaEjecutables '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
+bloque_ejecucion: bloque_ejecucion sentenciaEjecutable ','
+		     | sentenciaEjecutable ','
+;
+
+sentenciaWhile: WHILE '(' expresion comparador expresion ')' DO '{' bloque_ejecucion '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
                | WHILE '(' expresion comparador expresion ')' DO sentenciaEjecutable {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
-	       | WHILE '(' expresion comparador ')' DO '{' listaEjecutables '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
+	       | WHILE '(' expresion comparador ')' DO '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
 ;
 
 print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");}
 ;
 
-return: RETURN
+return: RETURN ','
 ;
 
 declaracionMetodo: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
-			| VOID ID '('')' '{' cuerpoMetodo '}'   {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
+			| VOID ID '('')' '{' cuerpoMetodo '}'  {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
 ;
 
-cuerpoMetodo: cuerpoMetodo listaSentencias
-	     | listaSentencias
+declaracionFuncion: VOID ID '(' tipo ID ')' '{' cuerpoMetodo return '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
+			| VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia RETURN");}
+			| VOID ID '('')' '{' cuerpoMetodo return '}'   {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
+			| VOID ID '('')' '{' cuerpoMetodo '}'   {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia RETURN");}
 ;
 
-invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo");}
-		  | ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo");}
+cuerpoMetodo: listaSentenciasMetodo
+;
+
+listaSentenciasMetodo: listaSentenciasMetodo sentenciaDeclarativaMetodo
+                       	| listaSentenciasMetodo sentenciaEjecutable ','
+                       	| sentenciaDeclarativaMetodo
+                       	| sentenciaEjecutable ','
+;
+
+invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");}
+		  | ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");}
 		  | ID '(' asignacion ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una asignación como parametro.");}
 		  | ID '(' tipo asignacion ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una declaración como parametro.");}
 ;
@@ -167,6 +171,7 @@ comparador: MAYORIGUAL
 	    | DISTINTO
             | '<'
 	    | '>'
+	    | '=' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal escrito el comparador ==");}
 ;
 
 %%
