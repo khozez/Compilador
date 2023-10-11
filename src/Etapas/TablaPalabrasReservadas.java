@@ -8,7 +8,7 @@ import java.util.Scanner;
 
 public class TablaPalabrasReservadas {
     public static final int PALABRA_NO_RESERVADA = -1;
-    private static final String ARCHIVO_PALABRAS_RESERVADAS = "PalabrasReservadas.txt";
+    private static final String ARCHIVO_PALABRAS_RESERVADAS = "src/PalabrasReservadas.txt";
     private static Map<String, Integer> palabras_reservadas;
 
     public TablaPalabrasReservadas(){
