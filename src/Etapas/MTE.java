@@ -121,39 +121,10 @@ public class MTE {
         }
         states_matrix[7][9] = 7;
         states_matrix[7][10] = ESTADO_FINAL;
-        states_matrix[7][11] = 8;
+        states_matrix[7][11] = 7;
         for (int i=12; i<=28; i++){
             states_matrix[7][i] = ESTADO_FINAL;
         }
-
-
-        //FILA 8
-        for (int i=0; i<=2; i++){
-            states_matrix[8][i] = ERROR;
-        }
-        states_matrix[8][3] = 9;
-        for (int i=4; i<=8; i++){
-            states_matrix[8][i] = ERROR;
-        }
-        states_matrix[8][9] = 9;
-        for (int i=10; i<=28; i++){
-            states_matrix[8][i] = ERROR;
-        }
-
-
-        //FILA 9
-        for (int i=0; i<=2; i++){
-            states_matrix[9][i] = ESTADO_FINAL;
-        }
-        states_matrix[9][3] = 9;
-        for (int i=4; i<=8; i++){
-            states_matrix[9][i] = ESTADO_FINAL;
-        }
-        states_matrix[9][9] = 9;
-        for (int i=10; i<=28; i++){
-            states_matrix[9][i] = ESTADO_FINAL;
-        }
-
 
         //FILA 10
         for (int i=0; i<=28; i++){

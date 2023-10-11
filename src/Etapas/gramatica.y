@@ -298,25 +298,7 @@ public static void imprimir(List<String> lista, String cabecera) {
 }
 
 public static void main(String[] args) {
-        String archivo = "src\\AL-TEST-1.txt";
-		System.out.println("Compilando el archivo: " + archivo);
-                try {
-                	FileInputStream fis = new FileInputStream(archivo);
-                        BufferedInputStream lector = new BufferedInputStream(fis);
-                        AnalizadorLexico.lector = lector;
-                        Parser parser = new Parser();
-                        parser.run();
-                } catch (IOException excepcion) {
-                        excepcion.printStackTrace();
-                }
-                Parser.imprimir(errorLexico, "Errores Lexicos");
-                Parser.imprimir(errorSintactico, "Errores Sintacticos");
-                TablaSimbolos.imprimirTabla();
-}
-
-/* MAIN PARA CUANDO EJECUTEMOS POR CONSOLA
-public static void main(String[] args) {
-        if (args.length > 1) {
+        if (args.length >= 1) {
                 String archivo = args[0];
 		System.out.println("Compilando el archivo: " + archivo);
                 try {
@@ -334,36 +316,4 @@ public static void main(String[] args) {
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }
-} */
-
-//BORRAR ESTO - REFERENCIA 2021
-/*
-public static void main(String[] args) {
-        if (args.length > 1) {
-                String archivo_a_leer = args[0];
-                System.out.println("Se esta compilando el siguiente archivo: " + archivo_a_leer);
-
-                try {
-                        AnalizadorLexico.lector = new BufferedReader(new FileReader(archivo_a_leer));
-                        Parser parser = new Parser();
-                        parser.run();
-                } catch (IOException excepcion) {
-                        excepcion.printStackTrace();
-                }
-
-                Parser.imprimirErrores(errores_lexicos, "Errores Lexicos");
-                Parser.imprimirErrores(errores_sintacticos, "Errores Sintacticos");
-
-                if (!errores_compilacion) {
-                        GeneradorCodigo.generarCodigo();
-                        FileHelper.writeProgram(args[1], GeneradorCodigo.codigo.toString());
-                }
-
-                Parser.imprimirErrores(errores_semanticos, "Errores Semanticos");
-                Parser.imprimirPolaca();
-                TablaSimbolos.imprimirTabla();
-        } else {
-                System.out.println("No se especifico el archivo a compilar");
-        }
 }
-*/
