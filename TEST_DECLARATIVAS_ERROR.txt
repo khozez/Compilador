@@ -1,0 +1,14 @@
+{
+VOID fmal(x)
+	{
+	x=y **No deberia llegar aca
+	}
+VOID f2mal()
+	{} **Error sin cuerpo de funcion
+VOID f3mal(ULONG x2)
+	{
+		ULONG x3,
+		x3=x2,
+		**No tiene return
+	}
+}

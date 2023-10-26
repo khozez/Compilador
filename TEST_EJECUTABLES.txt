@@ -1,0 +1,26 @@
+{
+VOID f1(SHORT x)
+	{
+	ULONG y,
+	y=x,
+	RETURN,
+	}
+ULONG suma = 1_ul + 7_ul,
+SHORT resta = 6_s - 4_s,
+SHORT mult = 2_s * 3_s,
+SHORT div = 10_s / 5_s,
+
+f1(resta),
+f1(mult + div),
+
+SHORT mm1 = mult---resta--,
+SHORT mm2 = mult-- * div,  **Tema 10, usar el operador -- en una expresion y asignacion
+
+ULONG _lim = 2_ul,
+IF (suma-- > 5_ul) **Tema 10, usar el operador -- en una comparacion
+	{
+	FLOAT f1 = 1.2,
+	FLOAT f2,
+	f2 = f1,
+	}
+}

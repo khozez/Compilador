@@ -1,0 +1,8 @@
+{
+SHORT x1 = -5_s,
+SHORT x2 = 7_s,
+SHORT x3 = 15_s,
+SHORT x4,
+
+x4 = (x1 + x2) * x3 **No estan permitidos los anidamientos de expresiones con parentesis
+}

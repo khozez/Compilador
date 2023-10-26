@@ -1,0 +1,12 @@
+{
+SHORT num1,
+**Este comentario esta bien escrito
+*Este comentario no*
+
+PRINT %Cadena multilinea
+escrita
+correctamente%
+
+%Cadena
+multilinea mal escrita
+}

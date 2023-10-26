@@ -1,0 +1,37 @@
+{
+CLASS cc,  ** Tema 21, Forward declaration
+CLASS ca {
+	SHORT a;c,
+	VOID f1() 
+		{
+		cc c1,
+		ULONG _i7 = 119_ul,
+		c1.p(),
+		},
+	}
+CLASS cb{
+	FLOAT a,
+	FLOAT b,
+	VOID f2()
+		{
+		SHORT _ss = -5_s,
+		},
+	ca,
+	}
+CLASS cc{
+	SHORT x1,
+	VOID p(){
+		SHORT x2 = 2_s,
+	},
+
+ca a1; a2,
+cb b1; b2; b3,
+
+a1.a = 3_s,
+b1.ca.a = 4_s,
+b1.a = 2.3,
+b1.b = 1.2,
+b1.ca.c = 1_s
+b1.ca.f1(),
+b1.f2(),
+}
