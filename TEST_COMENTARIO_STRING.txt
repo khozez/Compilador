@@ -1,12 +1,10 @@
 {
-SHORT num1,
-**Este comentario esta bien escrito
-*Este comentario no*
+SHORT num1,   **Declaracion de variable (ejemplo de comentario)
 
-PRINT %Cadena multilinea
+PRINT %Cadena multilinea            **CADENA MULTILINEA SIN ERROR
 escrita
-correctamente%
+correctamente%,
 
-%Cadena
-multilinea mal escrita
+%Cadena                             **CADENA MULTILINEA CON ERROR SINTACTICO
+multilinea mal escrita%,
 }

@@ -1,72 +1,78 @@
 {
-SHORT num1;num2;num3;num4,
-ULONG num5;num6;num7;num8;aux,
+    SHORT num1;num2;num3;num4,
+    ULONG num5;num6;num7;num8;aux,
 
-num1 = -128_s,
-num2 = 55_s,
+    num1 = 129_s,
+    num2 = -55_s,
+    num3 = 127_s,
+    num5 = -44_ul,
+    num6 = 4294967295_ul,
 
-num5 = 0_ul,
-num6 = 4294967295_ul,
+    VOID func1 (SHORT x)
+        {
+            SHORT y = 11_s,
+            x = y,
+            RETURN,
+        }
+
+    IF (num1 == num3)
+        PRINT %CONSTANTES TRUNCADAS%,
+    ELSE
+        PRINT %CONSTANTES NO TRUNCADAS%,
+    END_IF,
 
 
-VOID func1 (SHORT x)
+    WHILE (num1 !! 45_s) DO
+        num1 = num1 - 1_s,
+
+
+    IF (num5-- > 0_ul)
     {
-        SHORT y = 11_s,
-        x = y,
-        RETURN,
+        IF (num6 < 5_ul)
+        {
+            aux = num6-- - num7,
+            num6 = aux,
+        }END_IF,
+    }END_IF,
+
+
+    CLASS cc,
+
+    CLASS ca {
+        SHORT a;c,
+        VOID f1()
+            {
+                cc c1,
+                ULONG _i7 = 119_ul,
+                c1.p(),
+            },
     }
 
+    CLASS cb{
+        FLOAT a,
+        FLOAT b,
+        VOID f2()
+            {
+                SHORT _ss = -5_s,
+            },
+        ca,
+    }
 
-IF (num1 == num3)
-    PRINT %CONSTANTES TRUNCADAS%,
-ELSE
-    PRINT %CONSTANTES NO TRUNCADAS%,
-END_IF,
+    CLASS cc{
+        SHORT x1,
+        VOID p(){
+            SHORT x2 = 2_s,
+        },
+    }
 
+    ca a1; a2,
+    cb b1; b2; b3,
 
-WHILE (num1 !! 45_s) DO
-    num1 = num1+1_s,
-
-
-IF (num7-- > 1_ul)
-{
-    IF (num7 < 5_ul)
-    {
-        aux = num6-- - num7,
-        num6 = aux,
-    }END_IF,
-}END_IF,
-
-
-CLASS ca {
-    SHORT a;c,
-    VOID m()
-    {
-        PRINT %LLAMADO A METODO m%,
-    },
-}
-
-
-CLASS cb {
-    FLOAT b,
-    FLOAT a,
-    VOID n()
-    {
-        PRINT %LLAMADO A METODO n%,
-    },
-    ca,
-}
-
-ca a1; a2,
-cb b1; b2; b3,
-
-a1.a = 3_s,
-b1.ca.a = 3_s,
-b1.a = 2.3,
-b1.b = 1.2,
-b1.ca.c = 1_s,
-b1.ca.m(),
-b1.n(),
-
-func1(num1),
+    a1.a = 3_s,
+    b1.ca.a = 4_s,
+    b1.a = 2.3,
+    b1.b = 1.2,
+    b1.ca.c = 1_s,
+    b1.ca.f1(),
+    b1.f2(),
 }

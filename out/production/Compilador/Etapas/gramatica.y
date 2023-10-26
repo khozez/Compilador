@@ -49,7 +49,7 @@ seccionClase: seccionClase seccionAtributos
 
 referenciaClase: ID '.' referenciaClase
 		| ID '.' asignacion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Referencia a atributo de clase.");}
-		| ID '.' invocacionMetodo {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocacion de metodo de clase");}
+		| ID '.' invocacionMetodo
 ;
 
 seccionAtributos: tipo ID ';' listaAtributos
@@ -90,36 +90,51 @@ sentenciaIf: IF '(' expresion comparador expresion ')' '{' bloque_ejecucion '}' 
 			| IF '(' expresion comparador expresion ')' '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 			| IF '(' expresion comparador expresion ')' '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
 			| IF '(' expresion comparador expresion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' expresion comparador expresion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 			| IF '(' expresion comparador expresion ')' sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' expresion comparador expresion ')' ',' END_IF
+;
+
+sentenciaIfRetorno: IF '(' expresion comparador expresion ')' '{' bloque_ejecucion return '}' ELSE '{' bloque_ejecucion return ',' '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' expresion comparador expresion ')' '{' bloque_ejecucion return '}' ELSE '{' bloque_ejecucion return ',' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
+			| IF '(' expresion comparador expresion ')' '{' bloque_ejecucion return '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' expresion comparador expresion ')' '{' bloque_ejecucion return '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
+			| IF '(' expresion comparador expresion ')' return ',' ELSE sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' expresion comparador expresion ')' return ',' ELSE '{' bloque_ejecucion return ',' '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' expresion comparador expresion ')' return ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 ;
 
 bloque_ejecucion: bloque_ejecucion sentenciaEjecutable ','
 		     | sentenciaEjecutable ','
+		     | sentenciaDeclarativa {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una sentencia WHILE no puede contener una sentencia declarativa.");}
 ;
 
 sentenciaWhile: WHILE '(' expresion comparador expresion ')' DO '{' bloque_ejecucion '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
                | WHILE '(' expresion comparador expresion ')' DO sentenciaEjecutable {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
 	       | WHILE '(' expresion comparador ')' DO '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
+	       | WHILE '(' expresion comparador ')' DO sentenciaEjecutable {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
 ;
 
 print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");}
+       | CADENA {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
 ;
 
-return: RETURN ','
+return: RETURN
 ;
 
 declaracionMetodo: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
 			| VOID ID '('')' '{' cuerpoMetodo '}'  {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
 ;
 
-declaracionFuncion: VOID ID '(' tipo ID ')' '{' cuerpoMetodo return '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
-			| VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia RETURN");}
-			| VOID ID '('')' '{' cuerpoMetodo return '}'   {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
-			| VOID ID '('')' '{' cuerpoMetodo '}'   {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia RETURN");}
+declaracionFuncion: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
+			| VOID ID '(' ID ')' '{' cuerpoMetodo '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
+			| VOID ID '('')' '{' cuerpoMetodo '}'   {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
 ;
 
-cuerpoMetodo: listaSentenciasMetodo
+cuerpoMetodo: listaSentenciasMetodo return ','
+	      | sentenciaIfRetorno ',' listaSentenciasMetodo
+	      | listaSentenciasMetodo sentenciaIfRetorno ','
+	      | listaSentenciasMetodo {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR: Falta la sentencia RETURN");}
+	      | sentenciaIfRetorno ','
 ;
 
 listaSentenciasMetodo: listaSentenciasMetodo sentenciaDeclarativaMetodo
@@ -210,7 +225,7 @@ public static void comprobarRango(String valor){
         }
         else
         {
-            valor = "-"+valor+"_s";
+            valor = "-"+valor;
             agregado = TablaSimbolos.agregarSimbolo(valor);
             modificar_referencias(agregado, valor, "short");
         }

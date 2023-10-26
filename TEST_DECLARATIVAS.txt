@@ -1,20 +1,39 @@
 {
-VOID f1(SHORT x)
-	{
-	ULONG y,
-	y=x,
-	RETURN,
+
+
+VOID f1(SHORT x)                              **SENTENCIA DECLARATIVA DE FUNCION VOID SIN ERRORES
+    {
+	    ULONG y,
+	    y=x,
+	    RETURN,
 	}
-VOID f3()
+
+VOID f3()                                     **SENTENCIA DECLARATIVA DE FUNCION VOID SIN ERRORES
 	{
-	FLOAT x,
-	x = 1.2,
-	IF (x > 0.0)
-		RETURN,
-	ELSE
-		{
-		x = 2.0,
-		RETURN,
-		}
-	END_IF,
+	    FLOAT x,
+	    x = 1.2,
+	    IF (x > 1.0)
+		    RETURN,
+	    ELSE
+		    {
+		        x = 2.0,
+		        RETURN,
+		    }
+	    END_IF,
+    }
+
+
+VOID fmal(x)                                    **ERROR: Falta el tipo de la variable y sentencia RETURN
+	{
+	    x=y,
+	}
+
+
+VOID f2mal(ULONG x2)                            **ERROR: Falta sentencia RETURN
+	{
+		ULONG x3,
+		x3=x2,
+	}
+
+
 }

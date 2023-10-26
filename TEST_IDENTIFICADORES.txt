@@ -1,21 +1,15 @@
 {
-SHORT num1;num2;num3;num4, **Definicion de identificadores en masa
+SHORT num1;num2;num3;num4,                              **Definicion de identificadores en masa
 
-**Definicion de identificadores de a uno
+                                                        **Definicion de identificadores de a uno
 ULONG num5,
 ULONG num6,
 ULONG _num7,
 
-**Identificadores con mas de 25 caracteres
-SHORT _id_que_se_trunca_por_aca_esto_no_pasa,
 
-**Identificador no valido
-ULONG 5num,
-SHORT _E$ta_mal
+SHORT _id_que_se_trunca_por_aca_esto_no_pasa,           **Identificadores con mas de 25 caracteres: se trunca
+ULONG IDENTIFICADOR,                                    **Identificadores en mayusculas son pasados a minuscula
 
-**Palabras reservadas en minusculas y mayusculas
 
-ulong num8,
-Short _falla,
- 
+ulong num8,                                             **Palabras reservadas en minuscula: considerada como identificador
 }

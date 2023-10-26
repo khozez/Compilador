@@ -1,23 +1,22 @@
 {
-ULONG _i = 1_ul,
-WHILE (_i < 10_ul) DO
-	{
-	_i = _i + 1_ul,    **Tema 13, while loop con sentencias ejecutables
-	PRINT %Hola
-		Mundo%,    **Tema 35, print multilinea en un while loop
+    ULONG _i = 1_ul,
 
-	}
-WHILE (_i) DO   **While con error, condicion no valida
-	{
-	_i = _i + 1_ul,
-	}
+    WHILE (_i < 10_ul) DO
+        {
+            _i = _i + 1_ul,                     **Tema 13, while loop con sentencias ejecutables
+            PRINT %Hola
+                Mundo%,                         **Tema 35, print multilinea en un while loop
+        },
 
-WHILE (_i < 10_ul) DO	**While con error, contiene sentencia declarativa
-	{
-	VOID f1()
-		{
-		SHORT _x1 = 23_s,
-		RETURN,
-		}
-	}
+    WHILE (_i > ) DO                             **While con error, condicion no valida
+            _i = _i + 1_ul,
+
+    WHILE (_i < 10_ul) DO	                    **While con error, contiene sentencia declarativa
+        {
+            VOID f1()
+                {
+                    SHORT _x1 = 23_s,
+                    RETURN,
+                }
+        },
 }
