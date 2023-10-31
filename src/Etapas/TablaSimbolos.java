@@ -33,6 +33,11 @@ public class TablaSimbolos {
         return false;
     }
 
+    public static int obtenerID()
+    {
+        return identificador_siguiente--;
+    }
+
     public static int obtenerSimbolo(String lexema) {
         for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
             String lexema_actual = entrada.getValue().get(LEXEMA);

@@ -36,7 +36,7 @@ declaracionClase: CLASS ID '{' cuerpoClase '}'  {System.out.println("LINEA "+(An
 		 | CLASS ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
-cuerpoClase: seccionClase
+cuerpoClase: seccionClase { $$ = $1 }
 ;
 
 seccionClase: seccionClase seccionAtributos
@@ -63,11 +63,11 @@ listaAtributos: ID ';' listaAtributos
 
 
 sentenciaEjecutable: asignacion {$$ = new ParserVal( $1.obj);}
-    	| sentenciaIf {$$ = new ParserVal( $1.obj);}
-    	| sentenciaWhile {$$ = new ParserVal( $1.obj);}
-    	| print {$$ = new ParserVal( $1.obj);}
-		| invocacionMetodo
-		| referenciaClase
+    		   | sentenciaIf {$$ = new ParserVal( $1.obj);}
+    		   | sentenciaWhile {$$ = new ParserVal( $1.obj);}
+    		   | print {$$ = new ParserVal( $1.obj);}
+		   | invocacionMetodo {$$ = new ParserVal( $1.obj);}
+		   | referenciaClase {$$ = new ParserVal( $1.obj);}
 ;
 
 sentenciaDeclarativa: declaracionFuncion
@@ -79,20 +79,33 @@ sentenciaDeclarativaMetodo: declaracionFuncion
 			| declaracion ','
 ;
 
-asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");}
+
+asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");
+			      var x = new Nodo("Asignacion", new Nodo(getNombreTablaSimbolosVariables($1.sval), getTipoTablaSimbolosVariables($1.sval)), (Nodo) $3.obj);
+			      x.setTipo(validarTiposAssign(x.getIzq(), x.getDer()));
+			      $$ = new ParserVal(x); }
 	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 ;
 
-sentenciaIf: IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+sentenciaIf: IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+												$$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $6.obj, null), new Nodo("else", (Nodo) $10.obj, null)))); }
 			| IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
-			| IF '(' condicion ')' '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' condicion ')' '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+										$$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $6.obj, null), new Nodo("else", null, null))));
+										}
 			| IF '(' condicion ')' '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
-			| IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' condicion ')' sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+													     $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", (Nodo) $8.obj, null))));
+													   }
+			| IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+													     $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", (Nodo) $9.obj, null))));
+													    }
+			| IF '(' condicion ')' sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+										$$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", null, null))));
+									      }
 ;
 
-condicionIf: expresion comparador expresion
+condicion: expresion comparador expresion { $$ = new ParserVal(new Nodo($2.sval, (Nodo) $1.obj, (Nodo) $3.obj, validarTipos((Nodo) $1.obj, (Nodo) $3.obj)));}
 			| comparador expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el primer miembro de la condicion");}
 			| expresion comparador {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el segundo miembro de la condicion");}
 ;
@@ -111,13 +124,16 @@ bloque_ejecucion: bloque_ejecucion sentenciaEjecutable ','
 		     | sentenciaDeclarativa {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una sentencia WHILE no puede contener una sentencia declarativa.");}
 ;
 
-sentenciaWhile: WHILE '(' expresion comparador expresion ')' DO '{' bloque_ejecucion '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
-               | WHILE '(' expresion comparador expresion ')' DO sentenciaEjecutable {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");}
-	       | WHILE '(' expresion comparador ')' DO '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
-	       | WHILE '(' expresion comparador ')' DO sentenciaEjecutable {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal definida la condicion");}
+sentenciaWhile: WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
+								     $$ = new ParserVal( new Nodo("while", (Nodo) $3.obj, (Nodo) $7.obj));
+								    }
+               | WHILE '(' condicion ')' DO sentenciaEjecutable {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
+               							 $$ = new ParserVal( new Nodo("while", (Nodo) $3.obj, (Nodo) $7.obj));
+               							}
 ;
 
-print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");}
+print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");
+		    $$ = new ParserVal( new Nodo("Print", new Nodo(getVariableConAmbitoTS($2.sval)), null, "string"));}
        | CADENA {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
 ;
 
@@ -161,11 +177,32 @@ invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorL
 ;
 
 declaracion: tipo listaDeclaracion
-	    | tipo asignacion
+	         {
+                     var t = TablaSimbolos.getInstance();
+                     lista_variables
+                         .forEach( x ->
+                             {
+                               int clave = t.obtenerSimbolo(x);
+                               if (clave != t.NO_ENCONTRADO){
+                                 if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
+                                 	t.agregarAtributo(clave, "uso", "variable");
+                                 	t.agregarAtributo(clave, "tipo", $1.sval);
+                                 } else {
+                                   	yyerror("La variable declarada ya existe " + (x.contains(":") ? x.substring(0, x.indexOf(':')) : "en ambito global"));
+                               	 }
+                               } else {
+                               		t.agregarSimbolo(x);
+                               		t.agregarAtributo(t.obtenerID(), "tipo", $1.sval);
+                               		t.agregarAtributo(t.obtenerID(), "uso", "variable");
+                               }
+                             });
+                         lista_variables.clear();
+             	}
 ;
 
-listaDeclaracion: ID ';' listaDeclaracion
-		| ID
+
+listaDeclaracion: ID ';' listaDeclaracion { if (pilaWhen.isEmpty() || pilaWhen.getFirst()) lista_variables.add($1.sval + Parser.ambito); }
+		| ID { if (pilaWhen.isEmpty() || pilaWhen.getFirst()) lista_variables.add($1.sval + Parser.ambito);}
 ;
 
 tipo: SHORT  { $$ = $1; }
@@ -196,7 +233,7 @@ factor: ID {String x = getTipoVariableConAmbitoTS($1.sval);
                 yyerror("No se encontro esta variable en un ambito adecuado");
                 }
             }
-	| ID MENOSMENOS {en este caso debemos actualizar el valor de la variable segun enunciado}
+	| ID MENOSMENOS {en este caso debemos actualizar el valor de la variable segun enunciado, PREGUNTAR}
     	| CTE { $$ = new ParserVal( new Nodo($1.sval, getTipo($1.sval))); }
     	| '-' CTE { String x = comprobarRango($2.sval); $$ = new ParserVal( new Nodo(x, getTipo(x))); }
     	| '(' expresion ')' { $$ = $2; }
@@ -220,6 +257,7 @@ public static final String ERROR_SINTACTICO = "Error_sintactico";
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
 public static ArrayList<String> lista_variables = new ArrayList<>();
+public static LinkedList<Boolean> pilaWhen = new LinkedList<>();
 
 
 void yyerror(String mensaje) {
@@ -252,9 +290,42 @@ private String validarTipos(Nodo obj, Nodo obj1) {
     	if (!obj.getTipo().equals(obj1.getTipo())) {
     		//AL MENOS UNO DE LOS OPERANDOS DEBE SER FLOAT, SINO ERROR
     		if (obj.getTipo() == "float" || obj1.getTipo() == "float)
+    			//chequear cual de los 2 es float, y al otro crearle nodo intermedio de conversion
     			return "float";
     		else{
     			yyerror("Incompatibilidad de tipos");
+        		return "Error";
+        	}
+    	}
+    	else return obj.getTipo();
+}
+
+private String validarTiposAssign(Nodo izq, Nodo der) {
+	if (izq == null )
+        	return "obj is null";
+        if (der == null)
+          	return "obj1 is null";
+        if (izq.getTipo() == "null")
+          	return "obj type is null";
+        if (der.getTipo() == "null")
+          	return "obj1 type is null";
+
+
+    	if (izq.getTipo().equals("Error") || (der.getTipo().equals("Error"))){
+       		return "Error";
+    	}
+
+
+    	if (!izq.getTipo().equals(der.getTipo())) {
+    		//EL OPERANDO DE LA IZQUIERDA DEBE SER FLOAT, SINO ERROR
+    		if (izq.getTipo() == "float")
+    			if (der.getTipo() == "short")
+    				//crear nodo stof y que der apunte a él
+    			if (der.getTipo() == "long")
+    				//crear nodo ltof y que der apunte a él
+    			return "float";
+    		else{
+    			yyerror("Incompatibilidad de tipos en la asignación.");
         		return "Error";
         	}
     	}
