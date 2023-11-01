@@ -83,7 +83,7 @@ sentenciaDeclarativaMetodo: declaracionFuncion
 
 asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");
 			      var x = new Nodo("Asignacion", new Nodo(getNombreTablaSimbolosVariables($1.sval), getTipoTablaSimbolosVariables($1.sval)), (Nodo) $3.obj);
-			      x.setTipo(validarTiposAssign(x.getIzq(), x.getDer()));
+			      x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
 			      $$ = new ParserVal(x); }
 	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 ;
@@ -106,7 +106,10 @@ sentenciaIf: IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecu
 									      }
 ;
 
-condicion: expresion comparador expresion { $$ = new ParserVal(new Nodo($2.sval, (Nodo) $1.obj, (Nodo) $3.obj, validarTipos((Nodo) $1.obj, (Nodo) $3.obj)));}
+condicion: expresion comparador expresion { var x = new Nodo($2.sval, (Nodo) $1.obj, (Nodo) $3.obj, null);
+					    x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
+					    $$ = new ParserVal(x);
+					  }
 			| comparador expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el primer miembro de la condicion");}
 			| expresion comparador {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el segundo miembro de la condicion");}
 ;
@@ -222,16 +225,20 @@ tipo: SHORT  { $$ = $1; }
 ;
 
 expresion: termino { $$ = $1; }
-    	| expresion '+' termino { $$ = new ParserVal(new Nodo("+", (Nodo) $1.obj, (Nodo)  $3.obj, validarTipos((Nodo) $1.obj, (Nodo) $3.obj))); }
-    	| expresion '-' termino { $$ = new ParserVal(new Nodo("-", (Nodo) $1.obj, (Nodo)  $3.obj, validarTipos((Nodo) $1.obj, (Nodo) $3.obj))); }
+    	| expresion '+' termino { var x = new Nodo("+", (Nodo) $1.obj, (Nodo)  $3.obj, null);
+                                  x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
+                                  $$ = new ParserVal(x); }
+    	| expresion '-' termino { var x = new Nodo("-", (Nodo) $1.obj, (Nodo)  $3.obj, null);
+    				  x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
+    				  $$ = new ParserVal(x); }
 ;
 
 termino: factor { $$ = $1; }
     	| termino '*' factor { var x = new Nodo("*", (Nodo) $1.obj, (Nodo)  $3.obj);
-    			       x.setTipo(validarTipos((Nodo) $1.obj, (Nodo) $3.obj));
+    			       x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
     			       $$ = new ParserVal(x); }
     	| termino '/' factor { var x = new Nodo("/", (Nodo) $1.obj, (Nodo)  $3.obj);
-                               x.setTipo(validarTipos((Nodo) $1.obj, (Nodo) $3.obj));
+                               x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
                                $$ = new ParserVal(x); }
 ;
 
@@ -281,7 +288,7 @@ public String getTipo(String lexema){
   	return x;
 }
 
-private String validarTipos(Nodo obj, Nodo obj1) {
+private String validarTipos(Nodo x, Nodo obj, Nodo obj1) {
 	if (obj == null )
         	return "obj is null";
         if (obj1 == null)
@@ -290,18 +297,45 @@ private String validarTipos(Nodo obj, Nodo obj1) {
           	return "obj type is null";
         if (obj1.getTipo() == "null")
           	return "obj1 type is null";
-
-
     	if (obj.getTipo().equals("Error") || (obj1.getTipo().equals("Error"))){
        		return "Error";
     	}
 
-
     	if (!obj.getTipo().equals(obj1.getTipo())) {
     		//AL MENOS UNO DE LOS OPERANDOS DEBE SER FLOAT, SINO ERROR
     		if (obj.getTipo() == "float" || obj1.getTipo() == "float)
-    			//chequear cual de los 2 es float, y al otro crearle nodo intermedio de conversion
+    		{
+    			if (obj.getTipo() != "float")
+    			{
+    				if (obj.getTipo() == "short")
+    				{
+    					var conv = new Nodo("stof", obj, null);
+    					x.setIzq(conv);
+    				}else
+    				{
+    					if (obj.getTipo() == "long")
+    					{
+    						var conv = new Nodo("ltof", obj, null);
+    						x.setIzq(conv);
+    					}
+    				}
+    			}
+    			else{
+    				if (obj1.getTipo() == "short")
+                            	{
+                            		var conv = new Nodo("stof", obj1, null);
+                            		x.setDer(conv);
+                            	}else
+                            	{
+                            		if (obj1.getTipo() == "long")
+                            		{
+                            			var conv = new Nodo("ltof", obj1, null);
+                            			x.setDer(conv);
+                            		}
+                            	}
+    			}
     			return "float";
+    		}
     		else{
     			yyerror("Incompatibilidad de tipos");
         		return "Error";
@@ -310,7 +344,7 @@ private String validarTipos(Nodo obj, Nodo obj1) {
     	else return obj.getTipo();
 }
 
-private String validarTiposAssign(Nodo izq, Nodo der) {
+private String validarTiposAssign(Nodo x, Nodo izq, Nodo der) {
 	if (izq == null )
         	return "obj is null";
         if (der == null)
@@ -330,9 +364,17 @@ private String validarTiposAssign(Nodo izq, Nodo der) {
     		//EL OPERANDO DE LA IZQUIERDA DEBE SER FLOAT, SINO ERROR
     		if (izq.getTipo() == "float")
     			if (der.getTipo() == "short")
-    				//crear nodo stof y que der apunte a él
-    			if (der.getTipo() == "long")
-    				//crear nodo ltof y que der apunte a él
+    			{
+    				var conv = new Nodo("stof", der, null);
+    				x.setDer(conv);
+    			}
+    			else {
+    				if (der.getTipo() == "long")
+    				{
+    					var conv = new Nodo("ltof", der, null);
+                                	x.setDer(conv);
+    				}
+    			}
     			return "float";
     		else{
     			yyerror("Incompatibilidad de tipos en la asignación.");
