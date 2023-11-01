@@ -24,7 +24,8 @@ programa: '{' cuerpoPrograma '}' {raiz = new Nodo("program", (Nodo) $2.obj , nul
 		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de cierre '}'");}
 ;
 
-cuerpoPrograma: cuerpoPrograma sentencia { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
+cuerpoPrograma: sentencia {$$ = $1}
+		| cuerpoPrograma sentencia { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
 ;
 
 sentencia: sentenciaDeclarativa
@@ -110,25 +111,38 @@ condicion: expresion comparador expresion { $$ = new ParserVal(new Nodo($2.sval,
 			| expresion comparador {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el segundo miembro de la condicion");}
 ;
 
-sentenciaIfRetorno: IF '(' condicion ')' '{' bloque_ejecucion return '}' ELSE '{' bloque_ejecucion return ',' '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' condicion ')' '{' bloque_ejecucion return '}' ELSE '{' bloque_ejecucion return ',' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
-			| IF '(' condicion ')' '{' bloque_ejecucion return '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' condicion ')' '{' bloque_ejecucion return '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
-			| IF '(' condicion ')' return ',' ELSE sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' condicion ')' return ',' ELSE '{' bloque_ejecucion return ',' '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' condicion ')' return ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+sentenciaIfRetorno: IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
+			| IF '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' condicion ')' '{' bloque_ejecucion_return '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
+			| IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' condicion ')' sentencia_ejecutable_return ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 ;
 
-bloque_ejecucion: bloque_ejecucion sentenciaEjecutable ','
-		     | sentenciaEjecutable ','
-		     | sentenciaDeclarativa {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una sentencia WHILE no puede contener una sentencia declarativa.");}
+sentencia_ejecutable_return:  print {$$ = new ParserVal( $1.obj);}
+				| asignacion {$$ = new ParserVal( $1.obj);}
+                                | sentenciaIfRetorno {$$ = new ParserVal( $1.obj);}
+                                | sentenciaWhile {$$ = new ParserVal( $1.obj);}
+                                | invocacionMetodo {$$ = new ParserVal( $1.obj);}
+                                | referenciaClase {$$ = new ParserVal( $1.obj);}
+                                | return {$$ = new ParserVal( $1.obj);}
+;
+
+bloque_ejecucion: bloque_ejecucion sentenciaEjecutable ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj)); }
+                  | sentenciaEjecutable ',' {$$ = new ParserVal( $1.obj);}
+
+;
+
+bloque_ejecucion_return: bloque_ejecucion_return sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj)); }
+		     | sentencia_ejecutable_return ',' {$$ = new ParserVal( $1.obj);}
 ;
 
 sentenciaWhile: WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
 								     $$ = new ParserVal( new Nodo("while", (Nodo) $3.obj, (Nodo) $7.obj));
 								    }
                | WHILE '(' condicion ')' DO sentenciaEjecutable {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
-               							 $$ = new ParserVal( new Nodo("while", (Nodo) $3.obj, (Nodo) $7.obj));
+               							 $$ = new ParserVal( new Nodo("while", (Nodo) $3.obj, (Nodo) $6.obj));
                							}
 ;
 
@@ -149,17 +163,13 @@ declaracionFuncion: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {System.out.pri
 			| VOID ID '('')' '{' cuerpoMetodo '}'   {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
 ;
 
-cuerpoMetodo: listaSentenciasMetodo return ','
-	      | sentenciaIfRetorno ',' listaSentenciasMetodo
-	      | listaSentenciasMetodo sentenciaIfRetorno ','
-	      | listaSentenciasMetodo {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR: Falta la sentencia RETURN");}
-	      | sentenciaIfRetorno ','
+cuerpoMetodo: listaSentenciasMetodo
 ;
 
 listaSentenciasMetodo: listaSentenciasMetodo sentenciaDeclarativaMetodo
-                       	| listaSentenciasMetodo sentenciaEjecutable ','
+                       	| listaSentenciasMetodo sentencia_ejecutable_return ','
                        	| sentenciaDeclarativaMetodo
-                       	| sentenciaEjecutable ','
+                       	| sentencia_ejecutable_return ','
 ;
 
 invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
