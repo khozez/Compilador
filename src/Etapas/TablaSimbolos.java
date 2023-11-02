@@ -35,7 +35,7 @@ public class TablaSimbolos {
 
     public static int obtenerID()
     {
-        return identificador_siguiente--;
+        return identificador_siguiente-1;
     }
 
     public static int obtenerSimbolo(String lexema) {

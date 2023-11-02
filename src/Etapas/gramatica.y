@@ -51,17 +51,34 @@ referenciaClase: ID '.' referenciaClase
 		| ID '.' invocacionMetodo
 ;
 
-seccionAtributos: tipo ID ';' listaAtributos
-				| ID ','
-				| tipo ID ','
-				| tipo ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la definición de variable.");}
+seccionAtributos: tipo listaAtributos
+					{
+                                             var t = TablaSimbolos.getInstance();
+                                             lista_variables
+                                                 .forEach( x ->
+                                                     {
+                                                       int clave = t.obtenerSimbolo(x);
+                                                       if (clave != t.NO_ENCONTRADO){
+                                                         if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
+                                                         	t.agregarAtributo(clave, "uso", "variable");
+                                                         	t.agregarAtributo(clave, "tipo", $1.sval);
+                                                         } else {
+                                                           	yyerror("La variable declarada ya existe " + (x.contains(":") ? x.substring(0, x.indexOf(':')) : "en ambito global"));
+                                                       	 }
+                                                       } else {
+                                                       		t.agregarSimbolo(x);
+                                                       		t.agregarAtributo(t.obtenerID(), "tipo", $1.sval);
+                                                       		t.agregarAtributo(t.obtenerID(), "uso", "variable");
+                                                       }
+                                                     });
+                                                 lista_variables.clear();
+                          		}
 ;
 
-listaAtributos: ID ';' listaAtributos
-			| ID ','
-			| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la lista de variables.");}
+listaAtributos: ID ';' listaAtributos { if (pilaWhen.isEmpty() || pilaWhen.getFirst()) lista_variables.add($1.sval + Parser.ambito); }
+		| ID ',' { if (pilaWhen.isEmpty() || pilaWhen.getFirst()) lista_variables.add($1.sval + Parser.ambito); }
+		| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la lista de variables.");}
 ;
-
 
 sentenciaEjecutable: asignacion {$$ = new ParserVal( $1.obj);}
     		   | sentenciaIf {$$ = new ParserVal( $1.obj);}
@@ -154,16 +171,108 @@ print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas
        | CADENA {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
 ;
 
-return: RETURN
+return: RETURN {$$ = new ParserVal( new Nodo($1.sval, null));}
 ;
 
-declaracionMetodo: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
-			| VOID ID '('')' '{' cuerpoMetodo '}'  {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
+parametro: tipo ID {$$ = new ParserVal( new Nodo($2.sval, $1.sval));}
 ;
 
-declaracionFuncion: VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
-			| VOID ID '(' ID ')' '{' cuerpoMetodo '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
-			| VOID ID '('')' '{' cuerpoMetodo '}'   {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
+encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
+                  					     var t = TablaSimbolos.getInstance();
+                  					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+                                                               if (clave != t.NO_ENCONTRADO)
+                                                               	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
+                                                                  	yyerror("El nombre del metodo " + $2.sval +  " ya fue utilizado en este ambito");
+                                                                  else { //la tabla de simbolos contiene la funcion pero no tiene el tipo asignado.
+                                                                  	t.agregarAtributo(clave, "tipo", "void");
+                                                                  	t.agregarAtributo(clave, "uso", "nombre_metodo");
+                                                                   }
+                                                               else {
+                                                               	t.agregarSimbolo($2.sval + Parser.ambito);
+                                                               	t.agregarAtributo(t.obtenerID, "tipo", "void");
+                                                               	t.agregarAtributo(t.obtenerID, "uso", "nombre_metodo");
+                                                               }
+                                                               if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
+                                                               	yyerror("No se puede declarar un metodo con el mismo nombre que el de su ambito");
+                                                               $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), (Nodo) $4.obj, "void"));
+                                                               lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
+                                                               nuevoambito($2.sval);
+                                                               parametro((Nodo) $4.obj);
+                  					   }
+                  		   | VOID ID '(' ID ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
+                  		   | VOID ID '('')'	{ System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
+                  		   			  var t = TablaSimbolos.getInstance();
+                                                            int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+                                                            if (clave != t.NO_ENCONTRADO)
+                                                            	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
+                                                                  	yyerror("El nombre del metodo " + $2.sval +  " ya fue utilizado en este ambito");
+                                                                  else { //la tabla de simbolos contiene el metodo pero no tiene el tipo asignado.
+                                                                          t.agregarAtributo(clave, "tipo", "void");
+                                                                          t.agregarAtributo(clave, "uso", "nombre_metodo");
+                                                                  }
+                                                            else {
+                                                                  t.agregarSimbolo($2.sval + Parser.ambito);
+                                                                  t.agregarAtributo(t.obtenerID, "tipo", "void");
+                                                                  t.agregarAtributo(t.obtenerID, "uso", "nombre_metodo");
+                                                            }
+                                                            if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
+                                                            	yyerror("No se puede declarar un metodo con el mismo nombre que el de su ambito");
+                                                            $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), null, "void"));
+                                                            lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
+                                                            nuevoambito($2.sval);
+                                                            }
+;
+
+declaracionMetodo: encabezadoMetodo '{' cuerpoMetodo '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");}
+;
+
+encabezadoFuncion: VOID ID '(' parametro ')' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
+					     var t = TablaSimbolos.getInstance();
+					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+                                             if (clave != t.NO_ENCONTRADO)
+                                             	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
+                                                	yyerror("El nombre de la funcion " + $2.sval +  " ya fue utilizado en este ambito");
+                                                else { //la tabla de simbolos contiene la funcion pero no tiene el tipo asignado.
+                                                	t.agregarAtributo(clave, "tipo", "void");
+                                                	t.agregarAtributo(clave, "uso", "nombre_funcion");
+                                                 }
+                                             else {
+                                             	t.agregarSimbolo($2.sval + Parser.ambito);
+                                             	t.agregarAtributo(t.obtenerID, "tipo", "void");
+                                             	t.agregarAtributo(t.obtenerID, "uso", "nombre_funcion");
+                                             }
+                                             if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
+                                             	yyerror("No se puede declarar una funcion con el mismo nombre que el de su ambito");
+                                             $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), (Nodo) $4.obj, "void"));
+                                             lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
+                                             nuevoambito($2.sval);
+                                             parametro((Nodo) $4.obj);
+					   }
+		   | VOID ID '(' ID ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
+		   | VOID ID '('')'	{ System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
+		   			  var t = TablaSimbolos.getInstance();
+                                          int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+                                          if (clave != t.NO_ENCONTRADO)
+                                          	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
+                                                	yyerror("El nombre de la funcion " + $2.sval +  " ya fue utilizado en este ambito");
+                                                else { //la tabla de simbolos contiene la funcion pero no tiene el tipo asignado.
+                                                        t.agregarAtributo(clave, "tipo", "void");
+                                                        t.agregarAtributo(clave, "uso", "nombre_funcion");
+                                                }
+                                          else {
+                                                t.agregarSimbolo($2.sval + Parser.ambito);
+                                                t.agregarAtributo(t.obtenerID, "tipo", "void");
+                                                t.agregarAtributo(t.obtenerID, "uso", "nombre_funcion");
+                                          }
+                                          if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
+                                          	yyerror("No se puede declarar una funcion con el mismo nombre que el de su ambito");
+                                          $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), null, "void"));
+                                          lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
+                                          nuevoambito($2.sval);
+                                          }
+;
+
+declaracionFuncion: encabezadoFuncion '{' cuerpoMetodo '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de funcion VOID");}
 ;
 
 cuerpoMetodo: listaSentenciasMetodo
@@ -274,6 +383,7 @@ public static final String ERROR_SINTACTICO = "Error_sintactico";
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
 public static ArrayList<String> lista_variables = new ArrayList<>();
+public static ArrayList<String> lista_funciones = new ArrayList<>();
 public static LinkedList<Boolean> pilaWhen = new LinkedList<>();
 
 
@@ -287,6 +397,20 @@ public String getTipo(String lexema){
     		yyerror("La variable no esta declarada");
   	return x;
 }
+
+public void parametro(Nodo n){
+	var t = TablaSimbolos.getInstance();
+    	var nombre = "" ;
+    	int clave_funcion = t.obtenerSimbolo(Parser.ambito.substring(1));
+
+    	String nombre_parametro = n.getNombre + Parser.ambito;
+      	n.setNombre(nombre_parametro);
+      	t.agregarSimbolo(n.getNombre());
+      	t.agregarAtributo(t.obtenerID(), "tipo", n.getTipo());
+      	t.agregarAtributo(t.obtenerID(), "uso", "parametro");
+      	t.agregarAtributo(clave_funcion, "parametro", nombre_parametro);
+}
+
 
 private String validarTipos(Nodo x, Nodo obj, Nodo obj1) {
 	if (obj == null )
