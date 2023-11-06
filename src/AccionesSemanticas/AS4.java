@@ -23,7 +23,7 @@ public class AS4 implements AccionSemantica{
         boolean agregado = TablaSimbolos.agregarSimbolo(AnalizadorLexico.lexema);
         int id = TablaSimbolos.obtenerSimbolo(AnalizadorLexico.lexema);
         if (agregado){
-            TablaSimbolos.agregarAtributo(id, "tipo", "float");
+            TablaSimbolos.agregarAtributo(id, "tipo", "FLOAT");
             TablaSimbolos.agregarAtributo(id, "referencias", "1");
         }
         else {

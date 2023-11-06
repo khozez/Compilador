@@ -50,6 +50,29 @@ public class TablaSimbolos {
         return NO_ENCONTRADO;
     }
 
+    public static void aplicarHerencia(String heredada, String heredera, String ambito)
+    {
+        for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
+            String lexema_actual = entrada.getValue().get(LEXEMA);
+
+            if (lexema_actual.contains(heredada+":main")) {
+                String variable = lexema_actual.substring(lexema_actual.indexOf(heredada));
+                variable = variable + ":" + heredera + ":main";
+                agregarSimbolo(variable);
+                simbolos.put(obtenerID(), obtenerAtributos(entrada.getKey()));
+                agregarAtributo(obtenerID(), "herencia", "variable");
+            }
+        }
+
+        int clave_heredera = obtenerSimbolo(heredera+ambito);
+        int clave_heredada = obtenerSimbolo(heredada+":main");
+        agregarAtributo(clave_heredera, "clase_heredada", heredada+":main");
+        agregarAtributo(clave_heredera, "niveles_herencia", "0");
+
+        if (obtenerAtributo(clave_heredada, "niveles_herencia") == NO_ENCONTRADO_MESSAGE)
+            agregarAtributo(clave_heredada, "niveles_herencia", "0");
+    }
+
     public static void eliminarSimbolo(int clave) {
         simbolos.remove(clave);
     }

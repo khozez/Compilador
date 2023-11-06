@@ -1,0 +1,13 @@
+program
+'-->sentencias null
+   |-->sentencias null
+   |  |-->sentencias null
+   |  |  '-->Asignacion SHORT
+   |  |     |-->x:main SHORT
+   |  |     '-->4_s SHORT
+   |  '-->Asignacion SHORT
+   |     |-->y:main SHORT
+   |     '-->5_s SHORT
+   '-->Asignacion SHORT
+      |-->z:main SHORT
+      '-->8_s SHORT

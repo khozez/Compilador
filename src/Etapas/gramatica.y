@@ -18,22 +18,25 @@
 
 %%
 
-programa: '{' cuerpoPrograma '}' {raiz = new Nodo("program", (Nodo) $2.obj , null); System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de programa");}
+programa: '{' cuerpoPrograma '}' {raiz = new Nodo("program", (Nodo) $2.obj , null);
+				  System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de programa");
+				  chequeoAsignacionVariables();}
 		| '{' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Programa vacio");}
 		| cuerpoPrograma '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de apertura '{'");}
 		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de cierre '}'");}
 ;
 
-cuerpoPrograma: sentencia {$$ = $1}
-		| cuerpoPrograma sentencia { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
+cuerpoPrograma: sentencia {$$ = $1;}
+		| cuerpoPrograma sentencia { if ($2.obj != null)
+						$$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
 ;
 
-sentencia: sentenciaDeclarativa
+sentencia: sentenciaDeclarativa {$$ = new ParserVal(null);}
 		| sentenciaEjecutable ','  {$$ = new ParserVal( $1.obj);}
 ;
 
-encabezadoClase: CLASS ID {var t = TablaSimbolos.getInstance();
-                           int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+encabezadoClase: CLASS ID {var t = AnalizadorLexico.TS;
+                           int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                            if (clave != t.NO_ENCONTRADO)
                            	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
                                 	yyerror("El nombre de la clase " + $2.sval +  " ya fue utilizado en este ambito");
@@ -42,41 +45,71 @@ encabezadoClase: CLASS ID {var t = TablaSimbolos.getInstance();
                                 }
                            else {
                                 t.agregarSimbolo($2.sval + Parser.ambito);
-                                t.agregarAtributo(t.obtenerID, "uso", "nombre_clase");
+                                t.agregarAtributo(t.obtenerID(), "uso", "nombre_clase");
                            }
                            if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
                            	yyerror("No se puede declarar una clase con el mismo nombre que el de su ambito");
                            $$ = new ParserVal(new Nodo("EncabezadoClase", new Nodo($2.sval + Parser.ambito), null));
                            lista_clases.add($2.sval + Parser.ambito.replace(':','_'));
-                           nuevoambito($2.sval);
+                           claseActual = $2.sval;
+                           ambitoClase = Parser.ambito;
+                           agregarAmbito(claseActual);
                           }
 ;
 
 declaracionClase: encabezadoClase '{' cuerpoClase '}'  {lista_clases_fd.remove(Parser.ambito.substring(1));
 							chequeoAsignacionVariables();
-                                                        desapilarambito();
+                                                        salirAmbito();
+                                                        claseActual = "";
 							System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
 		 | encabezadoClase ',' {lista_clases_fd.add(Parser.ambito.substring(1));
 		 			chequeoAsignacionVariables();
-                                        desapilarambito();
+                                        salirAmbito();
+                                        claseActual = "";
+                                        ambitoClase = "";
 		 			System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
 		 | encabezadoClase {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
 cuerpoClase: cuerpoClase seccionAtributos
 	     | cuerpoClase declaracionMetodo ',' { $$ = new ParserVal( new Nodo("cuerpoClase", (Nodo) $1.obj, (Nodo) $2.obj));}
-	     | declaracionMetodo ','  { $$ = $1 }
+	     | declaracionMetodo ','  { $$ = $1; }
 	     | seccionAtributos
 ;
 
-referenciaClase: ID '.' referenciaClase
-		| ID '.' asignacion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Referencia a atributo de clase.");}
-		| ID '.' invocacionMetodo
+
+referenciaClase: listaReferencia asignacionClase {$$ = $2;}
+		 | listaReferencia referenciaMetodo {$$ = $2;}
+;
+
+asignacionClase: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación a atributo de clase");
+				   var t = AnalizadorLexico.TS;
+                                   variableAmbitoClase = ":" + $1.sval + ambitoClase;
+                                   chequearHerenciaVariable(variableAmbitoClase);
+                                   var x = new Nodo("Asignacion", new Nodo(variableAmbitoClase, t.obtenerAtributo(t.obtenerSimbolo(variableAmbitoClase), "tipo")), (Nodo) $3.obj);
+                                   x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
+                                   $$ = new ParserVal(x);
+				  }
+;
+
+referenciaMetodo: ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
+                              var t = AnalizadorLexico.TS;
+                              variableAmbitoClase = ":" + $1.sval + ambitoClase;
+                              chequearHerenciaVariable(variableAmbitoClase);
+                              var x = new Nodo("LlamadaFuncion", new Nodo(variableAmbitoClase, null, null, "void"), null);
+                              $$ = new ParserVal(x);
+                              chequearLlamadoFuncion($1.sval);
+                              }
+                 | ID '(' expresion ')'
+;
+
+listaReferencia: listaReferencia ID '.' {variableAmbitoClase = ":" + $2.sval + variableAmbitoClase;}
+		| ID '.' {variableAmbitoClase = ":"+ $1.sval + variableAmbitoClase;}
 ;
 
 seccionAtributos: tipo listaAtributos
 					{
-                                             var t = TablaSimbolos.getInstance();
+                                             var t = AnalizadorLexico.TS;
                                              lista_variables
                                                  .forEach( x ->
                                                      {
@@ -96,11 +129,29 @@ seccionAtributos: tipo listaAtributos
                                                      });
                                                  lista_variables.clear();
                           		}
+                 | herenciaNombre
 ;
 
 listaAtributos: ID ';' listaAtributos { lista_variables.add($1.sval + Parser.ambito); }
 		| ID ',' { lista_variables.add($1.sval + Parser.ambito); }
 		| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la lista de variables.");}
+;
+
+herenciaNombre: ID ',' { var t = AnalizadorLexico.TS;
+			 int clave = t.obtenerSimbolo($1.sval+Parser.ambito);
+ 		       	 if (clave != t.NO_ENCONTRADO){
+                         	if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
+                         		t.agregarAtributo(clave, "uso", "herencia");
+                                } else {
+                                	yyerror("La variable declarada ya existe en ambito global");
+                                }
+                         } else {
+                                 t.agregarSimbolo($1.sval+Parser.ambito);
+                                 t.agregarAtributo(t.obtenerID(), "uso", "herencia");
+                         }
+                         t.aplicarHerencia($1.sval, claseActual, Parser.ambito);
+			 chequearNivelesHerencia(claseActual+Parser.ambito);
+ 		       }
 ;
 
 sentenciaEjecutable: asignacion {$$ = new ParserVal( $1.obj);}
@@ -116,16 +167,16 @@ sentenciaDeclarativa: declaracionFuncion
 			| declaracionClase
 ;
 
-sentenciaDeclarativaMetodo: declaracionFuncion
+sentenciaDeclarativaMetodo: declaracionFuncionLocal
 			| declaracion ','
 ;
 
 
 asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");
-			      var x = new Nodo("Asignacion", new Nodo(getNombreTablaSimbolosVariables($1.sval), getTipoTablaSimbolosVariables($1.sval)), (Nodo) $3.obj);
+			      var x = new Nodo("Asignacion", new Nodo(getVariableConAmbitoTS($1.sval), getTipoVariableConAmbitoTS($1.sval)), (Nodo) $3.obj);
 			      x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
 			      $$ = new ParserVal(x);
-			      variables_no_asignadas.remove($1.sval + Parser.ambito)}
+			      variables_no_asignadas.remove($1.sval + Parser.ambito);}
 	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 ;
 
@@ -202,8 +253,8 @@ parametro: tipo ID {$$ = new ParserVal( new Nodo($2.sval, $1.sval));}
 ;
 
 encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
-                  					     var t = TablaSimbolos.getInstance();
-                  					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+                  					     var t = AnalizadorLexico.TS;
+                  					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                                                if (clave != t.NO_ENCONTRADO)
                                                                	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
                                                                   	yyerror("El nombre del metodo " + $2.sval +  " ya fue utilizado en este ambito");
@@ -213,20 +264,20 @@ encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(Anali
                                                                    }
                                                                else {
                                                                	t.agregarSimbolo($2.sval + Parser.ambito);
-                                                               	t.agregarAtributo(t.obtenerID, "tipo", "void");
-                                                               	t.agregarAtributo(t.obtenerID, "uso", "nombre_metodo");
+                                                               	t.agregarAtributo(t.obtenerID(), "tipo", "void");
+                                                               	t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                                }
                                                                if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
                                                                	yyerror("No se puede declarar un metodo con el mismo nombre que el de su ambito");
                                                                $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), (Nodo) $4.obj, "void"));
                                                                lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
-                                                               nuevoambito($2.sval);
+                                                               agregarAmbito($2.sval);
                                                                parametro((Nodo) $4.obj);
                   					   }
                   		   | VOID ID '(' ID ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
                   		   | VOID ID '('')'	{ System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
-                  		   			  var t = TablaSimbolos.getInstance();
-                                                            int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+                  		   			  var t = AnalizadorLexico.TS;
+                                                            int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                                             if (clave != t.NO_ENCONTRADO)
                                                             	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
                                                                   	yyerror("El nombre del metodo " + $2.sval +  " ya fue utilizado en este ambito");
@@ -236,36 +287,35 @@ encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(Anali
                                                                   }
                                                             else {
                                                                   t.agregarSimbolo($2.sval + Parser.ambito);
-                                                                  t.agregarAtributo(t.obtenerID, "tipo", "void");
-                                                                  t.agregarAtributo(t.obtenerID, "uso", "nombre_metodo");
+                                                                  t.agregarAtributo(t.obtenerID(), "tipo", "void");
+                                                                  t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                             }
                                                             if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
                                                             	yyerror("No se puede declarar un metodo con el mismo nombre que el de su ambito");
                                                             $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), null, "void"));
                                                             lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
-                                                            nuevoambito($2.sval);
+                                                            agregarAmbito($2.sval);
                                                             }
 ;
 
 declaracionMetodo: encabezadoMetodo '{' cuerpoMetodo '}' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
-                                                          if (pilaWhen.isEmpty() || !pilaWhen.getFirst() ){
-                                                          	$$ = new ParserVal(
-                                                                new Nodo( "Funcion",
+                                                           $$ = new ParserVal(
+                                                           new Nodo( "Funcion",
                                                                                     (Nodo) $1.obj ,
                                                                                     (Nodo) $2.obj ,
                                                                                     "void"));
 
-                                                                /* Acciones de desapilar */
-                                                                if (!verificarRetornoArbol((Nodo) $3.obj))
-                                                                	yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
-                                                                chequeoAsignacionVariables();
-                                                                desapilarambito();
-                                                          }}
+                                                           /* Acciones de desapilar */
+                                                           if (!verificarRetornoArbol((Nodo) $3.obj))
+                                                           	yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
+                                                           chequeoAsignacionVariables();
+                                                           salirAmbito();
+                                                           funcLocales = 0;}
 ;
 
 encabezadoFuncion: VOID ID '(' parametro ')' {
-					     var t = TablaSimbolos.getInstance();
-					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+					     var t = AnalizadorLexico.TS;
+					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                              if (clave != t.NO_ENCONTRADO)
                                              	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
                                                 	yyerror("El nombre de la funcion " + $2.sval +  " ya fue utilizado en este ambito");
@@ -275,20 +325,20 @@ encabezadoFuncion: VOID ID '(' parametro ')' {
                                                  }
                                              else {
                                              	t.agregarSimbolo($2.sval + Parser.ambito);
-                                             	t.agregarAtributo(t.obtenerID, "tipo", "void");
-                                             	t.agregarAtributo(t.obtenerID, "uso", "nombre_funcion");
+                                             	t.agregarAtributo(t.obtenerID(), "tipo", "void");
+                                             	t.agregarAtributo(t.obtenerID(), "uso", "nombre_funcion");
                                              }
                                              if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
                                              	yyerror("No se puede declarar una funcion con el mismo nombre que el de su ambito");
                                              $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), (Nodo) $4.obj, "void"));
                                              lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
-                                             nuevoambito($2.sval);
+                                             agregarAmbito($2.sval);
                                              parametro((Nodo) $4.obj);
 					   }
 		   | VOID ID '(' ID ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
 		   | VOID ID '('')'	{
-		   			  var t = TablaSimbolos.getInstance();
-                                          int clave = t.obtenerSimbolo($2.sval + Parser.ambito)
+		   			  var t = AnalizadorLexico.TS;
+                                          int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                           if (clave != t.NO_ENCONTRADO)
                                           	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
                                                 	yyerror("El nombre de la funcion " + $2.sval +  " ya fue utilizado en este ambito");
@@ -298,49 +348,77 @@ encabezadoFuncion: VOID ID '(' parametro ')' {
                                                 }
                                           else {
                                                 t.agregarSimbolo($2.sval + Parser.ambito);
-                                                t.agregarAtributo(t.obtenerID, "tipo", "void");
-                                                t.agregarAtributo(t.obtenerID, "uso", "nombre_funcion");
+                                                t.agregarAtributo(t.obtenerID(), "tipo", "void");
+                                                t.agregarAtributo(t.obtenerID(), "uso", "nombre_funcion");
                                           }
                                           if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
                                           	yyerror("No se puede declarar una funcion con el mismo nombre que el de su ambito");
                                           $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), null, "void"));
                                           lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
-                                          nuevoambito($2.sval);
+                                          agregarAmbito($2.sval);
                                           }
 ;
 
-declaracionFuncion: encabezadoFuncion '{' cuerpoMetodo '}' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
-                                                            if (pilaWhen.isEmpty() || !pilaWhen.getFirst() ){
-                                                            	$$ = new ParserVal(
-                                                                new Nodo( "Funcion",
+declaracionFuncion: encabezadoFuncion '{' cuerpoFuncion '}' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
+                                                            $$ = new ParserVal(
+                                                            new Nodo( "Funcion",
                                                                          	    (Nodo) $1.obj ,
                                                                                     (Nodo) $2.obj ,
                                                                                     		    "void"));
 
-                                                                /* Acciones de desapilar */
-                                                                if (!verificarRetornoArbol((Nodo) $3.obj))
-                                                                	yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
-                                                                chequeoAsignacionVariables();
-                                                                desapilarambito();
-                                                            }}
+                                                            /* Acciones de desapilar */
+                                                            if (!verificarRetornoArbol((Nodo) $3.obj))
+                                                            	yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
+                                                            chequeoAsignacionVariables();
+                                                            salirAmbito();}
+;
+
+declaracionFuncionLocal: encabezadoFuncion '{' cuerpoFuncion '}' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
+								var x = (Nodo) $1.obj;
+								String nombre = x.getIzq().getNombre();
+								funcLocales += 1;
+                                                            	if (funcLocales <= 1){
+                                                            		$$ = new ParserVal(
+                                                                	new Nodo( "Funcion",
+                                                                         	    (Nodo) $1.obj ,
+                                                                                    (Nodo) $2.obj ,
+                                                                                    		    "void"));
+
+                                                                	/* Acciones de desapilar */
+                                                                	if (!verificarRetornoArbol((Nodo) $3.obj))
+                                                                		yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
+                                                                	chequeoAsignacionVariables();
+                                                                	salirAmbito();
+                                                            	}
+                                                            	else
+                                                            		yyerror("En la función: '"+nombre+"' el nivel maximo de anidamiento (1) es superado.");}
 ;
 
 cuerpoMetodo: listaSentenciasMetodo { $$ = $1; }
 ;
 
+cuerpoFuncion:  listaSentenciasFuncion { $$ = $1; }
+;
+
 listaSentenciasMetodo: listaSentenciasMetodo sentenciaDeclarativaMetodo
-                       	| listaSentenciasMetodo sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
+                       	| listaSentenciasMetodo sentenciaEjecutable ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
+                       	| sentenciaDeclarativaMetodo
+                       	| sentenciaEjecutable ',' { $$ = new ParserVal( new Nodo("sentencias", null, (Nodo) $1.obj));}
+;
+
+listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo
+                       	| listaSentenciasFuncion sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
                        	| sentenciaDeclarativaMetodo
                        	| sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", null, (Nodo) $1.obj));}
 ;
 
 invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
-					var x = new Nodo("LlamadaFuncion", new Nodo(getNombreTablaSimbolosVariables($1.sval)), null, getTipoTablaSimbolosVariables($1.sval));
+					var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
 					$$ = new ParserVal(x);
 					chequearLlamadoFuncion($1.sval);
 					}
 		  | ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
-		  		var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, getTipoVariableConAmbitoTS($1.sval));
+		  		var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
 		  		$$ = new ParserVal(x);
 		  		chequearLlamadoFuncion($1.sval);
 		  		}
@@ -350,7 +428,7 @@ invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorL
 
 declaracion: tipo listaDeclaracion
 	         {
-                     var t = TablaSimbolos.getInstance();
+                     var t = AnalizadorLexico.TS;
                      lista_variables
                          .forEach( x ->
                              {
@@ -384,7 +462,7 @@ listaDeclaracion: ID ';' listaDeclaracion {  lista_variables.add($1.sval + Parse
 tipo: SHORT  { $$ = $1; }
     	| ULONG { $$ = $1; }
 	| FLOAT { $$ = $1; }
-    	| ID { $$ = $1 }
+    	| ID { $$ = $1; }
 ;
 
 expresion: termino { $$ = $1; }
@@ -406,14 +484,14 @@ termino: factor { $$ = $1; }
 ;
 
 factor: ID {String x = getTipoVariableConAmbitoTS($1.sval);
-            if (!x == TablaSimbolos.NO_ENCONTRADO_MESSAGE)
+            if (x != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
             	$$ =  new ParserVal( new Nodo(getVariableConAmbitoTS($1.sval), x));
             else{
             	$$ =  new ParserVal( new Nodo("variableNoEncontrada", x));
                 yyerror("No se encontro esta variable en un ambito adecuado");
                 }
             }
-	| ID MENOSMENOS {en este caso debemos actualizar el valor de la variable segun enunciado, PREGUNTAR}
+	| ID MENOSMENOS
     	| CTE { $$ = new ParserVal( new Nodo($1.sval, getTipo($1.sval))); }
     	| '-' CTE { String x = comprobarRango($2.sval); $$ = new ParserVal( new Nodo(x, getTipo(x))); }
     	| '(' expresion ')' { $$ = $2; }
@@ -431,17 +509,25 @@ comparador: MAYORIGUAL   { $$ = new ParserVal(">="); }
 %%
 
 public static Nodo raiz = null;
-public static String ambito = "";
+public static String ambito = ":main";
+public static String variableAmbitoClase = ":main";
+public static String ambitoClase = ":main";
 public static final String ERROR_LEXICO = "Error_lexico";
 public static final String ERROR_SINTACTICO = "Error_sintactico";
+private static int funcLocales = 0;
+public static String claseActual = "";
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
 public static ArrayList<String> lista_variables = new ArrayList<>();
 public static ArrayList<String> variables_no_asignadas = new ArrayList<>();
 public static ArrayList<String> lista_funciones = new ArrayList<>();
 public static ArrayList<String> lista_clases = new ArrayList<>();
-public static LinkedList<Boolean> pilaWhen = new LinkedList<>();
+public static ArrayList<String> lista_clases_fd = new ArrayList<>();
+public static OutputManager out_arbol = new OutputManager("./Arbol.txt");
 
+public void setYylval(ParserVal yylval) {
+	this.yylval = yylval;
+}
 
 void yyerror(String mensaje) {
         // funcion utilizada para imprimir errores que produce yacc
@@ -449,17 +535,18 @@ void yyerror(String mensaje) {
 }
 
 public String getTipo(String lexema){
-	if (getTipoTS(lexema) == TablaSimbolos.NO_ENCONTRADO_MESSAGE)
+	String tipo = getTipoTS(lexema);
+	if (tipo.equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE))
     		yyerror("La variable no esta declarada");
-  	return x;
+  	return tipo;
 }
 
 public void parametro(Nodo n){
-	var t = TablaSimbolos.getInstance();
+	var t = AnalizadorLexico.TS;
     	var nombre = "" ;
     	int clave_funcion = t.obtenerSimbolo(Parser.ambito.substring(1));
 
-    	String nombre_parametro = n.getNombre + Parser.ambito;
+    	String nombre_parametro = n.getNombre() + Parser.ambito;
       	n.setNombre(nombre_parametro);
       	t.agregarSimbolo(n.getNombre());
       	t.agregarAtributo(t.obtenerID(), "tipo", n.getTipo());
@@ -483,38 +570,38 @@ private String validarTipos(Nodo x, Nodo obj, Nodo obj1) {
 
     	if (!obj.getTipo().equals(obj1.getTipo())) {
     		//AL MENOS UNO DE LOS OPERANDOS DEBE SER FLOAT, SINO ERROR
-    		if (obj.getTipo() == "float" || obj1.getTipo() == "float)
+    		if (obj.getTipo().equals("FLOAT") || obj1.getTipo().equals("FLOAT"))
     		{
-    			if (obj.getTipo() != "float")
+    			if (obj.getTipo().equals("FLOAT"))
     			{
-    				if (obj.getTipo() == "short")
+    				if (obj.getTipo().equals("SHORT"))
     				{
-    					var conv = new Nodo("stof", obj, null);
+    					var conv = new Nodo("STOF", obj, null);
     					x.setIzq(conv);
     				}else
     				{
-    					if (obj.getTipo() == "long")
+    					if (obj.getTipo().equals("LONG"))
     					{
-    						var conv = new Nodo("ltof", obj, null);
+    						var conv = new Nodo("LTOF", obj, null);
     						x.setIzq(conv);
     					}
     				}
     			}
     			else{
-    				if (obj1.getTipo() == "short")
+    				if (obj1.getTipo().equals("SHORT"))
                             	{
-                            		var conv = new Nodo("stof", obj1, null);
+                            		var conv = new Nodo("STOF", obj1, null);
                             		x.setDer(conv);
                             	}else
                             	{
-                            		if (obj1.getTipo() == "long")
+                            		if (obj1.getTipo().equals("LONG"))
                             		{
-                            			var conv = new Nodo("ltof", obj1, null);
+                            			var conv = new Nodo("LTOF", obj1, null);
                             			x.setDer(conv);
                             		}
                             	}
     			}
-    			return "float";
+    			return "FLOAT";
     		}
     		else{
     			yyerror("Incompatibilidad de tipos");
@@ -535,33 +622,34 @@ private String validarTiposAssign(Nodo x, Nodo izq, Nodo der) {
           	return "obj1 type is null";
 
 
-    	if (izq.getTipo().equals("Error") || (der.getTipo().equals("Error"))){
+    	if (izq.getTipo() == "Error" || (der.getTipo() == "Error")){
        		return "Error";
     	}
 
-
     	if (!izq.getTipo().equals(der.getTipo())) {
     		//EL OPERANDO DE LA IZQUIERDA DEBE SER FLOAT, SINO ERROR
-    		if (izq.getTipo() == "float")
-    			if (der.getTipo() == "short")
+    		if (izq.getTipo().equals("FLOAT"))
+    		{
+    			if (der.getTipo().equals("SHORT"))
     			{
-    				var conv = new Nodo("stof", der, null);
+    				var conv = new Nodo("STOF", der, null);
     				x.setDer(conv);
     			}
     			else {
-    				if (der.getTipo() == "long")
+    				if (der.getTipo().equals("LONG"))
     				{
-    					var conv = new Nodo("ltof", der, null);
+    					var conv = new Nodo("LTOF", der, null);
                                 	x.setDer(conv);
     				}
     			}
-    			return "float";
+    			return "FLOAT";
+    		}
     		else{
     			yyerror("Incompatibilidad de tipos en la asignación.");
         		return "Error";
         	}
     	}
-    	else return obj.getTipo();
+    	else return izq.getTipo();
 }
 
 private boolean verificarRetornoArbol( Nodo n ){
@@ -586,8 +674,8 @@ private boolean verificarRetornoArbol( Nodo n ){
 
 private String getTipoTS(String lexema)
 {
-	int clave = TablaSimbolos.getInstance().obtenerSimbolo(lexema);
-	return TablaSimbolos.getInstance().obtenerAtributo(clave, "tipo");
+	int clave = AnalizadorLexico.TS.obtenerSimbolo(lexema);
+	return AnalizadorLexico.TS.obtenerAtributo(clave, "tipo");
 }
 
 public void agregarAmbito(String ambito){
@@ -622,7 +710,7 @@ private String getVariableConAmbitoTS(String sval) {
 private String getTipoVariableConAmbitoTS(String sval) {
   	String ambito_actual = getAmbito(sval);
 
-  	if (getTipoTS(sval + ambito_actual) == TablaSimbolos.NO_ENCONTRADO_MESSAGE && !falloNombre(sval) )
+  	if (getTipoTS(sval + ambito_actual).equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE) && !falloNombre(sval) )
     		yyerror("No se encontro el tipo para esta variable en un ambito valido");
 
 	//RETORNAMOS EL TIPO DE LA VARIABLE
@@ -634,15 +722,18 @@ private Boolean falloNombre(String sval){
 	//REVISAR
 
      	String ambito_actual = getAmbito(sval);
-      	return (getTipoTS(sval + ambito_actual) == TablaSimbolos.NO_ENCONTRADO_MESSAGE);
+      	return (getTipoTS(sval + ambito_actual).equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE));
 }
 
 private String getAmbito(String nombreVar){
     	String ambito_actual = Parser.ambito;
-    	while(!ambito_actual.isBlank() && getTipoTS(nombreVar + ambito_actual) == TablaSimbolos.NO_ENCONTRADO_MESSAGE){
+    	while(!ambito_actual.isBlank() && getTipoTS(nombreVar + ambito_actual).equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE)){
         	ambito_actual = ambito_actual.substring(1);
         	if (ambito_actual.contains(":"))
+        	{
             		ambito_actual = ambito_actual.substring(ambito_actual.indexOf(':'));
+            		System.out.println(ambito_actual);
+                }
         	else
             		ambito_actual = "";
       		}
@@ -659,22 +750,59 @@ public void chequeoAsignacionVariables()
 
 //CHEQUEO DE LLAMADO A FUNCION SIN PARAMETROS
 private void chequearLlamadoFuncion(String funcion) {
-  	var t = TablaSimbolos.getInstance();
-  	int entrada = TablaSimbolos.getInstance().obtenerSimbolo(funcion + getAmbito(funcion));
+  	var t = AnalizadorLexico.TS;
+  	int entrada = t.obtenerSimbolo(funcion + getAmbito(funcion));
 
 	//SI LA FUNCION TIENE UN PARAMETRO, SE NOTIFICA ERROR
-  	if (TablaSimbolos.getInstance().obtenerAtributo(clave, "parametro") != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
+  	if (!t.obtenerAtributo(entrada, "parametro").equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE))
     		yyerror("La funcion a la que se desea llamar tiene parametro");
 }
+
+private void chequearHerenciaVariable(String variableConAmbito)
+{
+	var t = AnalizadorLexico.TS;
+	int entrada = t.obtenerSimbolo(variableConAmbito);
+	if (entrada == TablaSimbolos.NO_ENCONTRADO)
+        	yyerror("La clase a la que se desea heredar no fue declarada.");
+        else{
+        	String x = t.obtenerAtributo(entrada, "herencia");
+        	if (!x.equals(t.NO_ENCONTRADO_MESSAGE) && t.obtenerAtributo(entrada, "tipo").equals("void"))
+        		yyerror("No se puede sobreescribir un atributo heredado.");
+        }
+}
+
+private void chequearNivelesHerencia(String clase_actual)
+{
+	if (!clase_actual.equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE))
+	{
+		var t = AnalizadorLexico.TS;
+		int entrada = t.obtenerSimbolo(clase_actual);
+		String heredada = t.obtenerAtributo(entrada, "clase_heredada");
+		if (!heredada.equals(t.NO_ENCONTRADO_MESSAGE))
+		{
+			int clave_heredada = t.obtenerSimbolo(heredada);
+			String niveles = t.obtenerAtributo(clave_heredada, "niveles_herencia");
+			int c = Integer.parseInt(niveles) + 1;
+			if (c < 3)
+			{
+				t.modificarAtributo(clave_heredada, "niveles_herencia", String.valueOf(c));
+				chequearNivelesHerencia(heredada);
+			}
+			else
+				yyerror("Se excedió el limite maximo de niveles de herencia.");
+		}
+	}
+}
+
 
 public static String comprobarRango(String valor){
     int id = TablaSimbolos.obtenerSimbolo(valor);
     String tipo = TablaSimbolos.obtenerAtributo(id, "tipo");
-    String valor_final;
+    String valor_final = "";
     int referencias = Integer.parseInt(TablaSimbolos.obtenerAtributo(id, "referencias"));
     TablaSimbolos.modificarAtributo(id, "referencias", Integer.toString(referencias-1));
     boolean agregado;
-    if (tipo.equals("short")){
+    if (tipo.equals("SHORT")){
         // Controlamos rango negativo de SHORT (el cual pudo haber sido truncado)
         String original = TablaSimbolos.obtenerAtributo(id, "valor_original");
         if (original != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
@@ -698,13 +826,13 @@ public static String comprobarRango(String valor){
         }
 	}
 
-	if (tipo.equals("float")){
+	if (tipo.equals("FLOAT")){
 		valor_final = "-"+valor;
         	agregado = TablaSimbolos.agregarSimbolo(valor_final);
         	modificar_referencias(agregado, valor_final, "float");
 	}
 
-    if (tipo.equals("long")){
+    if (tipo.equals("LONG")){
         anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
         valor_final = "0_ul";
         agregado = TablaSimbolos.agregarSimbolo(valor_final);
@@ -797,6 +925,8 @@ public static void main(String[] args) {
                 Parser.imprimir(errorLexico, "Errores Lexicos");
                 Parser.imprimir(errorSintactico, "Errores Sintacticos");
                 TablaSimbolos.imprimirTabla();
+                ArbolSintactico as = new ArbolSintactico(Parser.raiz);
+                as.print(Parser.out_arbol);
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }

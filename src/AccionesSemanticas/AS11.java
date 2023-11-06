@@ -30,7 +30,7 @@ public class AS11 implements AccionSemantica{
             int id = TablaSimbolos.obtenerSimbolo(AnalizadorLexico.lexema);
             if (agregado)
             {
-                TablaSimbolos.agregarAtributo(id, "tipo", "short");
+                TablaSimbolos.agregarAtributo(id, "tipo", "SHORT");
                 TablaSimbolos.agregarAtributo(id, "referencias", "1");
             }
             else {

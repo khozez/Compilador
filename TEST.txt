@@ -1,0 +1,9 @@
+{
+    SHORT x,
+    SHORT y,
+    SHORT z,
+
+    x = 4_s,
+    y = 5_s,
+    z = 8_s,
+}

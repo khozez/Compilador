@@ -26,6 +26,29 @@
 
 
 
-SHORT b = 44_s,
-FLOAT x,
-x = b,
+
+
+
+
+
+
+CLASS a{
+    SHORT x,  //ambito x:a:main
+
+    VOID func1{
+        ...
+    }
+}
+
+CLASS b{
+    SHORT y,  //ambito y:b:main
+    a,
+    x,      //ambito x:a:b:main
+}
+
+b.a.x = 4_s,
+b.x.func1();
+
+
+
+

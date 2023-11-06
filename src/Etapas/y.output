@@ -11,139 +11,162 @@
    7  sentencia : sentenciaDeclarativa
    8            | sentenciaEjecutable ','
 
-   9  declaracionClase : CLASS ID '{' cuerpoClase '}'
-  10                   | CLASS ID ','
-  11                   | CLASS ID
+   9  encabezadoClase : CLASS ID
 
-  12  cuerpoClase : seccionClase
+  10  declaracionClase : encabezadoClase '{' cuerpoClase '}'
+  11                   | encabezadoClase ','
+  12                   | encabezadoClase
 
-  13  seccionClase : seccionClase seccionAtributos
-  14               | seccionClase declaracionMetodo ','
-  15               | declaracionMetodo ','
-  16               | seccionAtributos
+  13  cuerpoClase : cuerpoClase seccionAtributos
+  14              | cuerpoClase declaracionMetodo ','
+  15              | declaracionMetodo ','
+  16              | seccionAtributos
 
-  17  referenciaClase : ID '.' referenciaClase
-  18                  | ID '.' asignacion
-  19                  | ID '.' invocacionMetodo
+  17  referenciaClase : listaReferencia asignacionClase
+  18                  | listaReferencia referenciaMetodo
 
-  20  seccionAtributos : tipo ID ';' listaAtributos
-  21                   | ID ','
-  22                   | tipo ID ','
-  23                   | tipo ID
+  19  asignacionClase : ID '=' expresion
 
-  24  listaAtributos : ID ';' listaAtributos
-  25                 | ID ','
-  26                 | ID
+  20  referenciaMetodo : ID '(' ')'
+  21                   | ID '(' expresion ')'
 
-  27  sentenciaEjecutable : asignacion
-  28                      | sentenciaIf
-  29                      | sentenciaWhile
-  30                      | print
-  31                      | invocacionMetodo
-  32                      | referenciaClase
+  22  listaReferencia : listaReferencia ID '.'
+  23                  | ID '.'
 
-  33  sentenciaDeclarativa : declaracionFuncion
-  34                       | declaracion ','
-  35                       | declaracionClase
+  24  seccionAtributos : tipo listaAtributos
+  25                   | herenciaNombre
 
-  36  sentenciaDeclarativaMetodo : declaracionFuncion
-  37                             | declaracion ','
+  26  listaAtributos : ID ';' listaAtributos
+  27                 | ID ','
+  28                 | ID
 
-  38  asignacion : ID '=' expresion
-  39             | ID IGUAL expresion
+  29  herenciaNombre : ID ','
 
-  40  sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF
-  41              | IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'
-  42              | IF '(' condicion ')' '{' bloque_ejecucion '}' END_IF
-  43              | IF '(' condicion ')' '{' bloque_ejecucion '}'
-  44              | IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF
-  45              | IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF
-  46              | IF '(' condicion ')' sentenciaEjecutable ',' END_IF
+  30  sentenciaEjecutable : asignacion
+  31                      | sentenciaIf
+  32                      | sentenciaWhile
+  33                      | print
+  34                      | invocacionMetodo
+  35                      | referenciaClase
 
-  47  condicion : expresion comparador expresion
-  48            | comparador expresion
-  49            | expresion comparador
+  36  sentenciaDeclarativa : declaracionFuncion
+  37                       | declaracion ','
+  38                       | declaracionClase
 
-  50  sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF
-  51                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'
-  52                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF
-  53                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}'
-  54                     | IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF
-  55                     | IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF
-  56                     | IF '(' condicion ')' sentencia_ejecutable_return ',' END_IF
+  39  sentenciaDeclarativaMetodo : declaracionFuncionLocal
+  40                             | declaracion ','
 
-  57  sentencia_ejecutable_return : print
-  58                              | asignacion
-  59                              | sentenciaIfRetorno
-  60                              | sentenciaWhile
-  61                              | invocacionMetodo
-  62                              | referenciaClase
-  63                              | return
+  41  asignacion : ID '=' expresion
+  42             | ID IGUAL expresion
 
-  64  bloque_ejecucion : bloque_ejecucion sentenciaEjecutable ','
-  65                   | sentenciaEjecutable ','
+  43  sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF
+  44              | IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'
+  45              | IF '(' condicion ')' '{' bloque_ejecucion '}' END_IF
+  46              | IF '(' condicion ')' '{' bloque_ejecucion '}'
+  47              | IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF
+  48              | IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF
+  49              | IF '(' condicion ')' sentenciaEjecutable ',' END_IF
 
-  66  bloque_ejecucion_return : bloque_ejecucion_return sentencia_ejecutable_return ','
-  67                          | sentencia_ejecutable_return ','
+  50  condicion : expresion comparador expresion
+  51            | comparador expresion
+  52            | expresion comparador
 
-  68  sentenciaWhile : WHILE '(' condicion ')' DO '{' bloque_ejecucion '}'
-  69                 | WHILE '(' condicion ')' DO sentenciaEjecutable
+  53  sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF
+  54                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'
+  55                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF
+  56                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}'
+  57                     | IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF
+  58                     | IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF
+  59                     | IF '(' condicion ')' sentencia_ejecutable_return ',' END_IF
 
-  70  print : PRINT CADENA
-  71        | CADENA
+  60  sentencia_ejecutable_return : print
+  61                              | asignacion
+  62                              | sentenciaIfRetorno
+  63                              | sentenciaWhile
+  64                              | invocacionMetodo
+  65                              | referenciaClase
+  66                              | return
 
-  72  return : RETURN
+  67  bloque_ejecucion : bloque_ejecucion sentenciaEjecutable ','
+  68                   | sentenciaEjecutable ','
 
-  73  declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}'
-  74                    | VOID ID '(' ')' '{' cuerpoMetodo '}'
+  69  bloque_ejecucion_return : bloque_ejecucion_return sentencia_ejecutable_return ','
+  70                          | sentencia_ejecutable_return ','
 
-  75  declaracionFuncion : VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}'
-  76                     | VOID ID '(' ID ')' '{' cuerpoMetodo '}'
-  77                     | VOID ID '(' ')' '{' cuerpoMetodo '}'
+  71  sentenciaWhile : WHILE '(' condicion ')' DO '{' bloque_ejecucion '}'
+  72                 | WHILE '(' condicion ')' DO sentenciaEjecutable
 
-  78  cuerpoMetodo : listaSentenciasMetodo
+  73  print : PRINT CADENA
+  74        | CADENA
 
-  79  listaSentenciasMetodo : listaSentenciasMetodo sentenciaDeclarativaMetodo
-  80                        | listaSentenciasMetodo sentencia_ejecutable_return ','
-  81                        | sentenciaDeclarativaMetodo
-  82                        | sentencia_ejecutable_return ','
+  75  return : RETURN
 
-  83  invocacionMetodo : ID '(' expresion ')'
-  84                   | ID '(' ')'
-  85                   | ID '(' asignacion ')'
-  86                   | ID '(' tipo asignacion ')'
+  76  parametro : tipo ID
 
-  87  declaracion : tipo listaDeclaracion
+  77  encabezadoMetodo : VOID ID '(' parametro ')'
+  78                   | VOID ID '(' ID ')'
+  79                   | VOID ID '(' ')'
 
-  88  listaDeclaracion : ID ';' listaDeclaracion
-  89                   | ID
+  80  declaracionMetodo : encabezadoMetodo '{' cuerpoMetodo '}'
 
-  90  tipo : SHORT
-  91       | ULONG
-  92       | FLOAT
-  93       | ID
+  81  encabezadoFuncion : VOID ID '(' parametro ')'
+  82                    | VOID ID '(' ID ')'
+  83                    | VOID ID '(' ')'
 
-  94  expresion : termino
-  95            | expresion '+' termino
-  96            | expresion '-' termino
+  84  declaracionFuncion : encabezadoFuncion '{' cuerpoFuncion '}'
 
-  97  termino : factor
-  98          | termino '*' factor
-  99          | termino '/' factor
+  85  declaracionFuncionLocal : encabezadoFuncion '{' cuerpoFuncion '}'
 
- 100  factor : ID
- 101         | ID MENOSMENOS
- 102         | CTE
- 103         | '-' CTE
- 104         | '(' expresion ')'
+  86  cuerpoMetodo : listaSentenciasMetodo
 
- 105  comparador : MAYORIGUAL
- 106             | MENORIGUAL
- 107             | IGUAL
- 108             | DISTINTO
- 109             | '<'
- 110             | '>'
- 111             | '='
+  87  cuerpoFuncion : listaSentenciasFuncion
+
+  88  listaSentenciasMetodo : listaSentenciasMetodo sentenciaDeclarativaMetodo
+  89                        | listaSentenciasMetodo sentenciaEjecutable ','
+  90                        | sentenciaDeclarativaMetodo
+  91                        | sentenciaEjecutable ','
+
+  92  listaSentenciasFuncion : listaSentenciasFuncion sentenciaDeclarativaMetodo
+  93                         | listaSentenciasFuncion sentencia_ejecutable_return ','
+  94                         | sentenciaDeclarativaMetodo
+  95                         | sentencia_ejecutable_return ','
+
+  96  invocacionMetodo : ID '(' expresion ')'
+  97                   | ID '(' ')'
+  98                   | ID '(' asignacion ')'
+  99                   | ID '(' tipo asignacion ')'
+
+ 100  declaracion : tipo listaDeclaracion
+
+ 101  listaDeclaracion : ID ';' listaDeclaracion
+ 102                   | ID
+
+ 103  tipo : SHORT
+ 104       | ULONG
+ 105       | FLOAT
+ 106       | ID
+
+ 107  expresion : termino
+ 108            | expresion '+' termino
+ 109            | expresion '-' termino
+
+ 110  termino : factor
+ 111          | termino '*' factor
+ 112          | termino '/' factor
+
+ 113  factor : ID
+ 114         | ID MENOSMENOS
+ 115         | CTE
+ 116         | '-' CTE
+ 117         | '(' expresion ')'
+
+ 118  comparador : MAYORIGUAL
+ 119             | MENORIGUAL
+ 120             | IGUAL
+ 121             | DISTINTO
+ 122             | '<'
+ 123             | '>'
+ 124             | '='
 
 state 0
 	$accept : . programa $end  (0)
@@ -166,104 +189,103 @@ state 0
 	sentencia  goto 14
 	sentenciaDeclarativa  goto 15
 	sentenciaEjecutable  goto 16
-	declaracionClase  goto 17
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
+	encabezadoClase  goto 17
+	declaracionClase  goto 18
+	referenciaClase  goto 19
+	listaReferencia  goto 20
 	tipo  goto 21
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	declaracionFuncion  goto 25
-	declaracion  goto 26
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	declaracionFuncion  goto 27
+	declaracion  goto 28
+	encabezadoFuncion  goto 29
 
 
 state 1
-	referenciaClase : ID . '.' referenciaClase  (17)
-	referenciaClase : ID . '.' asignacion  (18)
-	referenciaClase : ID . '.' invocacionMetodo  (19)
-	asignacion : ID . '=' expresion  (38)
-	asignacion : ID . IGUAL expresion  (39)
-	invocacionMetodo : ID . '(' expresion ')'  (83)
-	invocacionMetodo : ID . '(' ')'  (84)
-	invocacionMetodo : ID . '(' asignacion ')'  (85)
-	invocacionMetodo : ID . '(' tipo asignacion ')'  (86)
-	tipo : ID .  (93)
+	listaReferencia : ID . '.'  (23)
+	asignacion : ID . '=' expresion  (41)
+	asignacion : ID . IGUAL expresion  (42)
+	invocacionMetodo : ID . '(' expresion ')'  (96)
+	invocacionMetodo : ID . '(' ')'  (97)
+	invocacionMetodo : ID . '(' asignacion ')'  (98)
+	invocacionMetodo : ID . '(' tipo asignacion ')'  (99)
+	tipo : ID .  (106)
 
-	IGUAL  shift 27
-	'.'  shift 28
-	'='  shift 29
-	'('  shift 30
-	ID  reduce 93
+	IGUAL  shift 30
+	'='  shift 31
+	'('  shift 32
+	'.'  shift 33
+	ID  reduce 106
 
 
 state 2
-	print : CADENA .  (71)
+	print : CADENA .  (74)
 
-	.  reduce 71
+	.  reduce 74
 
 
 state 3
-	declaracionClase : CLASS . ID '{' cuerpoClase '}'  (9)
-	declaracionClase : CLASS . ID ','  (10)
-	declaracionClase : CLASS . ID  (11)
-
-	ID  shift 31
-	.  error
-
-
-state 4
-	sentenciaIf : IF . '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF . '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (41)
-	sentenciaIf : IF . '(' condicion ')' '{' bloque_ejecucion '}' END_IF  (42)
-	sentenciaIf : IF . '(' condicion ')' '{' bloque_ejecucion '}'  (43)
-	sentenciaIf : IF . '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF  (44)
-	sentenciaIf : IF . '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF  (45)
-	sentenciaIf : IF . '(' condicion ')' sentenciaEjecutable ',' END_IF  (46)
-
-	'('  shift 32
-	.  error
-
-
-state 5
-	print : PRINT . CADENA  (70)
-
-	CADENA  shift 33
-	.  error
-
-
-state 6
-	declaracionFuncion : VOID . ID '(' tipo ID ')' '{' cuerpoMetodo '}'  (75)
-	declaracionFuncion : VOID . ID '(' ID ')' '{' cuerpoMetodo '}'  (76)
-	declaracionFuncion : VOID . ID '(' ')' '{' cuerpoMetodo '}'  (77)
+	encabezadoClase : CLASS . ID  (9)
 
 	ID  shift 34
 	.  error
 
 
-state 7
-	tipo : SHORT .  (90)
+state 4
+	sentenciaIf : IF . '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF . '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (44)
+	sentenciaIf : IF . '(' condicion ')' '{' bloque_ejecucion '}' END_IF  (45)
+	sentenciaIf : IF . '(' condicion ')' '{' bloque_ejecucion '}'  (46)
+	sentenciaIf : IF . '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF  (47)
+	sentenciaIf : IF . '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF  (48)
+	sentenciaIf : IF . '(' condicion ')' sentenciaEjecutable ',' END_IF  (49)
 
-	.  reduce 90
+	'('  shift 35
+	.  error
+
+
+state 5
+	print : PRINT . CADENA  (73)
+
+	CADENA  shift 36
+	.  error
+
+
+state 6
+	encabezadoFuncion : VOID . ID '(' parametro ')'  (81)
+	encabezadoFuncion : VOID . ID '(' ID ')'  (82)
+	encabezadoFuncion : VOID . ID '(' ')'  (83)
+
+	ID  shift 37
+	.  error
+
+
+state 7
+	tipo : SHORT .  (103)
+
+	.  reduce 103
 
 
 state 8
-	tipo : ULONG .  (91)
+	tipo : ULONG .  (104)
 
-	.  reduce 91
+	.  reduce 104
 
 
 state 9
-	tipo : FLOAT .  (92)
+	tipo : FLOAT .  (105)
 
-	.  reduce 92
+	.  reduce 105
 
 
 state 10
-	sentenciaWhile : WHILE . '(' condicion ')' DO '{' bloque_ejecucion '}'  (68)
-	sentenciaWhile : WHILE . '(' condicion ')' DO sentenciaEjecutable  (69)
+	sentenciaWhile : WHILE . '(' condicion ')' DO '{' bloque_ejecucion '}'  (71)
+	sentenciaWhile : WHILE . '(' condicion ')' DO sentenciaEjecutable  (72)
 
-	'('  shift 35
+	'('  shift 38
 	.  error
 
 
@@ -282,23 +304,26 @@ state 11
 	ULONG  shift 8
 	FLOAT  shift 9
 	WHILE  shift 10
-	'}'  shift 36
+	'}'  shift 39
 	.  error
 
-	cuerpoPrograma  goto 37
+	cuerpoPrograma  goto 40
 	sentencia  goto 14
 	sentenciaDeclarativa  goto 15
 	sentenciaEjecutable  goto 16
-	declaracionClase  goto 17
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
+	encabezadoClase  goto 17
+	declaracionClase  goto 18
+	referenciaClase  goto 19
+	listaReferencia  goto 20
 	tipo  goto 21
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	declaracionFuncion  goto 25
-	declaracion  goto 26
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	declaracionFuncion  goto 27
+	declaracion  goto 28
+	encabezadoFuncion  goto 29
 
 
 state 12
@@ -321,22 +346,25 @@ state 13
 	ULONG  shift 8
 	FLOAT  shift 9
 	WHILE  shift 10
-	'}'  shift 38
+	'}'  shift 41
 	.  error
 
-	sentencia  goto 39
+	sentencia  goto 42
 	sentenciaDeclarativa  goto 15
 	sentenciaEjecutable  goto 16
-	declaracionClase  goto 17
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
+	encabezadoClase  goto 17
+	declaracionClase  goto 18
+	referenciaClase  goto 19
+	listaReferencia  goto 20
 	tipo  goto 21
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	declaracionFuncion  goto 25
-	declaracion  goto 26
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	declaracionFuncion  goto 27
+	declaracion  goto 28
+	encabezadoFuncion  goto 29
 
 
 state 14
@@ -354,234 +382,252 @@ state 15
 state 16
 	sentencia : sentenciaEjecutable . ','  (8)
 
-	','  shift 40
+	','  shift 43
 	.  error
 
 
 state 17
-	sentenciaDeclarativa : declaracionClase .  (35)
+	declaracionClase : encabezadoClase . '{' cuerpoClase '}'  (10)
+	declaracionClase : encabezadoClase . ','  (11)
+	declaracionClase : encabezadoClase .  (12)
+
+	'{'  shift 44
+	','  shift 45
+	$end  reduce 12
+	ID  reduce 12
+	CADENA  reduce 12
+	CLASS  reduce 12
+	IF  reduce 12
+	PRINT  reduce 12
+	VOID  reduce 12
+	SHORT  reduce 12
+	ULONG  reduce 12
+	FLOAT  reduce 12
+	WHILE  reduce 12
+	'}'  reduce 12
+
+
+state 18
+	sentenciaDeclarativa : declaracionClase .  (38)
+
+	.  reduce 38
+
+
+state 19
+	sentenciaEjecutable : referenciaClase .  (35)
 
 	.  reduce 35
 
 
-state 18
-	sentenciaEjecutable : referenciaClase .  (32)
-
-	.  reduce 32
-
-
-state 19
-	sentenciaEjecutable : asignacion .  (27)
-
-	.  reduce 27
-
-
 state 20
-	sentenciaEjecutable : invocacionMetodo .  (31)
+	referenciaClase : listaReferencia . asignacionClase  (17)
+	referenciaClase : listaReferencia . referenciaMetodo  (18)
+	listaReferencia : listaReferencia . ID '.'  (22)
 
-	.  reduce 31
+	ID  shift 46
+	.  error
+
+	asignacionClase  goto 47
+	referenciaMetodo  goto 48
 
 
 state 21
-	declaracion : tipo . listaDeclaracion  (87)
+	declaracion : tipo . listaDeclaracion  (100)
 
-	ID  shift 41
+	ID  shift 49
 	.  error
 
-	listaDeclaracion  goto 42
+	listaDeclaracion  goto 50
 
 
 state 22
-	sentenciaEjecutable : sentenciaIf .  (28)
-
-	.  reduce 28
-
-
-state 23
-	sentenciaEjecutable : sentenciaWhile .  (29)
-
-	.  reduce 29
-
-
-state 24
-	sentenciaEjecutable : print .  (30)
+	sentenciaEjecutable : asignacion .  (30)
 
 	.  reduce 30
 
 
+state 23
+	sentenciaEjecutable : sentenciaIf .  (31)
+
+	.  reduce 31
+
+
+state 24
+	sentenciaEjecutable : sentenciaWhile .  (32)
+
+	.  reduce 32
+
+
 state 25
-	sentenciaDeclarativa : declaracionFuncion .  (33)
+	sentenciaEjecutable : print .  (33)
 
 	.  reduce 33
 
 
 state 26
-	sentenciaDeclarativa : declaracion . ','  (34)
+	sentenciaEjecutable : invocacionMetodo .  (34)
 
-	','  shift 43
-	.  error
+	.  reduce 34
 
 
 state 27
-	asignacion : ID IGUAL . expresion  (39)
+	sentenciaDeclarativa : declaracionFuncion .  (36)
 
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
-	.  error
-
-	expresion  goto 48
-	termino  goto 49
-	factor  goto 50
+	.  reduce 36
 
 
 state 28
-	referenciaClase : ID '.' . referenciaClase  (17)
-	referenciaClase : ID '.' . asignacion  (18)
-	referenciaClase : ID '.' . invocacionMetodo  (19)
+	sentenciaDeclarativa : declaracion . ','  (37)
 
-	ID  shift 51
+	','  shift 51
 	.  error
-
-	referenciaClase  goto 52
-	asignacion  goto 53
-	invocacionMetodo  goto 54
 
 
 state 29
-	asignacion : ID '=' . expresion  (38)
+	declaracionFuncion : encabezadoFuncion . '{' cuerpoFuncion '}'  (84)
 
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
+	'{'  shift 52
 	.  error
-
-	expresion  goto 55
-	termino  goto 49
-	factor  goto 50
 
 
 state 30
-	invocacionMetodo : ID '(' . expresion ')'  (83)
-	invocacionMetodo : ID '(' . ')'  (84)
-	invocacionMetodo : ID '(' . asignacion ')'  (85)
-	invocacionMetodo : ID '(' . tipo asignacion ')'  (86)
+	asignacion : ID IGUAL . expresion  (42)
 
-	ID  shift 56
-	CTE  shift 45
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	'-'  shift 46
-	'('  shift 47
-	')'  shift 57
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
 	.  error
 
-	asignacion  goto 58
-	tipo  goto 59
-	expresion  goto 60
-	termino  goto 49
-	factor  goto 50
+	expresion  goto 57
+	termino  goto 58
+	factor  goto 59
 
 
 state 31
-	declaracionClase : CLASS ID . '{' cuerpoClase '}'  (9)
-	declaracionClase : CLASS ID . ','  (10)
-	declaracionClase : CLASS ID .  (11)
+	asignacion : ID '=' . expresion  (41)
 
-	'{'  shift 61
-	','  shift 62
-	$end  reduce 11
-	ID  reduce 11
-	CADENA  reduce 11
-	CLASS  reduce 11
-	IF  reduce 11
-	PRINT  reduce 11
-	VOID  reduce 11
-	SHORT  reduce 11
-	ULONG  reduce 11
-	FLOAT  reduce 11
-	WHILE  reduce 11
-	'}'  reduce 11
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	.  error
+
+	expresion  goto 60
+	termino  goto 58
+	factor  goto 59
 
 
 state 32
-	sentenciaIf : IF '(' . condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF '(' . condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (41)
-	sentenciaIf : IF '(' . condicion ')' '{' bloque_ejecucion '}' END_IF  (42)
-	sentenciaIf : IF '(' . condicion ')' '{' bloque_ejecucion '}'  (43)
-	sentenciaIf : IF '(' . condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF  (44)
-	sentenciaIf : IF '(' . condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF  (45)
-	sentenciaIf : IF '(' . condicion ')' sentenciaEjecutable ',' END_IF  (46)
+	invocacionMetodo : ID '(' . expresion ')'  (96)
+	invocacionMetodo : ID '(' . ')'  (97)
+	invocacionMetodo : ID '(' . asignacion ')'  (98)
+	invocacionMetodo : ID '(' . tipo asignacion ')'  (99)
 
-	ID  shift 44
-	CTE  shift 45
-	MAYORIGUAL  shift 63
-	MENORIGUAL  shift 64
-	IGUAL  shift 65
-	DISTINTO  shift 66
-	'-'  shift 46
-	'='  shift 67
-	'('  shift 47
-	'<'  shift 68
-	'>'  shift 69
+	ID  shift 61
+	CTE  shift 54
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	'-'  shift 55
+	'('  shift 56
+	')'  shift 62
 	.  error
 
-	expresion  goto 70
-	condicion  goto 71
-	comparador  goto 72
-	termino  goto 49
-	factor  goto 50
+	expresion  goto 63
+	tipo  goto 64
+	asignacion  goto 65
+	termino  goto 58
+	factor  goto 59
 
 
 state 33
-	print : PRINT CADENA .  (70)
+	listaReferencia : ID '.' .  (23)
 
-	.  reduce 70
+	.  reduce 23
 
 
 state 34
-	declaracionFuncion : VOID ID . '(' tipo ID ')' '{' cuerpoMetodo '}'  (75)
-	declaracionFuncion : VOID ID . '(' ID ')' '{' cuerpoMetodo '}'  (76)
-	declaracionFuncion : VOID ID . '(' ')' '{' cuerpoMetodo '}'  (77)
+	encabezadoClase : CLASS ID .  (9)
 
-	'('  shift 73
-	.  error
+	.  reduce 9
 
 
 state 35
-	sentenciaWhile : WHILE '(' . condicion ')' DO '{' bloque_ejecucion '}'  (68)
-	sentenciaWhile : WHILE '(' . condicion ')' DO sentenciaEjecutable  (69)
+	sentenciaIf : IF '(' . condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF '(' . condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (44)
+	sentenciaIf : IF '(' . condicion ')' '{' bloque_ejecucion '}' END_IF  (45)
+	sentenciaIf : IF '(' . condicion ')' '{' bloque_ejecucion '}'  (46)
+	sentenciaIf : IF '(' . condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF  (47)
+	sentenciaIf : IF '(' . condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF  (48)
+	sentenciaIf : IF '(' . condicion ')' sentenciaEjecutable ',' END_IF  (49)
 
-	ID  shift 44
-	CTE  shift 45
-	MAYORIGUAL  shift 63
-	MENORIGUAL  shift 64
-	IGUAL  shift 65
-	DISTINTO  shift 66
-	'-'  shift 46
-	'='  shift 67
-	'('  shift 47
-	'<'  shift 68
-	'>'  shift 69
+	ID  shift 53
+	CTE  shift 54
+	MAYORIGUAL  shift 66
+	MENORIGUAL  shift 67
+	IGUAL  shift 68
+	DISTINTO  shift 69
+	'-'  shift 55
+	'='  shift 70
+	'('  shift 56
+	'<'  shift 71
+	'>'  shift 72
 	.  error
 
-	expresion  goto 70
+	expresion  goto 73
 	condicion  goto 74
-	comparador  goto 72
-	termino  goto 49
-	factor  goto 50
+	comparador  goto 75
+	termino  goto 58
+	factor  goto 59
 
 
 state 36
+	print : PRINT CADENA .  (73)
+
+	.  reduce 73
+
+
+state 37
+	encabezadoFuncion : VOID ID . '(' parametro ')'  (81)
+	encabezadoFuncion : VOID ID . '(' ID ')'  (82)
+	encabezadoFuncion : VOID ID . '(' ')'  (83)
+
+	'('  shift 76
+	.  error
+
+
+state 38
+	sentenciaWhile : WHILE '(' . condicion ')' DO '{' bloque_ejecucion '}'  (71)
+	sentenciaWhile : WHILE '(' . condicion ')' DO sentenciaEjecutable  (72)
+
+	ID  shift 53
+	CTE  shift 54
+	MAYORIGUAL  shift 66
+	MENORIGUAL  shift 67
+	IGUAL  shift 68
+	DISTINTO  shift 69
+	'-'  shift 55
+	'='  shift 70
+	'('  shift 56
+	'<'  shift 71
+	'>'  shift 72
+	.  error
+
+	expresion  goto 73
+	condicion  goto 77
+	comparador  goto 75
+	termino  goto 58
+	factor  goto 59
+
+
+state 39
 	programa : '{' '}' .  (2)
 
 	.  reduce 2
 
 
-state 37
+state 40
 	programa : '{' cuerpoPrograma . '}'  (1)
 	programa : '{' cuerpoPrograma .  (4)
 	cuerpoPrograma : cuerpoPrograma . sentencia  (6)
@@ -596,1205 +642,1215 @@ state 37
 	ULONG  shift 8
 	FLOAT  shift 9
 	WHILE  shift 10
-	'}'  shift 75
+	'}'  shift 78
 	$end  reduce 4
 
-	sentencia  goto 39
+	sentencia  goto 42
 	sentenciaDeclarativa  goto 15
 	sentenciaEjecutable  goto 16
-	declaracionClase  goto 17
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
+	encabezadoClase  goto 17
+	declaracionClase  goto 18
+	referenciaClase  goto 19
+	listaReferencia  goto 20
 	tipo  goto 21
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	declaracionFuncion  goto 25
-	declaracion  goto 26
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	declaracionFuncion  goto 27
+	declaracion  goto 28
+	encabezadoFuncion  goto 29
 
 
-state 38
+state 41
 	programa : cuerpoPrograma '}' .  (3)
 
 	.  reduce 3
 
 
-state 39
+state 42
 	cuerpoPrograma : cuerpoPrograma sentencia .  (6)
 
 	.  reduce 6
 
 
-state 40
+state 43
 	sentencia : sentenciaEjecutable ',' .  (8)
 
 	.  reduce 8
 
 
-state 41
-	listaDeclaracion : ID . ';' listaDeclaracion  (88)
-	listaDeclaracion : ID .  (89)
-
-	';'  shift 76
-	','  reduce 89
-
-
-state 42
-	declaracion : tipo listaDeclaracion .  (87)
-
-	.  reduce 87
-
-
-state 43
-	sentenciaDeclarativa : declaracion ',' .  (34)
-
-	.  reduce 34
-
-
 state 44
-	factor : ID .  (100)
-	factor : ID . MENOSMENOS  (101)
+	declaracionClase : encabezadoClase '{' . cuerpoClase '}'  (10)
 
-	MENOSMENOS  shift 77
-	MAYORIGUAL  reduce 100
-	MENORIGUAL  reduce 100
-	IGUAL  reduce 100
-	DISTINTO  reduce 100
-	'+'  reduce 100
-	'-'  reduce 100
-	'*'  reduce 100
-	'/'  reduce 100
-	','  reduce 100
-	'='  reduce 100
-	')'  reduce 100
-	'<'  reduce 100
-	'>'  reduce 100
+	ID  shift 79
+	VOID  shift 80
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	.  error
+
+	cuerpoClase  goto 81
+	seccionAtributos  goto 82
+	declaracionMetodo  goto 83
+	tipo  goto 84
+	herenciaNombre  goto 85
+	encabezadoMetodo  goto 86
 
 
 state 45
-	factor : CTE .  (102)
+	declaracionClase : encabezadoClase ',' .  (11)
 
-	.  reduce 102
+	.  reduce 11
 
 
 state 46
-	factor : '-' . CTE  (103)
+	asignacionClase : ID . '=' expresion  (19)
+	referenciaMetodo : ID . '(' ')'  (20)
+	referenciaMetodo : ID . '(' expresion ')'  (21)
+	listaReferencia : listaReferencia ID . '.'  (22)
 
-	CTE  shift 78
+	'='  shift 87
+	'('  shift 88
+	'.'  shift 89
 	.  error
 
 
 state 47
-	factor : '(' . expresion ')'  (104)
-
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
-	.  error
-
-	expresion  goto 79
-	termino  goto 49
-	factor  goto 50
-
-
-state 48
-	asignacion : ID IGUAL expresion .  (39)
-	expresion : expresion . '+' termino  (95)
-	expresion : expresion . '-' termino  (96)
-
-	'+'  shift 80
-	'-'  shift 81
-	','  reduce 39
-	')'  reduce 39
-
-
-state 49
-	expresion : termino .  (94)
-	termino : termino . '*' factor  (98)
-	termino : termino . '/' factor  (99)
-
-	'*'  shift 82
-	'/'  shift 83
-	MAYORIGUAL  reduce 94
-	MENORIGUAL  reduce 94
-	IGUAL  reduce 94
-	DISTINTO  reduce 94
-	'+'  reduce 94
-	'-'  reduce 94
-	','  reduce 94
-	'='  reduce 94
-	')'  reduce 94
-	'<'  reduce 94
-	'>'  reduce 94
-
-
-state 50
-	termino : factor .  (97)
-
-	.  reduce 97
-
-
-state 51
-	referenciaClase : ID . '.' referenciaClase  (17)
-	referenciaClase : ID . '.' asignacion  (18)
-	referenciaClase : ID . '.' invocacionMetodo  (19)
-	asignacion : ID . '=' expresion  (38)
-	asignacion : ID . IGUAL expresion  (39)
-	invocacionMetodo : ID . '(' expresion ')'  (83)
-	invocacionMetodo : ID . '(' ')'  (84)
-	invocacionMetodo : ID . '(' asignacion ')'  (85)
-	invocacionMetodo : ID . '(' tipo asignacion ')'  (86)
-
-	IGUAL  shift 27
-	'.'  shift 28
-	'='  shift 29
-	'('  shift 30
-	.  error
-
-
-state 52
-	referenciaClase : ID '.' referenciaClase .  (17)
+	referenciaClase : listaReferencia asignacionClase .  (17)
 
 	.  reduce 17
 
 
-state 53
-	referenciaClase : ID '.' asignacion .  (18)
+state 48
+	referenciaClase : listaReferencia referenciaMetodo .  (18)
 
 	.  reduce 18
 
 
-state 54
-	referenciaClase : ID '.' invocacionMetodo .  (19)
+state 49
+	listaDeclaracion : ID . ';' listaDeclaracion  (101)
+	listaDeclaracion : ID .  (102)
 
-	.  reduce 19
-
-
-state 55
-	asignacion : ID '=' expresion .  (38)
-	expresion : expresion . '+' termino  (95)
-	expresion : expresion . '-' termino  (96)
-
-	'+'  shift 80
-	'-'  shift 81
-	','  reduce 38
-	')'  reduce 38
+	';'  shift 90
+	','  reduce 102
 
 
-state 56
-	asignacion : ID . '=' expresion  (38)
-	asignacion : ID . IGUAL expresion  (39)
-	tipo : ID .  (93)
-	factor : ID .  (100)
-	factor : ID . MENOSMENOS  (101)
+state 50
+	declaracion : tipo listaDeclaracion .  (100)
 
-	IGUAL  shift 27
-	MENOSMENOS  shift 77
-	'='  shift 29
-	ID  reduce 93
-	'+'  reduce 100
-	'-'  reduce 100
-	'*'  reduce 100
-	'/'  reduce 100
-	')'  reduce 100
+	.  reduce 100
 
 
-state 57
-	invocacionMetodo : ID '(' ')' .  (84)
+state 51
+	sentenciaDeclarativa : declaracion ',' .  (37)
 
-	.  reduce 84
-
-
-state 58
-	invocacionMetodo : ID '(' asignacion . ')'  (85)
-
-	')'  shift 84
-	.  error
+	.  reduce 37
 
 
-state 59
-	invocacionMetodo : ID '(' tipo . asignacion ')'  (86)
+state 52
+	declaracionFuncion : encabezadoFuncion '{' . cuerpoFuncion '}'  (84)
 
-	ID  shift 85
-	.  error
-
-	asignacion  goto 86
-
-
-state 60
-	invocacionMetodo : ID '(' expresion . ')'  (83)
-	expresion : expresion . '+' termino  (95)
-	expresion : expresion . '-' termino  (96)
-
-	'+'  shift 80
-	'-'  shift 81
-	')'  shift 87
-	.  error
-
-
-state 61
-	declaracionClase : CLASS ID '{' . cuerpoClase '}'  (9)
-
-	ID  shift 88
-	VOID  shift 89
+	ID  shift 1
+	CADENA  shift 2
+	IF  shift 91
+	PRINT  shift 5
+	VOID  shift 6
 	SHORT  shift 7
 	ULONG  shift 8
 	FLOAT  shift 9
+	WHILE  shift 10
+	RETURN  shift 92
 	.  error
 
-	cuerpoClase  goto 90
-	seccionClase  goto 91
-	seccionAtributos  goto 92
-	declaracionMetodo  goto 93
-	tipo  goto 94
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	tipo  goto 21
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	declaracion  goto 98
+	sentenciaDeclarativaMetodo  goto 99
+	declaracionFuncionLocal  goto 100
+	sentenciaIfRetorno  goto 101
+	sentencia_ejecutable_return  goto 102
+	return  goto 103
+	encabezadoFuncion  goto 104
+	cuerpoFuncion  goto 105
+	listaSentenciasFuncion  goto 106
 
 
-state 62
-	declaracionClase : CLASS ID ',' .  (10)
+state 53
+	factor : ID .  (113)
+	factor : ID . MENOSMENOS  (114)
 
-	.  reduce 10
-
-
-state 63
-	comparador : MAYORIGUAL .  (105)
-
-	.  reduce 105
-
-
-state 64
-	comparador : MENORIGUAL .  (106)
-
-	.  reduce 106
-
-
-state 65
-	comparador : IGUAL .  (107)
-
-	.  reduce 107
+	MENOSMENOS  shift 107
+	MAYORIGUAL  reduce 113
+	MENORIGUAL  reduce 113
+	IGUAL  reduce 113
+	DISTINTO  reduce 113
+	'+'  reduce 113
+	'-'  reduce 113
+	'*'  reduce 113
+	'/'  reduce 113
+	','  reduce 113
+	'='  reduce 113
+	')'  reduce 113
+	'<'  reduce 113
+	'>'  reduce 113
 
 
-state 66
-	comparador : DISTINTO .  (108)
+state 54
+	factor : CTE .  (115)
 
-	.  reduce 108
-
-
-state 67
-	comparador : '=' .  (111)
-
-	.  reduce 111
+	.  reduce 115
 
 
-state 68
-	comparador : '<' .  (109)
+state 55
+	factor : '-' . CTE  (116)
 
-	.  reduce 109
+	CTE  shift 108
+	.  error
 
 
-state 69
-	comparador : '>' .  (110)
+state 56
+	factor : '(' . expresion ')'  (117)
+
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	.  error
+
+	expresion  goto 109
+	termino  goto 58
+	factor  goto 59
+
+
+state 57
+	asignacion : ID IGUAL expresion .  (42)
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
+
+	'+'  shift 110
+	'-'  shift 111
+	','  reduce 42
+	')'  reduce 42
+
+
+state 58
+	expresion : termino .  (107)
+	termino : termino . '*' factor  (111)
+	termino : termino . '/' factor  (112)
+
+	'*'  shift 112
+	'/'  shift 113
+	MAYORIGUAL  reduce 107
+	MENORIGUAL  reduce 107
+	IGUAL  reduce 107
+	DISTINTO  reduce 107
+	'+'  reduce 107
+	'-'  reduce 107
+	','  reduce 107
+	'='  reduce 107
+	')'  reduce 107
+	'<'  reduce 107
+	'>'  reduce 107
+
+
+state 59
+	termino : factor .  (110)
 
 	.  reduce 110
 
 
-state 70
-	condicion : expresion . comparador expresion  (47)
-	condicion : expresion . comparador  (49)
-	expresion : expresion . '+' termino  (95)
-	expresion : expresion . '-' termino  (96)
+state 60
+	asignacion : ID '=' expresion .  (41)
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
 
-	MAYORIGUAL  shift 63
-	MENORIGUAL  shift 64
-	IGUAL  shift 65
-	DISTINTO  shift 66
-	'+'  shift 80
-	'-'  shift 81
-	'='  shift 67
-	'<'  shift 68
-	'>'  shift 69
+	'+'  shift 110
+	'-'  shift 111
+	','  reduce 41
+	')'  reduce 41
+
+
+state 61
+	asignacion : ID . '=' expresion  (41)
+	asignacion : ID . IGUAL expresion  (42)
+	tipo : ID .  (106)
+	factor : ID .  (113)
+	factor : ID . MENOSMENOS  (114)
+
+	IGUAL  shift 30
+	MENOSMENOS  shift 107
+	'='  shift 31
+	ID  reduce 106
+	'+'  reduce 113
+	'-'  reduce 113
+	'*'  reduce 113
+	'/'  reduce 113
+	')'  reduce 113
+
+
+state 62
+	invocacionMetodo : ID '(' ')' .  (97)
+
+	.  reduce 97
+
+
+state 63
+	invocacionMetodo : ID '(' expresion . ')'  (96)
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
+
+	'+'  shift 110
+	'-'  shift 111
+	')'  shift 114
 	.  error
 
-	comparador  goto 95
+
+state 64
+	invocacionMetodo : ID '(' tipo . asignacion ')'  (99)
+
+	ID  shift 115
+	.  error
+
+	asignacion  goto 116
+
+
+state 65
+	invocacionMetodo : ID '(' asignacion . ')'  (98)
+
+	')'  shift 117
+	.  error
+
+
+state 66
+	comparador : MAYORIGUAL .  (118)
+
+	.  reduce 118
+
+
+state 67
+	comparador : MENORIGUAL .  (119)
+
+	.  reduce 119
+
+
+state 68
+	comparador : IGUAL .  (120)
+
+	.  reduce 120
+
+
+state 69
+	comparador : DISTINTO .  (121)
+
+	.  reduce 121
+
+
+state 70
+	comparador : '=' .  (124)
+
+	.  reduce 124
 
 
 state 71
-	sentenciaIf : IF '(' condicion . ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF '(' condicion . ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (41)
-	sentenciaIf : IF '(' condicion . ')' '{' bloque_ejecucion '}' END_IF  (42)
-	sentenciaIf : IF '(' condicion . ')' '{' bloque_ejecucion '}'  (43)
-	sentenciaIf : IF '(' condicion . ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF  (44)
-	sentenciaIf : IF '(' condicion . ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF  (45)
-	sentenciaIf : IF '(' condicion . ')' sentenciaEjecutable ',' END_IF  (46)
+	comparador : '<' .  (122)
 
-	')'  shift 96
-	.  error
+	.  reduce 122
 
 
 state 72
-	condicion : comparador . expresion  (48)
+	comparador : '>' .  (123)
 
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
-	.  error
-
-	expresion  goto 97
-	termino  goto 49
-	factor  goto 50
+	.  reduce 123
 
 
 state 73
-	declaracionFuncion : VOID ID '(' . tipo ID ')' '{' cuerpoMetodo '}'  (75)
-	declaracionFuncion : VOID ID '(' . ID ')' '{' cuerpoMetodo '}'  (76)
-	declaracionFuncion : VOID ID '(' . ')' '{' cuerpoMetodo '}'  (77)
+	condicion : expresion . comparador expresion  (50)
+	condicion : expresion . comparador  (52)
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
 
-	ID  shift 98
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	')'  shift 99
+	MAYORIGUAL  shift 66
+	MENORIGUAL  shift 67
+	IGUAL  shift 68
+	DISTINTO  shift 69
+	'+'  shift 110
+	'-'  shift 111
+	'='  shift 70
+	'<'  shift 71
+	'>'  shift 72
 	.  error
 
-	tipo  goto 100
+	comparador  goto 118
 
 
 state 74
-	sentenciaWhile : WHILE '(' condicion . ')' DO '{' bloque_ejecucion '}'  (68)
-	sentenciaWhile : WHILE '(' condicion . ')' DO sentenciaEjecutable  (69)
+	sentenciaIf : IF '(' condicion . ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF '(' condicion . ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (44)
+	sentenciaIf : IF '(' condicion . ')' '{' bloque_ejecucion '}' END_IF  (45)
+	sentenciaIf : IF '(' condicion . ')' '{' bloque_ejecucion '}'  (46)
+	sentenciaIf : IF '(' condicion . ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF  (47)
+	sentenciaIf : IF '(' condicion . ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF  (48)
+	sentenciaIf : IF '(' condicion . ')' sentenciaEjecutable ',' END_IF  (49)
 
-	')'  shift 101
+	')'  shift 119
 	.  error
 
 
 state 75
+	condicion : comparador . expresion  (51)
+
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	.  error
+
+	expresion  goto 120
+	termino  goto 58
+	factor  goto 59
+
+
+state 76
+	encabezadoFuncion : VOID ID '(' . parametro ')'  (81)
+	encabezadoFuncion : VOID ID '(' . ID ')'  (82)
+	encabezadoFuncion : VOID ID '(' . ')'  (83)
+
+	ID  shift 121
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	')'  shift 122
+	.  error
+
+	tipo  goto 123
+	parametro  goto 124
+
+
+state 77
+	sentenciaWhile : WHILE '(' condicion . ')' DO '{' bloque_ejecucion '}'  (71)
+	sentenciaWhile : WHILE '(' condicion . ')' DO sentenciaEjecutable  (72)
+
+	')'  shift 125
+	.  error
+
+
+state 78
 	programa : '{' cuerpoPrograma '}' .  (1)
 
 	.  reduce 1
 
 
-state 76
-	listaDeclaracion : ID ';' . listaDeclaracion  (88)
-
-	ID  shift 41
-	.  error
-
-	listaDeclaracion  goto 102
-
-
-state 77
-	factor : ID MENOSMENOS .  (101)
-
-	.  reduce 101
-
-
-state 78
-	factor : '-' CTE .  (103)
-
-	.  reduce 103
-
-
 state 79
-	expresion : expresion . '+' termino  (95)
-	expresion : expresion . '-' termino  (96)
-	factor : '(' expresion . ')'  (104)
+	herenciaNombre : ID . ','  (29)
+	tipo : ID .  (106)
 
-	'+'  shift 80
-	'-'  shift 81
-	')'  shift 103
-	.  error
+	','  shift 126
+	ID  reduce 106
 
 
 state 80
-	expresion : expresion '+' . termino  (95)
+	encabezadoMetodo : VOID . ID '(' parametro ')'  (77)
+	encabezadoMetodo : VOID . ID '(' ID ')'  (78)
+	encabezadoMetodo : VOID . ID '(' ')'  (79)
 
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
+	ID  shift 127
 	.  error
-
-	termino  goto 104
-	factor  goto 50
 
 
 state 81
-	expresion : expresion '-' . termino  (96)
+	declaracionClase : encabezadoClase '{' cuerpoClase . '}'  (10)
+	cuerpoClase : cuerpoClase . seccionAtributos  (13)
+	cuerpoClase : cuerpoClase . declaracionMetodo ','  (14)
 
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
-	.  error
-
-	termino  goto 105
-	factor  goto 50
-
-
-state 82
-	termino : termino '*' . factor  (98)
-
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
-	.  error
-
-	factor  goto 106
-
-
-state 83
-	termino : termino '/' . factor  (99)
-
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
-	.  error
-
-	factor  goto 107
-
-
-state 84
-	invocacionMetodo : ID '(' asignacion ')' .  (85)
-
-	.  reduce 85
-
-
-state 85
-	asignacion : ID . '=' expresion  (38)
-	asignacion : ID . IGUAL expresion  (39)
-
-	IGUAL  shift 27
-	'='  shift 29
-	.  error
-
-
-state 86
-	invocacionMetodo : ID '(' tipo asignacion . ')'  (86)
-
-	')'  shift 108
-	.  error
-
-
-state 87
-	invocacionMetodo : ID '(' expresion ')' .  (83)
-
-	.  reduce 83
-
-
-state 88
-	seccionAtributos : ID . ','  (21)
-	tipo : ID .  (93)
-
-	','  shift 109
-	ID  reduce 93
-
-
-state 89
-	declaracionMetodo : VOID . ID '(' tipo ID ')' '{' cuerpoMetodo '}'  (73)
-	declaracionMetodo : VOID . ID '(' ')' '{' cuerpoMetodo '}'  (74)
-
-	ID  shift 110
-	.  error
-
-
-state 90
-	declaracionClase : CLASS ID '{' cuerpoClase . '}'  (9)
-
-	'}'  shift 111
-	.  error
-
-
-state 91
-	cuerpoClase : seccionClase .  (12)
-	seccionClase : seccionClase . seccionAtributos  (13)
-	seccionClase : seccionClase . declaracionMetodo ','  (14)
-
-	ID  shift 88
-	VOID  shift 89
+	ID  shift 79
+	VOID  shift 80
 	SHORT  shift 7
 	ULONG  shift 8
 	FLOAT  shift 9
-	'}'  reduce 12
+	'}'  shift 128
+	.  error
 
-	seccionAtributos  goto 112
-	declaracionMetodo  goto 113
-	tipo  goto 94
+	seccionAtributos  goto 129
+	declaracionMetodo  goto 130
+	tipo  goto 84
+	herenciaNombre  goto 85
+	encabezadoMetodo  goto 86
 
 
-state 92
-	seccionClase : seccionAtributos .  (16)
+state 82
+	cuerpoClase : seccionAtributos .  (16)
 
 	.  reduce 16
 
 
-state 93
-	seccionClase : declaracionMetodo . ','  (15)
+state 83
+	cuerpoClase : declaracionMetodo . ','  (15)
 
-	','  shift 114
+	','  shift 131
 	.  error
 
 
-state 94
-	seccionAtributos : tipo . ID ';' listaAtributos  (20)
-	seccionAtributos : tipo . ID ','  (22)
-	seccionAtributos : tipo . ID  (23)
+state 84
+	seccionAtributos : tipo . listaAtributos  (24)
 
-	ID  shift 115
+	ID  shift 132
+	.  error
+
+	listaAtributos  goto 133
+
+
+state 85
+	seccionAtributos : herenciaNombre .  (25)
+
+	.  reduce 25
+
+
+state 86
+	declaracionMetodo : encabezadoMetodo . '{' cuerpoMetodo '}'  (80)
+
+	'{'  shift 134
 	.  error
 
 
-state 95
-	condicion : expresion comparador . expresion  (47)
-	condicion : expresion comparador .  (49)
+state 87
+	asignacionClase : ID '=' . expresion  (19)
 
-	ID  shift 44
-	CTE  shift 45
-	'-'  shift 46
-	'('  shift 47
-	')'  reduce 49
-
-	expresion  goto 116
-	termino  goto 49
-	factor  goto 50
-
-
-state 96
-	sentenciaIf : IF '(' condicion ')' . '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF '(' condicion ')' . '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (41)
-	sentenciaIf : IF '(' condicion ')' . '{' bloque_ejecucion '}' END_IF  (42)
-	sentenciaIf : IF '(' condicion ')' . '{' bloque_ejecucion '}'  (43)
-	sentenciaIf : IF '(' condicion ')' . sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF  (44)
-	sentenciaIf : IF '(' condicion ')' . sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF  (45)
-	sentenciaIf : IF '(' condicion ')' . sentenciaEjecutable ',' END_IF  (46)
-
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 4
-	PRINT  shift 5
-	WHILE  shift 10
-	'{'  shift 117
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
 	.  error
 
-	sentenciaEjecutable  goto 118
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
+	expresion  goto 135
+	termino  goto 58
+	factor  goto 59
 
 
-state 97
-	condicion : comparador expresion .  (48)
-	expresion : expresion . '+' termino  (95)
-	expresion : expresion . '-' termino  (96)
+state 88
+	referenciaMetodo : ID '(' . ')'  (20)
+	referenciaMetodo : ID '(' . expresion ')'  (21)
 
-	'+'  shift 80
-	'-'  shift 81
-	')'  reduce 48
-
-
-state 98
-	declaracionFuncion : VOID ID '(' ID . ')' '{' cuerpoMetodo '}'  (76)
-	tipo : ID .  (93)
-
-	')'  shift 119
-	ID  reduce 93
-
-
-state 99
-	declaracionFuncion : VOID ID '(' ')' . '{' cuerpoMetodo '}'  (77)
-
-	'{'  shift 120
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	')'  shift 136
 	.  error
 
+	expresion  goto 137
+	termino  goto 58
+	factor  goto 59
 
-state 100
-	declaracionFuncion : VOID ID '(' tipo . ID ')' '{' cuerpoMetodo '}'  (75)
 
-	ID  shift 121
-	.  error
-
-
-state 101
-	sentenciaWhile : WHILE '(' condicion ')' . DO '{' bloque_ejecucion '}'  (68)
-	sentenciaWhile : WHILE '(' condicion ')' . DO sentenciaEjecutable  (69)
-
-	DO  shift 122
-	.  error
-
-
-state 102
-	listaDeclaracion : ID ';' listaDeclaracion .  (88)
-
-	.  reduce 88
-
-
-state 103
-	factor : '(' expresion ')' .  (104)
-
-	.  reduce 104
-
-
-state 104
-	expresion : expresion '+' termino .  (95)
-	termino : termino . '*' factor  (98)
-	termino : termino . '/' factor  (99)
-
-	'*'  shift 82
-	'/'  shift 83
-	MAYORIGUAL  reduce 95
-	MENORIGUAL  reduce 95
-	IGUAL  reduce 95
-	DISTINTO  reduce 95
-	'+'  reduce 95
-	'-'  reduce 95
-	','  reduce 95
-	'='  reduce 95
-	')'  reduce 95
-	'<'  reduce 95
-	'>'  reduce 95
-
-
-state 105
-	expresion : expresion '-' termino .  (96)
-	termino : termino . '*' factor  (98)
-	termino : termino . '/' factor  (99)
-
-	'*'  shift 82
-	'/'  shift 83
-	MAYORIGUAL  reduce 96
-	MENORIGUAL  reduce 96
-	IGUAL  reduce 96
-	DISTINTO  reduce 96
-	'+'  reduce 96
-	'-'  reduce 96
-	','  reduce 96
-	'='  reduce 96
-	')'  reduce 96
-	'<'  reduce 96
-	'>'  reduce 96
-
-
-state 106
-	termino : termino '*' factor .  (98)
-
-	.  reduce 98
-
-
-state 107
-	termino : termino '/' factor .  (99)
-
-	.  reduce 99
-
-
-state 108
-	invocacionMetodo : ID '(' tipo asignacion ')' .  (86)
-
-	.  reduce 86
-
-
-state 109
-	seccionAtributos : ID ',' .  (21)
-
-	.  reduce 21
-
-
-state 110
-	declaracionMetodo : VOID ID . '(' tipo ID ')' '{' cuerpoMetodo '}'  (73)
-	declaracionMetodo : VOID ID . '(' ')' '{' cuerpoMetodo '}'  (74)
-
-	'('  shift 123
-	.  error
-
-
-state 111
-	declaracionClase : CLASS ID '{' cuerpoClase '}' .  (9)
-
-	.  reduce 9
-
-
-state 112
-	seccionClase : seccionClase seccionAtributos .  (13)
-
-	.  reduce 13
-
-
-state 113
-	seccionClase : seccionClase declaracionMetodo . ','  (14)
-
-	','  shift 124
-	.  error
-
-
-state 114
-	seccionClase : declaracionMetodo ',' .  (15)
-
-	.  reduce 15
-
-
-state 115
-	seccionAtributos : tipo ID . ';' listaAtributos  (20)
-	seccionAtributos : tipo ID . ','  (22)
-	seccionAtributos : tipo ID .  (23)
-
-	','  shift 125
-	';'  shift 126
-	ID  reduce 23
-	VOID  reduce 23
-	SHORT  reduce 23
-	ULONG  reduce 23
-	FLOAT  reduce 23
-	'}'  reduce 23
-
-
-state 116
-	condicion : expresion comparador expresion .  (47)
-	expresion : expresion . '+' termino  (95)
-	expresion : expresion . '-' termino  (96)
-
-	'+'  shift 80
-	'-'  shift 81
-	')'  reduce 47
-
-
-state 117
-	sentenciaIf : IF '(' condicion ')' '{' . bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF '(' condicion ')' '{' . bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (41)
-	sentenciaIf : IF '(' condicion ')' '{' . bloque_ejecucion '}' END_IF  (42)
-	sentenciaIf : IF '(' condicion ')' '{' . bloque_ejecucion '}'  (43)
-
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 4
-	PRINT  shift 5
-	WHILE  shift 10
-	.  error
-
-	sentenciaEjecutable  goto 127
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	bloque_ejecucion  goto 128
-
-
-state 118
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable . ',' ELSE sentenciaEjecutable ',' END_IF  (44)
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable . ',' ELSE '{' bloque_ejecucion '}' END_IF  (45)
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable . ',' END_IF  (46)
-
-	','  shift 129
-	.  error
-
-
-state 119
-	declaracionFuncion : VOID ID '(' ID ')' . '{' cuerpoMetodo '}'  (76)
-
-	'{'  shift 130
-	.  error
-
-
-state 120
-	declaracionFuncion : VOID ID '(' ')' '{' . cuerpoMetodo '}'  (77)
-
-	ID  shift 1
-	CADENA  shift 2
-	IF  shift 131
-	PRINT  shift 5
-	VOID  shift 6
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	WHILE  shift 10
-	RETURN  shift 132
-	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	tipo  goto 21
-	sentenciaWhile  goto 136
-	print  goto 137
-	declaracionFuncion  goto 138
-	declaracion  goto 139
-	sentenciaDeclarativaMetodo  goto 140
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 142
-	return  goto 143
-	cuerpoMetodo  goto 144
-	listaSentenciasMetodo  goto 145
-
-
-state 121
-	declaracionFuncion : VOID ID '(' tipo ID . ')' '{' cuerpoMetodo '}'  (75)
-
-	')'  shift 146
-	.  error
-
-
-state 122
-	sentenciaWhile : WHILE '(' condicion ')' DO . '{' bloque_ejecucion '}'  (68)
-	sentenciaWhile : WHILE '(' condicion ')' DO . sentenciaEjecutable  (69)
-
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 4
-	PRINT  shift 5
-	WHILE  shift 10
-	'{'  shift 147
-	.  error
-
-	sentenciaEjecutable  goto 148
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-
-
-state 123
-	declaracionMetodo : VOID ID '(' . tipo ID ')' '{' cuerpoMetodo '}'  (73)
-	declaracionMetodo : VOID ID '(' . ')' '{' cuerpoMetodo '}'  (74)
-
-	ID  shift 149
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	')'  shift 150
-	.  error
-
-	tipo  goto 151
-
-
-state 124
-	seccionClase : seccionClase declaracionMetodo ',' .  (14)
-
-	.  reduce 14
-
-
-state 125
-	seccionAtributos : tipo ID ',' .  (22)
+state 89
+	listaReferencia : listaReferencia ID '.' .  (22)
 
 	.  reduce 22
 
 
-state 126
-	seccionAtributos : tipo ID ';' . listaAtributos  (20)
+state 90
+	listaDeclaracion : ID ';' . listaDeclaracion  (101)
 
-	ID  shift 152
+	ID  shift 49
 	.  error
 
-	listaAtributos  goto 153
+	listaDeclaracion  goto 138
 
 
-state 127
-	bloque_ejecucion : sentenciaEjecutable . ','  (65)
+state 91
+	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF  (55)
+	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}'  (56)
+	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
+	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' END_IF  (59)
 
-	','  shift 154
-	.  error
-
-
-state 128
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion . '}' ELSE '{' bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion . '}' ELSE '{' bloque_ejecucion '}'  (41)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion . '}' END_IF  (42)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion . '}'  (43)
-	bloque_ejecucion : bloque_ejecucion . sentenciaEjecutable ','  (64)
-
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 4
-	PRINT  shift 5
-	WHILE  shift 10
-	'}'  shift 155
-	.  error
-
-	sentenciaEjecutable  goto 156
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-
-
-state 129
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' . ELSE sentenciaEjecutable ',' END_IF  (44)
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' . ELSE '{' bloque_ejecucion '}' END_IF  (45)
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' . END_IF  (46)
-
-	ELSE  shift 157
-	END_IF  shift 158
+	'('  shift 139
 	.  error
 
 
-state 130
-	declaracionFuncion : VOID ID '(' ID ')' '{' . cuerpoMetodo '}'  (76)
+state 92
+	return : RETURN .  (75)
+
+	.  reduce 75
+
+
+state 93
+	sentencia_ejecutable_return : referenciaClase .  (65)
+
+	.  reduce 65
+
+
+state 94
+	sentencia_ejecutable_return : asignacion .  (61)
+
+	.  reduce 61
+
+
+state 95
+	sentencia_ejecutable_return : sentenciaWhile .  (63)
+
+	.  reduce 63
+
+
+state 96
+	sentencia_ejecutable_return : print .  (60)
+
+	.  reduce 60
+
+
+state 97
+	sentencia_ejecutable_return : invocacionMetodo .  (64)
+
+	.  reduce 64
+
+
+state 98
+	sentenciaDeclarativaMetodo : declaracion . ','  (40)
+
+	','  shift 140
+	.  error
+
+
+state 99
+	listaSentenciasFuncion : sentenciaDeclarativaMetodo .  (94)
+
+	.  reduce 94
+
+
+state 100
+	sentenciaDeclarativaMetodo : declaracionFuncionLocal .  (39)
+
+	.  reduce 39
+
+
+state 101
+	sentencia_ejecutable_return : sentenciaIfRetorno .  (62)
+
+	.  reduce 62
+
+
+state 102
+	listaSentenciasFuncion : sentencia_ejecutable_return . ','  (95)
+
+	','  shift 141
+	.  error
+
+
+state 103
+	sentencia_ejecutable_return : return .  (66)
+
+	.  reduce 66
+
+
+state 104
+	declaracionFuncionLocal : encabezadoFuncion . '{' cuerpoFuncion '}'  (85)
+
+	'{'  shift 142
+	.  error
+
+
+state 105
+	declaracionFuncion : encabezadoFuncion '{' cuerpoFuncion . '}'  (84)
+
+	'}'  shift 143
+	.  error
+
+
+state 106
+	cuerpoFuncion : listaSentenciasFuncion .  (87)
+	listaSentenciasFuncion : listaSentenciasFuncion . sentenciaDeclarativaMetodo  (92)
+	listaSentenciasFuncion : listaSentenciasFuncion . sentencia_ejecutable_return ','  (93)
 
 	ID  shift 1
 	CADENA  shift 2
-	IF  shift 131
+	IF  shift 91
 	PRINT  shift 5
 	VOID  shift 6
 	SHORT  shift 7
 	ULONG  shift 8
 	FLOAT  shift 9
 	WHILE  shift 10
-	RETURN  shift 132
+	RETURN  shift 92
+	'}'  reduce 87
+
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	tipo  goto 21
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	declaracion  goto 98
+	sentenciaDeclarativaMetodo  goto 144
+	declaracionFuncionLocal  goto 100
+	sentenciaIfRetorno  goto 101
+	sentencia_ejecutable_return  goto 145
+	return  goto 103
+	encabezadoFuncion  goto 104
+
+
+state 107
+	factor : ID MENOSMENOS .  (114)
+
+	.  reduce 114
+
+
+state 108
+	factor : '-' CTE .  (116)
+
+	.  reduce 116
+
+
+state 109
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
+	factor : '(' expresion . ')'  (117)
+
+	'+'  shift 110
+	'-'  shift 111
+	')'  shift 146
 	.  error
 
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	tipo  goto 21
-	sentenciaWhile  goto 136
-	print  goto 137
-	declaracionFuncion  goto 138
-	declaracion  goto 139
-	sentenciaDeclarativaMetodo  goto 140
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 142
-	return  goto 143
-	cuerpoMetodo  goto 159
-	listaSentenciasMetodo  goto 145
+
+state 110
+	expresion : expresion '+' . termino  (108)
+
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	.  error
+
+	termino  goto 147
+	factor  goto 59
 
 
-state 131
-	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (51)
-	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF  (52)
-	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}'  (53)
-	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (54)
-	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (55)
-	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' END_IF  (56)
+state 111
+	expresion : expresion '-' . termino  (109)
+
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	.  error
+
+	termino  goto 148
+	factor  goto 59
+
+
+state 112
+	termino : termino '*' . factor  (111)
+
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	.  error
+
+	factor  goto 149
+
+
+state 113
+	termino : termino '/' . factor  (112)
+
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	.  error
+
+	factor  goto 150
+
+
+state 114
+	invocacionMetodo : ID '(' expresion ')' .  (96)
+
+	.  reduce 96
+
+
+state 115
+	asignacion : ID . '=' expresion  (41)
+	asignacion : ID . IGUAL expresion  (42)
+
+	IGUAL  shift 30
+	'='  shift 31
+	.  error
+
+
+state 116
+	invocacionMetodo : ID '(' tipo asignacion . ')'  (99)
+
+	')'  shift 151
+	.  error
+
+
+state 117
+	invocacionMetodo : ID '(' asignacion ')' .  (98)
+
+	.  reduce 98
+
+
+state 118
+	condicion : expresion comparador . expresion  (50)
+	condicion : expresion comparador .  (52)
+
+	ID  shift 53
+	CTE  shift 54
+	'-'  shift 55
+	'('  shift 56
+	')'  reduce 52
+
+	expresion  goto 152
+	termino  goto 58
+	factor  goto 59
+
+
+state 119
+	sentenciaIf : IF '(' condicion ')' . '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF '(' condicion ')' . '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (44)
+	sentenciaIf : IF '(' condicion ')' . '{' bloque_ejecucion '}' END_IF  (45)
+	sentenciaIf : IF '(' condicion ')' . '{' bloque_ejecucion '}'  (46)
+	sentenciaIf : IF '(' condicion ')' . sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF  (47)
+	sentenciaIf : IF '(' condicion ')' . sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF  (48)
+	sentenciaIf : IF '(' condicion ')' . sentenciaEjecutable ',' END_IF  (49)
+
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 4
+	PRINT  shift 5
+	WHILE  shift 10
+	'{'  shift 154
+	.  error
+
+	sentenciaEjecutable  goto 155
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+
+
+state 120
+	condicion : comparador expresion .  (51)
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
+
+	'+'  shift 110
+	'-'  shift 111
+	')'  reduce 51
+
+
+state 121
+	encabezadoFuncion : VOID ID '(' ID . ')'  (82)
+	tipo : ID .  (106)
+
+	')'  shift 156
+	ID  reduce 106
+
+
+state 122
+	encabezadoFuncion : VOID ID '(' ')' .  (83)
+
+	.  reduce 83
+
+
+state 123
+	parametro : tipo . ID  (76)
+
+	ID  shift 157
+	.  error
+
+
+state 124
+	encabezadoFuncion : VOID ID '(' parametro . ')'  (81)
+
+	')'  shift 158
+	.  error
+
+
+state 125
+	sentenciaWhile : WHILE '(' condicion ')' . DO '{' bloque_ejecucion '}'  (71)
+	sentenciaWhile : WHILE '(' condicion ')' . DO sentenciaEjecutable  (72)
+
+	DO  shift 159
+	.  error
+
+
+state 126
+	herenciaNombre : ID ',' .  (29)
+
+	.  reduce 29
+
+
+state 127
+	encabezadoMetodo : VOID ID . '(' parametro ')'  (77)
+	encabezadoMetodo : VOID ID . '(' ID ')'  (78)
+	encabezadoMetodo : VOID ID . '(' ')'  (79)
 
 	'('  shift 160
 	.  error
 
 
-state 132
-	return : RETURN .  (72)
+state 128
+	declaracionClase : encabezadoClase '{' cuerpoClase '}' .  (10)
 
-	.  reduce 72
-
-
-state 133
-	sentencia_ejecutable_return : referenciaClase .  (62)
-
-	.  reduce 62
+	.  reduce 10
 
 
-state 134
-	sentencia_ejecutable_return : asignacion .  (58)
+state 129
+	cuerpoClase : cuerpoClase seccionAtributos .  (13)
 
-	.  reduce 58
-
-
-state 135
-	sentencia_ejecutable_return : invocacionMetodo .  (61)
-
-	.  reduce 61
+	.  reduce 13
 
 
-state 136
-	sentencia_ejecutable_return : sentenciaWhile .  (60)
-
-	.  reduce 60
-
-
-state 137
-	sentencia_ejecutable_return : print .  (57)
-
-	.  reduce 57
-
-
-state 138
-	sentenciaDeclarativaMetodo : declaracionFuncion .  (36)
-
-	.  reduce 36
-
-
-state 139
-	sentenciaDeclarativaMetodo : declaracion . ','  (37)
+state 130
+	cuerpoClase : cuerpoClase declaracionMetodo . ','  (14)
 
 	','  shift 161
 	.  error
 
 
-state 140
-	listaSentenciasMetodo : sentenciaDeclarativaMetodo .  (81)
+state 131
+	cuerpoClase : declaracionMetodo ',' .  (15)
 
-	.  reduce 81
-
-
-state 141
-	sentencia_ejecutable_return : sentenciaIfRetorno .  (59)
-
-	.  reduce 59
+	.  reduce 15
 
 
-state 142
-	listaSentenciasMetodo : sentencia_ejecutable_return . ','  (82)
+state 132
+	listaAtributos : ID . ';' listaAtributos  (26)
+	listaAtributos : ID . ','  (27)
+	listaAtributos : ID .  (28)
 
 	','  shift 162
-	.  error
+	';'  shift 163
+	ID  reduce 28
+	VOID  reduce 28
+	SHORT  reduce 28
+	ULONG  reduce 28
+	FLOAT  reduce 28
+	'}'  reduce 28
 
 
-state 143
-	sentencia_ejecutable_return : return .  (63)
+state 133
+	seccionAtributos : tipo listaAtributos .  (24)
 
-	.  reduce 63
-
-
-state 144
-	declaracionFuncion : VOID ID '(' ')' '{' cuerpoMetodo . '}'  (77)
-
-	'}'  shift 163
-	.  error
+	.  reduce 24
 
 
-state 145
-	cuerpoMetodo : listaSentenciasMetodo .  (78)
-	listaSentenciasMetodo : listaSentenciasMetodo . sentenciaDeclarativaMetodo  (79)
-	listaSentenciasMetodo : listaSentenciasMetodo . sentencia_ejecutable_return ','  (80)
+state 134
+	declaracionMetodo : encabezadoMetodo '{' . cuerpoMetodo '}'  (80)
 
 	ID  shift 1
 	CADENA  shift 2
-	IF  shift 131
+	IF  shift 4
 	PRINT  shift 5
 	VOID  shift 6
 	SHORT  shift 7
 	ULONG  shift 8
 	FLOAT  shift 9
 	WHILE  shift 10
-	RETURN  shift 132
-	'}'  reduce 78
+	.  error
 
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
+	sentenciaEjecutable  goto 164
+	referenciaClase  goto 19
+	listaReferencia  goto 20
 	tipo  goto 21
-	sentenciaWhile  goto 136
-	print  goto 137
-	declaracionFuncion  goto 138
-	declaracion  goto 139
-	sentenciaDeclarativaMetodo  goto 164
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 165
-	return  goto 143
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	declaracion  goto 98
+	sentenciaDeclarativaMetodo  goto 165
+	declaracionFuncionLocal  goto 100
+	cuerpoMetodo  goto 166
+	encabezadoFuncion  goto 104
+	listaSentenciasMetodo  goto 167
 
 
-state 146
-	declaracionFuncion : VOID ID '(' tipo ID ')' . '{' cuerpoMetodo '}'  (75)
+state 135
+	asignacionClase : ID '=' expresion .  (19)
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
 
-	'{'  shift 166
+	'+'  shift 110
+	'-'  shift 111
+	','  reduce 19
+
+
+state 136
+	referenciaMetodo : ID '(' ')' .  (20)
+
+	.  reduce 20
+
+
+state 137
+	referenciaMetodo : ID '(' expresion . ')'  (21)
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
+
+	'+'  shift 110
+	'-'  shift 111
+	')'  shift 168
 	.  error
 
 
-state 147
-	sentenciaWhile : WHILE '(' condicion ')' DO '{' . bloque_ejecucion '}'  (68)
+state 138
+	listaDeclaracion : ID ';' listaDeclaracion .  (101)
 
-	ID  shift 51
+	.  reduce 101
+
+
+state 139
+	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' END_IF  (55)
+	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}'  (56)
+	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
+	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' END_IF  (59)
+
+	ID  shift 53
+	CTE  shift 54
+	MAYORIGUAL  shift 66
+	MENORIGUAL  shift 67
+	IGUAL  shift 68
+	DISTINTO  shift 69
+	'-'  shift 55
+	'='  shift 70
+	'('  shift 56
+	'<'  shift 71
+	'>'  shift 72
+	.  error
+
+	expresion  goto 73
+	condicion  goto 169
+	comparador  goto 75
+	termino  goto 58
+	factor  goto 59
+
+
+state 140
+	sentenciaDeclarativaMetodo : declaracion ',' .  (40)
+
+	.  reduce 40
+
+
+state 141
+	listaSentenciasFuncion : sentencia_ejecutable_return ',' .  (95)
+
+	.  reduce 95
+
+
+state 142
+	declaracionFuncionLocal : encabezadoFuncion '{' . cuerpoFuncion '}'  (85)
+
+	ID  shift 1
+	CADENA  shift 2
+	IF  shift 91
+	PRINT  shift 5
+	VOID  shift 6
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	WHILE  shift 10
+	RETURN  shift 92
+	.  error
+
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	tipo  goto 21
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	declaracion  goto 98
+	sentenciaDeclarativaMetodo  goto 99
+	declaracionFuncionLocal  goto 100
+	sentenciaIfRetorno  goto 101
+	sentencia_ejecutable_return  goto 102
+	return  goto 103
+	encabezadoFuncion  goto 104
+	cuerpoFuncion  goto 170
+	listaSentenciasFuncion  goto 106
+
+
+state 143
+	declaracionFuncion : encabezadoFuncion '{' cuerpoFuncion '}' .  (84)
+
+	.  reduce 84
+
+
+state 144
+	listaSentenciasFuncion : listaSentenciasFuncion sentenciaDeclarativaMetodo .  (92)
+
+	.  reduce 92
+
+
+state 145
+	listaSentenciasFuncion : listaSentenciasFuncion sentencia_ejecutable_return . ','  (93)
+
+	','  shift 171
+	.  error
+
+
+state 146
+	factor : '(' expresion ')' .  (117)
+
+	.  reduce 117
+
+
+state 147
+	expresion : expresion '+' termino .  (108)
+	termino : termino . '*' factor  (111)
+	termino : termino . '/' factor  (112)
+
+	'*'  shift 112
+	'/'  shift 113
+	MAYORIGUAL  reduce 108
+	MENORIGUAL  reduce 108
+	IGUAL  reduce 108
+	DISTINTO  reduce 108
+	'+'  reduce 108
+	'-'  reduce 108
+	','  reduce 108
+	'='  reduce 108
+	')'  reduce 108
+	'<'  reduce 108
+	'>'  reduce 108
+
+
+state 148
+	expresion : expresion '-' termino .  (109)
+	termino : termino . '*' factor  (111)
+	termino : termino . '/' factor  (112)
+
+	'*'  shift 112
+	'/'  shift 113
+	MAYORIGUAL  reduce 109
+	MENORIGUAL  reduce 109
+	IGUAL  reduce 109
+	DISTINTO  reduce 109
+	'+'  reduce 109
+	'-'  reduce 109
+	','  reduce 109
+	'='  reduce 109
+	')'  reduce 109
+	'<'  reduce 109
+	'>'  reduce 109
+
+
+state 149
+	termino : termino '*' factor .  (111)
+
+	.  reduce 111
+
+
+state 150
+	termino : termino '/' factor .  (112)
+
+	.  reduce 112
+
+
+state 151
+	invocacionMetodo : ID '(' tipo asignacion ')' .  (99)
+
+	.  reduce 99
+
+
+state 152
+	condicion : expresion comparador expresion .  (50)
+	expresion : expresion . '+' termino  (108)
+	expresion : expresion . '-' termino  (109)
+
+	'+'  shift 110
+	'-'  shift 111
+	')'  reduce 50
+
+
+state 153
+	listaReferencia : ID . '.'  (23)
+	asignacion : ID . '=' expresion  (41)
+	asignacion : ID . IGUAL expresion  (42)
+	invocacionMetodo : ID . '(' expresion ')'  (96)
+	invocacionMetodo : ID . '(' ')'  (97)
+	invocacionMetodo : ID . '(' asignacion ')'  (98)
+	invocacionMetodo : ID . '(' tipo asignacion ')'  (99)
+
+	IGUAL  shift 30
+	'='  shift 31
+	'('  shift 32
+	'.'  shift 33
+	.  error
+
+
+state 154
+	sentenciaIf : IF '(' condicion ')' '{' . bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF '(' condicion ')' '{' . bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}'  (44)
+	sentenciaIf : IF '(' condicion ')' '{' . bloque_ejecucion '}' END_IF  (45)
+	sentenciaIf : IF '(' condicion ')' '{' . bloque_ejecucion '}'  (46)
+
+	ID  shift 153
 	CADENA  shift 2
 	IF  shift 4
 	PRINT  shift 5
 	WHILE  shift 10
 	.  error
 
-	sentenciaEjecutable  goto 127
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	bloque_ejecucion  goto 167
-
-
-state 148
-	sentenciaWhile : WHILE '(' condicion ')' DO sentenciaEjecutable .  (69)
-
-	.  reduce 69
-
-
-state 149
-	tipo : ID .  (93)
-
-	.  reduce 93
-
-
-state 150
-	declaracionMetodo : VOID ID '(' ')' . '{' cuerpoMetodo '}'  (74)
-
-	'{'  shift 168
-	.  error
-
-
-state 151
-	declaracionMetodo : VOID ID '(' tipo . ID ')' '{' cuerpoMetodo '}'  (73)
-
-	ID  shift 169
-	.  error
-
-
-state 152
-	listaAtributos : ID . ';' listaAtributos  (24)
-	listaAtributos : ID . ','  (25)
-	listaAtributos : ID .  (26)
-
-	','  shift 170
-	';'  shift 171
-	ID  reduce 26
-	VOID  reduce 26
-	SHORT  reduce 26
-	ULONG  reduce 26
-	FLOAT  reduce 26
-	'}'  reduce 26
-
-
-state 153
-	seccionAtributos : tipo ID ';' listaAtributos .  (20)
-
-	.  reduce 20
-
-
-state 154
-	bloque_ejecucion : sentenciaEjecutable ',' .  (65)
-
-	.  reduce 65
+	sentenciaEjecutable  goto 172
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	bloque_ejecucion  goto 173
 
 
 state 155
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' . ELSE '{' bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' . ELSE '{' bloque_ejecucion '}'  (41)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' . END_IF  (42)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' .  (43)
-
-	ELSE  shift 172
-	END_IF  shift 173
-	','  reduce 43
-
-
-state 156
-	bloque_ejecucion : bloque_ejecucion sentenciaEjecutable . ','  (64)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable . ',' ELSE sentenciaEjecutable ',' END_IF  (47)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable . ',' ELSE '{' bloque_ejecucion '}' END_IF  (48)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable . ',' END_IF  (49)
 
 	','  shift 174
 	.  error
 
 
-state 157
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE . sentenciaEjecutable ',' END_IF  (44)
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE . '{' bloque_ejecucion '}' END_IF  (45)
+state 156
+	encabezadoFuncion : VOID ID '(' ID ')' .  (82)
 
-	ID  shift 51
+	.  reduce 82
+
+
+state 157
+	parametro : tipo ID .  (76)
+
+	.  reduce 76
+
+
+state 158
+	encabezadoFuncion : VOID ID '(' parametro ')' .  (81)
+
+	.  reduce 81
+
+
+state 159
+	sentenciaWhile : WHILE '(' condicion ')' DO . '{' bloque_ejecucion '}'  (71)
+	sentenciaWhile : WHILE '(' condicion ')' DO . sentenciaEjecutable  (72)
+
+	ID  shift 153
 	CADENA  shift 2
 	IF  shift 4
 	PRINT  shift 5
@@ -1803,788 +1859,854 @@ state 157
 	.  error
 
 	sentenciaEjecutable  goto 176
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-
-
-state 158
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' END_IF .  (46)
-
-	.  reduce 46
-
-
-state 159
-	declaracionFuncion : VOID ID '(' ID ')' '{' cuerpoMetodo . '}'  (76)
-
-	'}'  shift 177
-	.  error
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
 
 
 state 160
-	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (51)
-	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' END_IF  (52)
-	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}'  (53)
-	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (54)
-	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (55)
-	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' END_IF  (56)
+	encabezadoMetodo : VOID ID '(' . parametro ')'  (77)
+	encabezadoMetodo : VOID ID '(' . ID ')'  (78)
+	encabezadoMetodo : VOID ID '(' . ')'  (79)
 
-	ID  shift 44
-	CTE  shift 45
-	MAYORIGUAL  shift 63
-	MENORIGUAL  shift 64
-	IGUAL  shift 65
-	DISTINTO  shift 66
-	'-'  shift 46
-	'='  shift 67
-	'('  shift 47
-	'<'  shift 68
-	'>'  shift 69
+	ID  shift 177
+	SHORT  shift 7
+	ULONG  shift 8
+	FLOAT  shift 9
+	')'  shift 178
 	.  error
 
-	expresion  goto 70
-	condicion  goto 178
-	comparador  goto 72
-	termino  goto 49
-	factor  goto 50
+	tipo  goto 123
+	parametro  goto 179
 
 
 state 161
-	sentenciaDeclarativaMetodo : declaracion ',' .  (37)
+	cuerpoClase : cuerpoClase declaracionMetodo ',' .  (14)
 
-	.  reduce 37
+	.  reduce 14
 
 
 state 162
-	listaSentenciasMetodo : sentencia_ejecutable_return ',' .  (82)
+	listaAtributos : ID ',' .  (27)
 
-	.  reduce 82
+	.  reduce 27
 
 
 state 163
-	declaracionFuncion : VOID ID '(' ')' '{' cuerpoMetodo '}' .  (77)
+	listaAtributos : ID ';' . listaAtributos  (26)
 
-	.  reduce 77
+	ID  shift 132
+	.  error
+
+	listaAtributos  goto 180
 
 
 state 164
-	listaSentenciasMetodo : listaSentenciasMetodo sentenciaDeclarativaMetodo .  (79)
+	listaSentenciasMetodo : sentenciaEjecutable . ','  (91)
 
-	.  reduce 79
+	','  shift 181
+	.  error
 
 
 state 165
-	listaSentenciasMetodo : listaSentenciasMetodo sentencia_ejecutable_return . ','  (80)
+	listaSentenciasMetodo : sentenciaDeclarativaMetodo .  (90)
 
-	','  shift 179
-	.  error
+	.  reduce 90
 
 
 state 166
-	declaracionFuncion : VOID ID '(' tipo ID ')' '{' . cuerpoMetodo '}'  (75)
+	declaracionMetodo : encabezadoMetodo '{' cuerpoMetodo . '}'  (80)
 
-	ID  shift 1
-	CADENA  shift 2
-	IF  shift 131
-	PRINT  shift 5
-	VOID  shift 6
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	WHILE  shift 10
-	RETURN  shift 132
+	'}'  shift 182
 	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	tipo  goto 21
-	sentenciaWhile  goto 136
-	print  goto 137
-	declaracionFuncion  goto 138
-	declaracion  goto 139
-	sentenciaDeclarativaMetodo  goto 140
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 142
-	return  goto 143
-	cuerpoMetodo  goto 180
-	listaSentenciasMetodo  goto 145
 
 
 state 167
-	bloque_ejecucion : bloque_ejecucion . sentenciaEjecutable ','  (64)
-	sentenciaWhile : WHILE '(' condicion ')' DO '{' bloque_ejecucion . '}'  (68)
-
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 4
-	PRINT  shift 5
-	WHILE  shift 10
-	'}'  shift 181
-	.  error
-
-	sentenciaEjecutable  goto 156
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-
-
-state 168
-	declaracionMetodo : VOID ID '(' ')' '{' . cuerpoMetodo '}'  (74)
+	cuerpoMetodo : listaSentenciasMetodo .  (86)
+	listaSentenciasMetodo : listaSentenciasMetodo . sentenciaDeclarativaMetodo  (88)
+	listaSentenciasMetodo : listaSentenciasMetodo . sentenciaEjecutable ','  (89)
 
 	ID  shift 1
 	CADENA  shift 2
-	IF  shift 131
+	IF  shift 4
 	PRINT  shift 5
 	VOID  shift 6
 	SHORT  shift 7
 	ULONG  shift 8
 	FLOAT  shift 9
 	WHILE  shift 10
-	RETURN  shift 132
-	.  error
+	'}'  reduce 86
 
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
+	sentenciaEjecutable  goto 183
+	referenciaClase  goto 19
+	listaReferencia  goto 20
 	tipo  goto 21
-	sentenciaWhile  goto 136
-	print  goto 137
-	declaracionFuncion  goto 138
-	declaracion  goto 139
-	sentenciaDeclarativaMetodo  goto 140
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 142
-	return  goto 143
-	cuerpoMetodo  goto 182
-	listaSentenciasMetodo  goto 145
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	declaracion  goto 98
+	sentenciaDeclarativaMetodo  goto 184
+	declaracionFuncionLocal  goto 100
+	encabezadoFuncion  goto 104
+
+
+state 168
+	referenciaMetodo : ID '(' expresion ')' .  (21)
+
+	.  reduce 21
 
 
 state 169
-	declaracionMetodo : VOID ID '(' tipo ID . ')' '{' cuerpoMetodo '}'  (73)
+	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' END_IF  (55)
+	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}'  (56)
+	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
+	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' END_IF  (59)
 
-	')'  shift 183
+	')'  shift 185
 	.  error
 
 
 state 170
-	listaAtributos : ID ',' .  (25)
+	declaracionFuncionLocal : encabezadoFuncion '{' cuerpoFuncion . '}'  (85)
 
-	.  reduce 25
+	'}'  shift 186
+	.  error
 
 
 state 171
-	listaAtributos : ID ';' . listaAtributos  (24)
+	listaSentenciasFuncion : listaSentenciasFuncion sentencia_ejecutable_return ',' .  (93)
 
-	ID  shift 152
-	.  error
-
-	listaAtributos  goto 184
+	.  reduce 93
 
 
 state 172
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE . '{' bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE . '{' bloque_ejecucion '}'  (41)
-
-	'{'  shift 185
-	.  error
-
-
-state 173
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' END_IF .  (42)
-
-	.  reduce 42
-
-
-state 174
-	bloque_ejecucion : bloque_ejecucion sentenciaEjecutable ',' .  (64)
-
-	.  reduce 64
-
-
-state 175
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' . bloque_ejecucion '}' END_IF  (45)
-
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 4
-	PRINT  shift 5
-	WHILE  shift 10
-	.  error
-
-	sentenciaEjecutable  goto 127
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	bloque_ejecucion  goto 186
-
-
-state 176
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable . ',' END_IF  (44)
+	bloque_ejecucion : sentenciaEjecutable . ','  (68)
 
 	','  shift 187
 	.  error
 
 
-state 177
-	declaracionFuncion : VOID ID '(' ID ')' '{' cuerpoMetodo '}' .  (76)
+state 173
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion . '}' ELSE '{' bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion . '}' ELSE '{' bloque_ejecucion '}'  (44)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion . '}' END_IF  (45)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion . '}'  (46)
+	bloque_ejecucion : bloque_ejecucion . sentenciaEjecutable ','  (67)
 
-	.  reduce 76
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 4
+	PRINT  shift 5
+	WHILE  shift 10
+	'}'  shift 188
+	.  error
+
+	sentenciaEjecutable  goto 189
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
 
 
-state 178
-	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (51)
-	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' END_IF  (52)
-	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}'  (53)
-	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (54)
-	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (55)
-	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' END_IF  (56)
+state 174
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' . ELSE sentenciaEjecutable ',' END_IF  (47)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' . ELSE '{' bloque_ejecucion '}' END_IF  (48)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' . END_IF  (49)
 
-	')'  shift 188
+	ELSE  shift 190
+	END_IF  shift 191
 	.  error
 
 
+state 175
+	sentenciaWhile : WHILE '(' condicion ')' DO '{' . bloque_ejecucion '}'  (71)
+
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 4
+	PRINT  shift 5
+	WHILE  shift 10
+	.  error
+
+	sentenciaEjecutable  goto 172
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	bloque_ejecucion  goto 192
+
+
+state 176
+	sentenciaWhile : WHILE '(' condicion ')' DO sentenciaEjecutable .  (72)
+
+	.  reduce 72
+
+
+state 177
+	encabezadoMetodo : VOID ID '(' ID . ')'  (78)
+	tipo : ID .  (106)
+
+	')'  shift 193
+	ID  reduce 106
+
+
+state 178
+	encabezadoMetodo : VOID ID '(' ')' .  (79)
+
+	.  reduce 79
+
+
 state 179
-	listaSentenciasMetodo : listaSentenciasMetodo sentencia_ejecutable_return ',' .  (80)
+	encabezadoMetodo : VOID ID '(' parametro . ')'  (77)
+
+	')'  shift 194
+	.  error
+
+
+state 180
+	listaAtributos : ID ';' listaAtributos .  (26)
+
+	.  reduce 26
+
+
+state 181
+	listaSentenciasMetodo : sentenciaEjecutable ',' .  (91)
+
+	.  reduce 91
+
+
+state 182
+	declaracionMetodo : encabezadoMetodo '{' cuerpoMetodo '}' .  (80)
 
 	.  reduce 80
 
 
-state 180
-	declaracionFuncion : VOID ID '(' tipo ID ')' '{' cuerpoMetodo . '}'  (75)
-
-	'}'  shift 189
-	.  error
-
-
-state 181
-	sentenciaWhile : WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' .  (68)
-
-	.  reduce 68
-
-
-state 182
-	declaracionMetodo : VOID ID '(' ')' '{' cuerpoMetodo . '}'  (74)
-
-	'}'  shift 190
-	.  error
-
-
 state 183
-	declaracionMetodo : VOID ID '(' tipo ID ')' . '{' cuerpoMetodo '}'  (73)
+	listaSentenciasMetodo : listaSentenciasMetodo sentenciaEjecutable . ','  (89)
 
-	'{'  shift 191
+	','  shift 195
 	.  error
 
 
 state 184
-	listaAtributos : ID ';' listaAtributos .  (24)
+	listaSentenciasMetodo : listaSentenciasMetodo sentenciaDeclarativaMetodo .  (88)
 
-	.  reduce 24
+	.  reduce 88
 
 
 state 185
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' . bloque_ejecucion '}' END_IF  (40)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' . bloque_ejecucion '}'  (41)
+	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' END_IF  (55)
+	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}'  (56)
+	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
+	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' END_IF  (59)
 
-	ID  shift 51
+	ID  shift 153
 	CADENA  shift 2
-	IF  shift 4
+	IF  shift 91
 	PRINT  shift 5
 	WHILE  shift 10
+	RETURN  shift 92
+	'{'  shift 196
 	.  error
 
-	sentenciaEjecutable  goto 127
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
-	bloque_ejecucion  goto 192
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	sentenciaIfRetorno  goto 101
+	sentencia_ejecutable_return  goto 197
+	return  goto 103
 
 
 state 186
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion . '}' END_IF  (45)
-	bloque_ejecucion : bloque_ejecucion . sentenciaEjecutable ','  (64)
+	declaracionFuncionLocal : encabezadoFuncion '{' cuerpoFuncion '}' .  (85)
 
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 4
-	PRINT  shift 5
-	WHILE  shift 10
-	'}'  shift 193
-	.  error
-
-	sentenciaEjecutable  goto 156
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
+	.  reduce 85
 
 
 state 187
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' . END_IF  (44)
+	bloque_ejecucion : sentenciaEjecutable ',' .  (68)
 
-	END_IF  shift 194
-	.  error
+	.  reduce 68
 
 
 state 188
-	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (51)
-	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' END_IF  (52)
-	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}'  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (54)
-	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (55)
-	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' END_IF  (56)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' . ELSE '{' bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' . ELSE '{' bloque_ejecucion '}'  (44)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' . END_IF  (45)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' .  (46)
 
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 131
-	PRINT  shift 5
-	WHILE  shift 10
-	RETURN  shift 132
-	'{'  shift 195
-	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	sentenciaWhile  goto 136
-	print  goto 137
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 196
-	return  goto 143
+	ELSE  shift 198
+	END_IF  shift 199
+	','  reduce 46
 
 
 state 189
-	declaracionFuncion : VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' .  (75)
+	bloque_ejecucion : bloque_ejecucion sentenciaEjecutable . ','  (67)
 
-	.  reduce 75
+	','  shift 200
+	.  error
 
 
 state 190
-	declaracionMetodo : VOID ID '(' ')' '{' cuerpoMetodo '}' .  (74)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE . sentenciaEjecutable ',' END_IF  (47)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE . '{' bloque_ejecucion '}' END_IF  (48)
 
-	.  reduce 74
-
-
-state 191
-	declaracionMetodo : VOID ID '(' tipo ID ')' '{' . cuerpoMetodo '}'  (73)
-
-	ID  shift 1
-	CADENA  shift 2
-	IF  shift 131
-	PRINT  shift 5
-	VOID  shift 6
-	SHORT  shift 7
-	ULONG  shift 8
-	FLOAT  shift 9
-	WHILE  shift 10
-	RETURN  shift 132
-	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	tipo  goto 21
-	sentenciaWhile  goto 136
-	print  goto 137
-	declaracionFuncion  goto 138
-	declaracion  goto 139
-	sentenciaDeclarativaMetodo  goto 140
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 142
-	return  goto 143
-	cuerpoMetodo  goto 197
-	listaSentenciasMetodo  goto 145
-
-
-state 192
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion . '}' END_IF  (40)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion . '}'  (41)
-	bloque_ejecucion : bloque_ejecucion . sentenciaEjecutable ','  (64)
-
-	ID  shift 51
+	ID  shift 153
 	CADENA  shift 2
 	IF  shift 4
 	PRINT  shift 5
 	WHILE  shift 10
-	'}'  shift 198
+	'{'  shift 201
 	.  error
 
-	sentenciaEjecutable  goto 156
-	referenciaClase  goto 18
-	asignacion  goto 19
-	invocacionMetodo  goto 20
-	sentenciaIf  goto 22
-	sentenciaWhile  goto 23
-	print  goto 24
+	sentenciaEjecutable  goto 202
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+
+
+state 191
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' END_IF .  (49)
+
+	.  reduce 49
+
+
+state 192
+	bloque_ejecucion : bloque_ejecucion . sentenciaEjecutable ','  (67)
+	sentenciaWhile : WHILE '(' condicion ')' DO '{' bloque_ejecucion . '}'  (71)
+
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 4
+	PRINT  shift 5
+	WHILE  shift 10
+	'}'  shift 203
+	.  error
+
+	sentenciaEjecutable  goto 189
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
 
 
 state 193
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' . END_IF  (45)
+	encabezadoMetodo : VOID ID '(' ID ')' .  (78)
 
-	END_IF  shift 199
-	.  error
+	.  reduce 78
 
 
 state 194
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF .  (44)
+	encabezadoMetodo : VOID ID '(' parametro ')' .  (77)
 
-	.  reduce 44
+	.  reduce 77
 
 
 state 195
-	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (51)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' END_IF  (52)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}'  (53)
+	listaSentenciasMetodo : listaSentenciasMetodo sentenciaEjecutable ',' .  (89)
 
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 131
-	PRINT  shift 5
-	WHILE  shift 10
-	RETURN  shift 132
-	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	sentenciaWhile  goto 136
-	print  goto 137
-	sentenciaIfRetorno  goto 141
-	bloque_ejecucion_return  goto 200
-	sentencia_ejecutable_return  goto 201
-	return  goto 143
+	.  reduce 89
 
 
 state 196
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' ELSE sentencia_ejecutable_return ',' END_IF  (54)
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (55)
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' END_IF  (56)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' END_IF  (55)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}'  (56)
 
-	','  shift 202
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 91
+	PRINT  shift 5
+	WHILE  shift 10
+	RETURN  shift 92
 	.  error
+
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	sentenciaIfRetorno  goto 101
+	bloque_ejecucion_return  goto 204
+	sentencia_ejecutable_return  goto 205
+	return  goto 103
 
 
 state 197
-	declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo . '}'  (73)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' END_IF  (59)
 
-	'}'  shift 203
+	','  shift 206
 	.  error
 
 
 state 198
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' . END_IF  (40)
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' .  (41)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE . '{' bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE . '{' bloque_ejecucion '}'  (44)
 
-	END_IF  shift 204
-	','  reduce 41
+	'{'  shift 207
+	.  error
 
 
 state 199
-	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF .  (45)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' END_IF .  (45)
 
 	.  reduce 45
 
 
 state 200
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' ELSE '{' bloque_ejecucion_return ',' '}'  (51)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' END_IF  (52)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}'  (53)
-	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (66)
+	bloque_ejecucion : bloque_ejecucion sentenciaEjecutable ',' .  (67)
 
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 131
-	PRINT  shift 5
-	WHILE  shift 10
-	RETURN  shift 132
-	'}'  shift 205
-	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	sentenciaWhile  goto 136
-	print  goto 137
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 206
-	return  goto 143
+	.  reduce 67
 
 
 state 201
-	bloque_ejecucion_return : sentencia_ejecutable_return . ','  (67)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' . bloque_ejecucion '}' END_IF  (48)
 
-	','  shift 207
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 4
+	PRINT  shift 5
+	WHILE  shift 10
 	.  error
+
+	sentenciaEjecutable  goto 172
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	bloque_ejecucion  goto 208
 
 
 state 202
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . ELSE sentencia_ejecutable_return ',' END_IF  (54)
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (55)
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . END_IF  (56)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable . ',' END_IF  (47)
 
-	ELSE  shift 208
-	END_IF  shift 209
+	','  shift 209
 	.  error
 
 
 state 203
-	declaracionMetodo : VOID ID '(' tipo ID ')' '{' cuerpoMetodo '}' .  (73)
+	sentenciaWhile : WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' .  (71)
 
-	.  reduce 73
+	.  reduce 71
 
 
 state 204
-	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF .  (40)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' END_IF  (55)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}'  (56)
+	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (69)
 
-	.  reduce 40
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 91
+	PRINT  shift 5
+	WHILE  shift 10
+	RETURN  shift 92
+	'}'  shift 210
+	.  error
+
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	sentenciaIfRetorno  goto 101
+	sentencia_ejecutable_return  goto 211
+	return  goto 103
 
 
 state 205
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . ELSE '{' bloque_ejecucion_return ',' '}'  (51)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . END_IF  (52)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' .  (53)
-
-	ELSE  shift 210
-	END_IF  shift 211
-	','  reduce 53
-
-
-state 206
-	bloque_ejecucion_return : bloque_ejecucion_return sentencia_ejecutable_return . ','  (66)
+	bloque_ejecucion_return : sentencia_ejecutable_return . ','  (70)
 
 	','  shift 212
 	.  error
 
 
-state 207
-	bloque_ejecucion_return : sentencia_ejecutable_return ',' .  (67)
+state 206
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . ELSE sentencia_ejecutable_return ',' END_IF  (57)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . END_IF  (59)
 
-	.  reduce 67
+	ELSE  shift 213
+	END_IF  shift 214
+	.  error
+
+
+state 207
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' . bloque_ejecucion '}' END_IF  (43)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' . bloque_ejecucion '}'  (44)
+
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 4
+	PRINT  shift 5
+	WHILE  shift 10
+	.  error
+
+	sentenciaEjecutable  goto 172
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
+	bloque_ejecucion  goto 215
 
 
 state 208
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE . sentencia_ejecutable_return ',' END_IF  (54)
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE . '{' bloque_ejecucion_return ',' '}' END_IF  (55)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion . '}' END_IF  (48)
+	bloque_ejecucion : bloque_ejecucion . sentenciaEjecutable ','  (67)
 
-	ID  shift 51
+	ID  shift 153
 	CADENA  shift 2
-	IF  shift 131
+	IF  shift 4
 	PRINT  shift 5
 	WHILE  shift 10
-	RETURN  shift 132
-	'{'  shift 213
+	'}'  shift 216
 	.  error
 
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	sentenciaWhile  goto 136
-	print  goto 137
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 214
-	return  goto 143
+	sentenciaEjecutable  goto 189
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
 
 
 state 209
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' END_IF .  (56)
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' . END_IF  (47)
 
-	.  reduce 56
+	END_IF  shift 217
+	.  error
 
 
 state 210
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE . '{' bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE . '{' bloque_ejecucion_return ',' '}'  (51)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . END_IF  (55)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' .  (56)
 
-	'{'  shift 215
-	.  error
+	ELSE  shift 218
+	END_IF  shift 219
+	','  reduce 56
 
 
 state 211
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF .  (52)
+	bloque_ejecucion_return : bloque_ejecucion_return sentencia_ejecutable_return . ','  (69)
 
-	.  reduce 52
+	','  shift 220
+	.  error
 
 
 state 212
-	bloque_ejecucion_return : bloque_ejecucion_return sentencia_ejecutable_return ',' .  (66)
+	bloque_ejecucion_return : sentencia_ejecutable_return ',' .  (70)
 
-	.  reduce 66
+	.  reduce 70
 
 
 state 213
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' . bloque_ejecucion_return ',' '}' END_IF  (55)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE . sentencia_ejecutable_return ',' END_IF  (57)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE . '{' bloque_ejecucion_return ',' '}' END_IF  (58)
 
-	ID  shift 51
+	ID  shift 153
 	CADENA  shift 2
-	IF  shift 131
+	IF  shift 91
 	PRINT  shift 5
 	WHILE  shift 10
-	RETURN  shift 132
+	RETURN  shift 92
+	'{'  shift 221
 	.  error
 
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	sentenciaWhile  goto 136
-	print  goto 137
-	sentenciaIfRetorno  goto 141
-	bloque_ejecucion_return  goto 216
-	sentencia_ejecutable_return  goto 201
-	return  goto 143
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	sentenciaIfRetorno  goto 101
+	sentencia_ejecutable_return  goto 222
+	return  goto 103
 
 
 state 214
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return . ',' END_IF  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' END_IF .  (59)
 
-	','  shift 217
-	.  error
+	.  reduce 59
 
 
 state 215
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' . bloque_ejecucion_return ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' . bloque_ejecucion_return ',' '}'  (51)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion . '}' END_IF  (43)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion . '}'  (44)
+	bloque_ejecucion : bloque_ejecucion . sentenciaEjecutable ','  (67)
 
-	ID  shift 51
+	ID  shift 153
 	CADENA  shift 2
-	IF  shift 131
+	IF  shift 4
 	PRINT  shift 5
 	WHILE  shift 10
-	RETURN  shift 132
-	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	sentenciaWhile  goto 136
-	print  goto 137
-	sentenciaIfRetorno  goto 141
-	bloque_ejecucion_return  goto 218
-	sentencia_ejecutable_return  goto 201
-	return  goto 143
-
-
-state 216
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return . ',' '}' END_IF  (55)
-	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (66)
-
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 131
-	PRINT  shift 5
-	WHILE  shift 10
-	RETURN  shift 132
-	','  shift 219
-	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	sentenciaWhile  goto 136
-	print  goto 137
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 206
-	return  goto 143
-
-
-state 217
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' . END_IF  (54)
-
-	END_IF  shift 220
-	.  error
-
-
-state 218
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return . ',' '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return . ',' '}'  (51)
-	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (66)
-
-	ID  shift 51
-	CADENA  shift 2
-	IF  shift 131
-	PRINT  shift 5
-	WHILE  shift 10
-	RETURN  shift 132
-	','  shift 221
-	.  error
-
-	referenciaClase  goto 133
-	asignacion  goto 134
-	invocacionMetodo  goto 135
-	sentenciaWhile  goto 136
-	print  goto 137
-	sentenciaIfRetorno  goto 141
-	sentencia_ejecutable_return  goto 206
-	return  goto 143
-
-
-state 219
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' . '}' END_IF  (55)
-
-	'}'  shift 222
-	.  error
-
-
-state 220
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF .  (54)
-
-	.  reduce 54
-
-
-state 221
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' . '}' END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' . '}'  (51)
-
 	'}'  shift 223
 	.  error
 
+	sentenciaEjecutable  goto 189
+	referenciaClase  goto 19
+	listaReferencia  goto 20
+	asignacion  goto 22
+	sentenciaIf  goto 23
+	sentenciaWhile  goto 24
+	print  goto 25
+	invocacionMetodo  goto 26
 
-state 222
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' . END_IF  (55)
+
+state 216
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' . END_IF  (48)
 
 	END_IF  shift 224
 	.  error
 
 
-state 223
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' . END_IF  (50)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' .  (51)
+state 217
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF .  (47)
 
-	END_IF  shift 225
-	','  reduce 51
+	.  reduce 47
 
 
-state 224
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF .  (55)
+state 218
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE . '{' bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE . '{' bloque_ejecucion_return ',' '}'  (54)
+
+	'{'  shift 225
+	.  error
+
+
+state 219
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF .  (55)
 
 	.  reduce 55
 
 
+state 220
+	bloque_ejecucion_return : bloque_ejecucion_return sentencia_ejecutable_return ',' .  (69)
+
+	.  reduce 69
+
+
+state 221
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' . bloque_ejecucion_return ',' '}' END_IF  (58)
+
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 91
+	PRINT  shift 5
+	WHILE  shift 10
+	RETURN  shift 92
+	.  error
+
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	sentenciaIfRetorno  goto 101
+	bloque_ejecucion_return  goto 226
+	sentencia_ejecutable_return  goto 205
+	return  goto 103
+
+
+state 222
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return . ',' END_IF  (57)
+
+	','  shift 227
+	.  error
+
+
+state 223
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' . END_IF  (43)
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' .  (44)
+
+	END_IF  shift 228
+	','  reduce 44
+
+
+state 224
+	sentenciaIf : IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF .  (48)
+
+	.  reduce 48
+
+
 state 225
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF .  (50)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' . bloque_ejecucion_return ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' . bloque_ejecucion_return ',' '}'  (54)
 
-	.  reduce 50
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 91
+	PRINT  shift 5
+	WHILE  shift 10
+	RETURN  shift 92
+	.  error
+
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	sentenciaIfRetorno  goto 101
+	bloque_ejecucion_return  goto 229
+	sentencia_ejecutable_return  goto 205
+	return  goto 103
 
 
-36 terminals, 35 nonterminals
-112 grammar rules, 226 states
+state 226
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return . ',' '}' END_IF  (58)
+	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (69)
+
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 91
+	PRINT  shift 5
+	WHILE  shift 10
+	RETURN  shift 92
+	','  shift 230
+	.  error
+
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	sentenciaIfRetorno  goto 101
+	sentencia_ejecutable_return  goto 211
+	return  goto 103
+
+
+state 227
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' . END_IF  (57)
+
+	END_IF  shift 231
+	.  error
+
+
+state 228
+	sentenciaIf : IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF .  (43)
+
+	.  reduce 43
+
+
+state 229
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return . ',' '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return . ',' '}'  (54)
+	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (69)
+
+	ID  shift 153
+	CADENA  shift 2
+	IF  shift 91
+	PRINT  shift 5
+	WHILE  shift 10
+	RETURN  shift 92
+	','  shift 232
+	.  error
+
+	referenciaClase  goto 93
+	listaReferencia  goto 20
+	asignacion  goto 94
+	sentenciaWhile  goto 95
+	print  goto 96
+	invocacionMetodo  goto 97
+	sentenciaIfRetorno  goto 101
+	sentencia_ejecutable_return  goto 211
+	return  goto 103
+
+
+state 230
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' . '}' END_IF  (58)
+
+	'}'  shift 233
+	.  error
+
+
+state 231
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF .  (57)
+
+	.  reduce 57
+
+
+state 232
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' . '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' . '}'  (54)
+
+	'}'  shift 234
+	.  error
+
+
+state 233
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' . END_IF  (58)
+
+	END_IF  shift 235
+	.  error
+
+
+state 234
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' . END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' .  (54)
+
+	END_IF  shift 236
+	','  reduce 54
+
+
+state 235
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF .  (58)
+
+	.  reduce 58
+
+
+state 236
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF .  (53)
+
+	.  reduce 53
+
+
+36 terminals, 45 nonterminals
+125 grammar rules, 237 states

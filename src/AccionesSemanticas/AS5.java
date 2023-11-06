@@ -31,7 +31,7 @@ public class AS5 implements AccionSemantica{
             int id = TablaSimbolos.obtenerSimbolo(AnalizadorLexico.lexema);
             if (agregado)
             {
-                TablaSimbolos.agregarAtributo(id, "tipo", "long");
+                TablaSimbolos.agregarAtributo(id, "tipo", "LONG");
                 TablaSimbolos.agregarAtributo(id, "referencias", "1");
             }
             else {
