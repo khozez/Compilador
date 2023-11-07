@@ -595,7 +595,7 @@ final static String yyrule[] = {
 "comparador : '='",
 };
 
-//#line 510 "gramatica.y"
+//#line 497 "gramatica.y"
 
 public static Nodo raiz = null;
 public static String ambito = ":main";
@@ -663,30 +663,30 @@ private String validarTipos(Nodo x, Nodo obj, Nodo obj1) {
     		{
     			if (obj.getTipo().equals("FLOAT"))
     			{
-    				if (obj.getTipo().equals("SHORT"))
+    				if (obj1.getTipo().equals("SHORT"))
     				{
-    					var conv = new Nodo("STOF", obj, null);
-    					x.setIzq(conv);
+    					var conv = new Nodo("STOF", obj1, null);
+    					x.setDer(conv);
     				}else
     				{
-    					if (obj.getTipo().equals("LONG"))
+    					if (obj1.getTipo().equals("LONG"))
     					{
-    						var conv = new Nodo("LTOF", obj, null);
-    						x.setIzq(conv);
+    						var conv = new Nodo("LTOF", obj1, null);
+    						x.setDer(conv);
     					}
     				}
     			}
     			else{
-    				if (obj1.getTipo().equals("SHORT"))
+    				if (obj.getTipo().equals("SHORT"))
                             	{
-                            		var conv = new Nodo("STOF", obj1, null);
-                            		x.setDer(conv);
+                            		var conv = new Nodo("STOF", obj, null);
+                            		x.setIzq(conv);
                             	}else
                             	{
-                            		if (obj1.getTipo().equals("LONG"))
+                            		if (obj.getTipo().equals("LONG"))
                             		{
-                            			var conv = new Nodo("LTOF", obj1, null);
-                            			x.setDer(conv);
+                            			var conv = new Nodo("LTOF", obj, null);
+                            			x.setIzq(conv);
                             		}
                             	}
     			}
@@ -1203,7 +1203,7 @@ case 6:
 break;
 case 7:
 //#line 34 "gramatica.y"
-{yyval = new ParserVal(null);}
+{yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 8:
 //#line 35 "gramatica.y"
@@ -1223,8 +1223,6 @@ case 9:
                                 t.agregarSimbolo(val_peek(0).sval + Parser.ambito);
                                 t.agregarAtributo(t.obtenerID(), "uso", "nombre_clase");
                            }
-                           if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                           	yyerror("No se puede declarar una clase con el mismo nombre que el de su ambito");
                            yyval = new ParserVal(new Nodo("EncabezadoClase", new Nodo(val_peek(0).sval + Parser.ambito), null));
                            lista_clases.add(val_peek(0).sval + Parser.ambito.replace(':','_'));
                            claseActual = val_peek(0).sval;
@@ -1233,15 +1231,16 @@ case 9:
                           }
 break;
 case 10:
-//#line 60 "gramatica.y"
+//#line 58 "gramatica.y"
 {lista_clases_fd.remove(Parser.ambito.substring(1));
 							chequeoAsignacionVariables();
                                                         salirAmbito();
                                                         claseActual = "";
-							System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
+							System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");
+							yyval = new ParserVal( new Nodo("Clase", (Nodo) val_peek(3).obj, (Nodo) val_peek(1).obj) );}
 break;
 case 11:
-//#line 65 "gramatica.y"
+//#line 64 "gramatica.y"
 {lista_clases_fd.add(Parser.ambito.substring(1));
 		 			chequeoAsignacionVariables();
                                         salirAmbito();
@@ -1250,27 +1249,27 @@ case 11:
 		 			System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
 break;
 case 12:
-//#line 71 "gramatica.y"
+//#line 70 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 break;
 case 14:
-//#line 75 "gramatica.y"
+//#line 74 "gramatica.y"
 { yyval = new ParserVal( new Nodo("cuerpoClase", (Nodo) val_peek(2).obj, (Nodo) val_peek(1).obj));}
 break;
 case 15:
-//#line 76 "gramatica.y"
+//#line 75 "gramatica.y"
 { yyval = val_peek(1); }
 break;
 case 17:
-//#line 81 "gramatica.y"
+//#line 80 "gramatica.y"
 {yyval = val_peek(0);}
 break;
 case 18:
-//#line 82 "gramatica.y"
+//#line 81 "gramatica.y"
 {yyval = val_peek(0);}
 break;
 case 19:
-//#line 85 "gramatica.y"
+//#line 84 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación a atributo de clase");
 				   var t = AnalizadorLexico.TS;
                                    variableAmbitoClase = ":" + val_peek(2).sval + ambitoClase;
@@ -1281,7 +1280,7 @@ case 19:
 				  }
 break;
 case 20:
-//#line 95 "gramatica.y"
+//#line 94 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                               var t = AnalizadorLexico.TS;
                               variableAmbitoClase = ":" + val_peek(2).sval + ambitoClase;
@@ -1292,15 +1291,15 @@ case 20:
                               }
 break;
 case 22:
-//#line 106 "gramatica.y"
+//#line 105 "gramatica.y"
 {variableAmbitoClase = ":" + val_peek(1).sval + variableAmbitoClase;}
 break;
 case 23:
-//#line 107 "gramatica.y"
+//#line 106 "gramatica.y"
 {variableAmbitoClase = ":"+ val_peek(1).sval + variableAmbitoClase;}
 break;
 case 24:
-//#line 111 "gramatica.y"
+//#line 110 "gramatica.y"
 {
                                              var t = AnalizadorLexico.TS;
                                              lista_variables
@@ -1324,19 +1323,19 @@ case 24:
                           		}
 break;
 case 26:
-//#line 135 "gramatica.y"
+//#line 134 "gramatica.y"
 { lista_variables.add(val_peek(2).sval + Parser.ambito); }
 break;
 case 27:
-//#line 136 "gramatica.y"
+//#line 135 "gramatica.y"
 { lista_variables.add(val_peek(1).sval + Parser.ambito); }
 break;
 case 28:
-//#line 137 "gramatica.y"
+//#line 136 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la lista de variables.");}
 break;
 case 29:
-//#line 140 "gramatica.y"
+//#line 139 "gramatica.y"
 { var t = AnalizadorLexico.TS;
 			 int clave = t.obtenerSimbolo(val_peek(1).sval+Parser.ambito);
  		       	 if (clave != t.NO_ENCONTRADO){
@@ -1350,35 +1349,47 @@ case 29:
                                  t.agregarAtributo(t.obtenerID(), "uso", "herencia");
                          }
                          t.aplicarHerencia(val_peek(1).sval, claseActual, Parser.ambito);
-			 chequearNivelesHerencia(claseActual+Parser.ambito);
+			 chequearNivelesHerencia(Parser.ambito.substring(1));
  		       }
 break;
 case 30:
-//#line 157 "gramatica.y"
+//#line 156 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 31:
-//#line 158 "gramatica.y"
+//#line 157 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 32:
-//#line 159 "gramatica.y"
+//#line 158 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 33:
-//#line 160 "gramatica.y"
+//#line 159 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 34:
-//#line 161 "gramatica.y"
+//#line 160 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 35:
-//#line 162 "gramatica.y"
+//#line 161 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
+case 36:
+//#line 164 "gramatica.y"
+{yyval = new ParserVal(null);}
+break;
+case 37:
+//#line 165 "gramatica.y"
+{yyval = new ParserVal(null);}
+break;
+case 38:
+//#line 166 "gramatica.y"
+{yyval = val_peek(0);}
+break;
 case 41:
-//#line 175 "gramatica.y"
+//#line 174 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");
 			      var x = new Nodo("Asignacion", new Nodo(getVariableConAmbitoTS(val_peek(2).sval), getTipoVariableConAmbitoTS(val_peek(2).sval)), (Nodo) val_peek(0).obj);
 			      x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
@@ -1386,164 +1397,164 @@ case 41:
 			      variables_no_asignadas.remove(val_peek(2).sval + Parser.ambito);}
 break;
 case 42:
-//#line 180 "gramatica.y"
+//#line 179 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 break;
 case 43:
-//#line 183 "gramatica.y"
+//#line 182 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 												yyval = new ParserVal( new Nodo("if", (Nodo) val_peek(9).obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) val_peek(6).obj, null), new Nodo("else", (Nodo) val_peek(2).obj, null)))); }
 break;
 case 44:
-//#line 185 "gramatica.y"
+//#line 184 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
 break;
 case 45:
-//#line 186 "gramatica.y"
+//#line 185 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 										yyval = new ParserVal( new Nodo("if", (Nodo) val_peek(5).obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) val_peek(2).obj, null), new Nodo("else", null, null))));
 										}
 break;
 case 46:
-//#line 189 "gramatica.y"
+//#line 188 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
 break;
 case 47:
-//#line 190 "gramatica.y"
+//#line 189 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 													     yyval = new ParserVal( new Nodo("if", (Nodo) val_peek(7).obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) val_peek(5).obj, null), new Nodo("else", (Nodo) val_peek(2).obj, null))));
 													   }
 break;
 case 48:
-//#line 193 "gramatica.y"
+//#line 192 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 													     yyval = new ParserVal( new Nodo("if", (Nodo) val_peek(8).obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) val_peek(6).obj, null), new Nodo("else", (Nodo) val_peek(2).obj, null))));
 													    }
 break;
 case 49:
-//#line 196 "gramatica.y"
+//#line 195 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 										yyval = new ParserVal( new Nodo("if", (Nodo) val_peek(4).obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) val_peek(2).obj, null), new Nodo("else", null, null))));
 									      }
 break;
 case 50:
-//#line 201 "gramatica.y"
+//#line 200 "gramatica.y"
 { var x = new Nodo(val_peek(1).sval, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj, null);
 					    x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
 					    yyval = new ParserVal(x);
 					  }
 break;
 case 51:
-//#line 205 "gramatica.y"
+//#line 204 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el primer miembro de la condicion");}
 break;
 case 52:
-//#line 206 "gramatica.y"
+//#line 205 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el segundo miembro de la condicion");}
 break;
 case 53:
-//#line 209 "gramatica.y"
+//#line 208 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 break;
 case 54:
-//#line 210 "gramatica.y"
+//#line 209 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
 break;
 case 55:
-//#line 211 "gramatica.y"
+//#line 210 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 break;
 case 56:
-//#line 212 "gramatica.y"
+//#line 211 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
 break;
 case 57:
-//#line 213 "gramatica.y"
+//#line 212 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 break;
 case 58:
-//#line 214 "gramatica.y"
+//#line 213 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 break;
 case 59:
-//#line 215 "gramatica.y"
+//#line 214 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
 break;
 case 60:
-//#line 218 "gramatica.y"
+//#line 217 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 61:
-//#line 219 "gramatica.y"
+//#line 218 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 62:
-//#line 220 "gramatica.y"
+//#line 219 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 63:
-//#line 221 "gramatica.y"
+//#line 220 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 64:
-//#line 222 "gramatica.y"
+//#line 221 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 65:
-//#line 223 "gramatica.y"
+//#line 222 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 66:
-//#line 224 "gramatica.y"
+//#line 223 "gramatica.y"
 {yyval = new ParserVal( val_peek(0).obj);}
 break;
 case 67:
-//#line 227 "gramatica.y"
+//#line 226 "gramatica.y"
 { yyval = new ParserVal( new Nodo("sentencias", (Nodo) val_peek(2).obj, (Nodo) val_peek(1).obj)); }
 break;
 case 68:
-//#line 228 "gramatica.y"
+//#line 227 "gramatica.y"
 {yyval = new ParserVal( val_peek(1).obj);}
 break;
 case 69:
-//#line 232 "gramatica.y"
+//#line 231 "gramatica.y"
 { yyval = new ParserVal( new Nodo("sentencias", (Nodo) val_peek(2).obj, (Nodo) val_peek(1).obj)); }
 break;
 case 70:
-//#line 233 "gramatica.y"
+//#line 232 "gramatica.y"
 {yyval = new ParserVal( val_peek(1).obj);}
 break;
 case 71:
-//#line 236 "gramatica.y"
+//#line 235 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
 								     yyval = new ParserVal( new Nodo("while", (Nodo) val_peek(5).obj, (Nodo) val_peek(1).obj));
 								    }
 break;
 case 72:
-//#line 239 "gramatica.y"
+//#line 238 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
                							 yyval = new ParserVal( new Nodo("while", (Nodo) val_peek(3).obj, (Nodo) val_peek(0).obj));
                							}
 break;
 case 73:
-//#line 244 "gramatica.y"
+//#line 243 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");
 		    yyval = new ParserVal( new Nodo("Print", new Nodo(getVariableConAmbitoTS(val_peek(0).sval)), null, "string"));}
 break;
 case 74:
-//#line 246 "gramatica.y"
+//#line 245 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
 break;
 case 75:
-//#line 249 "gramatica.y"
+//#line 248 "gramatica.y"
 {yyval = new ParserVal( new Nodo(val_peek(0).sval, null));}
 break;
 case 76:
-//#line 252 "gramatica.y"
+//#line 251 "gramatica.y"
 {yyval = new ParserVal( new Nodo(val_peek(0).sval, val_peek(1).sval));}
 break;
 case 77:
-//#line 255 "gramatica.y"
+//#line 254 "gramatica.y"
 { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
                   					     var t = AnalizadorLexico.TS;
                   					     int clave = t.obtenerSimbolo(val_peek(3).sval + Parser.ambito);
@@ -1559,8 +1570,6 @@ case 77:
                                                                	t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                                                	t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                                }
-                                                               if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                                                               	yyerror("No se puede declarar un metodo con el mismo nombre que el de su ambito");
                                                                yyval = new ParserVal(new Nodo("Encabezado", new Nodo(val_peek(3).sval + Parser.ambito), (Nodo) val_peek(1).obj, "void"));
                                                                lista_funciones.add(val_peek(3).sval + Parser.ambito.replace(':','_'));
                                                                agregarAmbito(val_peek(3).sval);
@@ -1568,11 +1577,11 @@ case 77:
                   					   }
 break;
 case 78:
-//#line 277 "gramatica.y"
+//#line 274 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
 break;
 case 79:
-//#line 278 "gramatica.y"
+//#line 275 "gramatica.y"
 { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
                   		   			  var t = AnalizadorLexico.TS;
                                                             int clave = t.obtenerSimbolo(val_peek(2).sval + Parser.ambito);
@@ -1588,31 +1597,25 @@ case 79:
                                                                   t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                                                   t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                             }
-                                                            if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                                                            	yyerror("No se puede declarar un metodo con el mismo nombre que el de su ambito");
                                                             yyval = new ParserVal(new Nodo("Encabezado", new Nodo(val_peek(2).sval + Parser.ambito), null, "void"));
                                                             lista_funciones.add(val_peek(2).sval + Parser.ambito.replace(':','_'));
                                                             agregarAmbito(val_peek(2).sval);
                                                             }
 break;
 case 80:
-//#line 301 "gramatica.y"
+//#line 296 "gramatica.y"
 { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
                                                            yyval = new ParserVal(
                                                            new Nodo( "Funcion",
                                                                                     (Nodo) val_peek(3).obj ,
-                                                                                    (Nodo) val_peek(2).obj ,
+                                                                                    (Nodo) val_peek(1).obj ,
                                                                                     "void"));
-
-                                                           /* Acciones de desapilar */
-                                                           if (!verificarRetornoArbol((Nodo) val_peek(1).obj))
-                                                           	yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
                                                            chequeoAsignacionVariables();
                                                            salirAmbito();
                                                            funcLocales = 0;}
 break;
 case 81:
-//#line 316 "gramatica.y"
+//#line 307 "gramatica.y"
 {
 					     var t = AnalizadorLexico.TS;
 					     int clave = t.obtenerSimbolo(val_peek(3).sval + Parser.ambito);
@@ -1628,8 +1631,6 @@ case 81:
                                              	t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                              	t.agregarAtributo(t.obtenerID(), "uso", "nombre_funcion");
                                              }
-                                             if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                                             	yyerror("No se puede declarar una funcion con el mismo nombre que el de su ambito");
                                              yyval = new ParserVal(new Nodo("Encabezado", new Nodo(val_peek(3).sval + Parser.ambito), (Nodo) val_peek(1).obj, "void"));
                                              lista_funciones.add(val_peek(3).sval + Parser.ambito.replace(':','_'));
                                              agregarAmbito(val_peek(3).sval);
@@ -1637,11 +1638,11 @@ case 81:
 					   }
 break;
 case 82:
-//#line 338 "gramatica.y"
+//#line 327 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
 break;
 case 83:
-//#line 339 "gramatica.y"
+//#line 328 "gramatica.y"
 {
 		   			  var t = AnalizadorLexico.TS;
                                           int clave = t.obtenerSimbolo(val_peek(2).sval + Parser.ambito);
@@ -1657,15 +1658,13 @@ case 83:
                                                 t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                                 t.agregarAtributo(t.obtenerID(), "uso", "nombre_funcion");
                                           }
-                                          if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                                          	yyerror("No se puede declarar una funcion con el mismo nombre que el de su ambito");
                                           yyval = new ParserVal(new Nodo("Encabezado", new Nodo(val_peek(2).sval + Parser.ambito), null, "void"));
                                           lista_funciones.add(val_peek(2).sval + Parser.ambito.replace(':','_'));
                                           agregarAmbito(val_peek(2).sval);
                                           }
 break;
 case 84:
-//#line 362 "gramatica.y"
+//#line 349 "gramatica.y"
 { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
                                                             yyval = new ParserVal(
                                                             new Nodo( "Funcion",
@@ -1680,7 +1679,7 @@ case 84:
                                                             salirAmbito();}
 break;
 case 85:
-//#line 376 "gramatica.y"
+//#line 363 "gramatica.y"
 { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
 								var x = (Nodo) val_peek(3).obj;
 								String nombre = x.getIzq().getNombre();
@@ -1702,31 +1701,31 @@ case 85:
                                                             		yyerror("En la función: '"+nombre+"' el nivel maximo de anidamiento (1) es superado.");}
 break;
 case 86:
-//#line 397 "gramatica.y"
+//#line 384 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 87:
-//#line 400 "gramatica.y"
+//#line 387 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 89:
-//#line 404 "gramatica.y"
+//#line 391 "gramatica.y"
 { yyval = new ParserVal( new Nodo("sentencias", (Nodo) val_peek(2).obj, (Nodo) val_peek(1).obj));}
 break;
 case 91:
-//#line 406 "gramatica.y"
+//#line 393 "gramatica.y"
 { yyval = new ParserVal( new Nodo("sentencias", null, (Nodo) val_peek(1).obj));}
 break;
 case 93:
-//#line 410 "gramatica.y"
+//#line 397 "gramatica.y"
 { yyval = new ParserVal( new Nodo("sentencias", (Nodo) val_peek(2).obj, (Nodo) val_peek(1).obj));}
 break;
 case 95:
-//#line 412 "gramatica.y"
+//#line 399 "gramatica.y"
 { yyval = new ParserVal( new Nodo("sentencias", null, (Nodo) val_peek(1).obj));}
 break;
 case 96:
-//#line 415 "gramatica.y"
+//#line 402 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
 					var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS(val_peek(3).sval)), null, "void");
 					yyval = new ParserVal(x);
@@ -1734,7 +1733,7 @@ case 96:
 					}
 break;
 case 97:
-//#line 420 "gramatica.y"
+//#line 407 "gramatica.y"
 {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
 		  		var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS(val_peek(2).sval)), null, "void");
 		  		yyval = new ParserVal(x);
@@ -1742,15 +1741,15 @@ case 97:
 		  		}
 break;
 case 98:
-//#line 425 "gramatica.y"
+//#line 412 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una asignación como parametro.");}
 break;
 case 99:
-//#line 426 "gramatica.y"
+//#line 413 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una declaración como parametro.");}
 break;
 case 100:
-//#line 430 "gramatica.y"
+//#line 417 "gramatica.y"
 {
                      var t = AnalizadorLexico.TS;
                      lista_variables
@@ -1774,67 +1773,67 @@ case 100:
              	}
 break;
 case 101:
-//#line 454 "gramatica.y"
+//#line 441 "gramatica.y"
 {  lista_variables.add(val_peek(2).sval + Parser.ambito);
  					     variables_no_asignadas.add(val_peek(2).sval + Parser.ambito);
  					  }
 break;
 case 102:
-//#line 457 "gramatica.y"
+//#line 444 "gramatica.y"
 { lista_variables.add(val_peek(0).sval + Parser.ambito);
 		       variables_no_asignadas.add(val_peek(0).sval + Parser.ambito);
 		     }
 break;
 case 103:
-//#line 462 "gramatica.y"
+//#line 449 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 104:
-//#line 463 "gramatica.y"
+//#line 450 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 105:
-//#line 464 "gramatica.y"
+//#line 451 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 106:
-//#line 465 "gramatica.y"
+//#line 452 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 107:
-//#line 468 "gramatica.y"
+//#line 455 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 108:
-//#line 469 "gramatica.y"
+//#line 456 "gramatica.y"
 { var x = new Nodo("+", (Nodo) val_peek(2).obj, (Nodo)  val_peek(0).obj, null);
                                   x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
                                   yyval = new ParserVal(x); }
 break;
 case 109:
-//#line 472 "gramatica.y"
+//#line 459 "gramatica.y"
 { var x = new Nodo("-", (Nodo) val_peek(2).obj, (Nodo)  val_peek(0).obj, null);
     				  x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
     				  yyval = new ParserVal(x); }
 break;
 case 110:
-//#line 477 "gramatica.y"
+//#line 464 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 111:
-//#line 478 "gramatica.y"
+//#line 465 "gramatica.y"
 { var x = new Nodo("*", (Nodo) val_peek(2).obj, (Nodo)  val_peek(0).obj);
     			       x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
     			       yyval = new ParserVal(x); }
 break;
 case 112:
-//#line 481 "gramatica.y"
+//#line 468 "gramatica.y"
 { var x = new Nodo("/", (Nodo) val_peek(2).obj, (Nodo)  val_peek(0).obj);
                                x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
                                yyval = new ParserVal(x); }
 break;
 case 113:
-//#line 486 "gramatica.y"
+//#line 473 "gramatica.y"
 {String x = getTipoVariableConAmbitoTS(val_peek(0).sval);
             if (x != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
             	yyval =  new ParserVal( new Nodo(getVariableConAmbitoTS(val_peek(0).sval), x));
@@ -1845,46 +1844,46 @@ case 113:
             }
 break;
 case 115:
-//#line 495 "gramatica.y"
+//#line 482 "gramatica.y"
 { yyval = new ParserVal( new Nodo(val_peek(0).sval, getTipo(val_peek(0).sval))); }
 break;
 case 116:
-//#line 496 "gramatica.y"
+//#line 483 "gramatica.y"
 { String x = comprobarRango(val_peek(0).sval); yyval = new ParserVal( new Nodo(x, getTipo(x))); }
 break;
 case 117:
-//#line 497 "gramatica.y"
+//#line 484 "gramatica.y"
 { yyval = val_peek(1); }
 break;
 case 118:
-//#line 500 "gramatica.y"
+//#line 487 "gramatica.y"
 { yyval = new ParserVal(">="); }
 break;
 case 119:
-//#line 501 "gramatica.y"
+//#line 488 "gramatica.y"
 { yyval = new ParserVal("<="); }
 break;
 case 120:
-//#line 502 "gramatica.y"
+//#line 489 "gramatica.y"
 { yyval = new ParserVal("=="); }
 break;
 case 121:
-//#line 503 "gramatica.y"
+//#line 490 "gramatica.y"
 { yyval = new ParserVal("!!"); }
 break;
 case 122:
-//#line 504 "gramatica.y"
+//#line 491 "gramatica.y"
 { yyval = new ParserVal("<"); }
 break;
 case 123:
-//#line 505 "gramatica.y"
+//#line 492 "gramatica.y"
 { yyval = new ParserVal("<"); }
 break;
 case 124:
-//#line 506 "gramatica.y"
+//#line 493 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal escrito el comparador ==");}
 break;
-//#line 1811 "Parser.java"
+//#line 1810 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

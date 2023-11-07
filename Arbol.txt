@@ -2,12 +2,68 @@ program
 '-->sentencias null
    |-->sentencias null
    |  |-->sentencias null
-   |  |  '-->Asignacion SHORT
-   |  |     |-->x:main SHORT
-   |  |     '-->4_s SHORT
-   |  '-->Asignacion SHORT
-   |     |-->y:main SHORT
-   |     '-->5_s SHORT
-   '-->Asignacion SHORT
-      |-->z:main SHORT
-      '-->8_s SHORT
+   |  |  |-->sentencias null
+   |  |  |  |-->sentencias null
+   |  |  |  |  |-->sentencias null
+   |  |  |  |  |  |-->sentencias null
+   |  |  |  |  |  |  '-->Asignacion SHORT
+   |  |  |  |  |  |     |-->x:main SHORT
+   |  |  |  |  |  |     '-->4_s SHORT
+   |  |  |  |  |  '-->Asignacion SHORT
+   |  |  |  |  |     |-->y:main SHORT
+   |  |  |  |  |     '-->5_s SHORT
+   |  |  |  |  '-->Asignacion FLOAT
+   |  |  |  |     |-->z:main FLOAT
+   |  |  |  |     '-->+ FLOAT
+   |  |  |  |        |-->STOF null
+   |  |  |  |        |  '-->x:main SHORT
+   |  |  |  |        '-->7.0 FLOAT
+   |  |  |  '-->EncabezadoClase null
+   |  |  |     '-->cc:main null
+   |  |  '-->Clase null
+   |  |     '-->EncabezadoClase null
+   |  |        '-->final:main null
+   |  '-->Clase null
+   |     |-->EncabezadoClase null
+   |     |  '-->ca:main null
+   |     '-->cuerpoClase null
+   |        '-->Funcion void
+   |           |-->Encabezado void
+   |           |  |-->func1:ca:main null
+   |           |  '-->x:func1:ca:main SHORT
+   |           '-->sentencias null
+   |              '-->Asignacion SHORT
+   |                 |-->h:ca:main SHORT
+   |                 '-->* SHORT
+   |                    |-->h:ca:main SHORT
+   |                    '-->x:func1:ca:main SHORT
+   '-->Clase null
+      |-->EncabezadoClase null
+      |  '-->cb:main null
+      '-->cuerpoClase null
+         |-->cuerpoClase null
+         |  '-->Funcion void
+         |     |-->Encabezado void
+         |     |  '-->func2:cb:main null
+         |     '-->sentencias null
+         |        |-->sentencias null
+         |        |  |-->sentencias null
+         |        |  |  '-->Asignacion SHORT
+         |        |  |     |-->n:cb:main SHORT
+         |        |  |     '-->4_s SHORT
+         |        |  '-->Asignacion SHORT
+         |        |     |-->aux:func2:cb:main SHORT
+         |        |     '-->* SHORT
+         |        |        |-->n:cb:main SHORT
+         |        |        '-->7_s SHORT
+         |        '-->Asignacion SHORT
+         |           |-->n:cb:main SHORT
+         |           '-->aux:func2:cb:main SHORT
+         '-->Funcion void
+            |-->Encabezado void
+            |  |-->set_n:cb:main null
+            |  '-->numero:set_n:cb:main SHORT
+            '-->sentencias null
+               '-->Asignacion SHORT
+                  |-->n:cb:main SHORT
+                  '-->numero:set_n:cb:main SHORT

@@ -1,5 +1,6 @@
 package Etapas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -19,6 +20,7 @@ public class TablaSimbolos {
         return simbolos.keySet();
     }
     private static final Map<Integer, Map<String, String>> simbolos = new HashMap<>();
+    private static final ArrayList<Integer> clave_variables_herencia = new ArrayList<>();
     private static int identificador_siguiente = 1;
 
 
@@ -55,16 +57,23 @@ public class TablaSimbolos {
         for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
             String lexema_actual = entrada.getValue().get(LEXEMA);
 
-            if (lexema_actual.contains(heredada+":main")) {
-                String variable = lexema_actual.substring(lexema_actual.indexOf(heredada));
-                variable = variable + ":" + heredera + ":main";
-                agregarSimbolo(variable);
-                simbolos.put(obtenerID(), obtenerAtributos(entrada.getKey()));
-                agregarAtributo(obtenerID(), "herencia", "variable");
+            if (lexema_actual.contains(heredada + ":main") && !lexema_actual.equals(heredada+":main")) {
+                clave_variables_herencia.add(entrada.getKey());
             }
         }
 
-        int clave_heredera = obtenerSimbolo(heredera+ambito);
+        for (Integer clave : clave_variables_herencia)
+        {
+            String lexema_actual = simbolos.get(clave).get(LEXEMA);
+            String variable = lexema_actual.substring(0, lexema_actual.indexOf(heredada.charAt(heredada.length()-1))+1);
+            variable = variable + ":" + heredera + ":main";
+            agregarSimbolo(variable);
+            simbolos.put(obtenerID(), obtenerAtributos(clave));
+            modificarAtributo(obtenerID(), "lexema", variable);
+            agregarAtributo(obtenerID(), "herencia", "variable");
+        }
+
+        int clave_heredera = obtenerSimbolo(ambito.substring(1));
         int clave_heredada = obtenerSimbolo(heredada+":main");
         agregarAtributo(clave_heredera, "clase_heredada", heredada+":main");
         agregarAtributo(clave_heredera, "niveles_herencia", "0");

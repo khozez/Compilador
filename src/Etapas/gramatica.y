@@ -31,7 +31,7 @@ cuerpoPrograma: sentencia {$$ = $1;}
 						$$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
 ;
 
-sentencia: sentenciaDeclarativa {$$ = new ParserVal(null);}
+sentencia: sentenciaDeclarativa {$$ = new ParserVal( $1.obj);}
 		| sentenciaEjecutable ','  {$$ = new ParserVal( $1.obj);}
 ;
 
@@ -47,8 +47,6 @@ encabezadoClase: CLASS ID {var t = AnalizadorLexico.TS;
                                 t.agregarSimbolo($2.sval + Parser.ambito);
                                 t.agregarAtributo(t.obtenerID(), "uso", "nombre_clase");
                            }
-                           if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                           	yyerror("No se puede declarar una clase con el mismo nombre que el de su ambito");
                            $$ = new ParserVal(new Nodo("EncabezadoClase", new Nodo($2.sval + Parser.ambito), null));
                            lista_clases.add($2.sval + Parser.ambito.replace(':','_'));
                            claseActual = $2.sval;
@@ -61,7 +59,8 @@ declaracionClase: encabezadoClase '{' cuerpoClase '}'  {lista_clases_fd.remove(P
 							chequeoAsignacionVariables();
                                                         salirAmbito();
                                                         claseActual = "";
-							System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
+							System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");
+							$$ = new ParserVal( new Nodo("Clase", (Nodo) $1.obj, (Nodo) $3.obj) );}
 		 | encabezadoClase ',' {lista_clases_fd.add(Parser.ambito.substring(1));
 		 			chequeoAsignacionVariables();
                                         salirAmbito();
@@ -150,7 +149,7 @@ herenciaNombre: ID ',' { var t = AnalizadorLexico.TS;
                                  t.agregarAtributo(t.obtenerID(), "uso", "herencia");
                          }
                          t.aplicarHerencia($1.sval, claseActual, Parser.ambito);
-			 chequearNivelesHerencia(claseActual+Parser.ambito);
+			 chequearNivelesHerencia(Parser.ambito.substring(1));
  		       }
 ;
 
@@ -162,9 +161,9 @@ sentenciaEjecutable: asignacion {$$ = new ParserVal( $1.obj);}
 		   | referenciaClase {$$ = new ParserVal( $1.obj);}
 ;
 
-sentenciaDeclarativa: declaracionFuncion
-			| declaracion ','
-			| declaracionClase
+sentenciaDeclarativa: declaracionFuncion {$$ = new ParserVal(null);}
+			| declaracion ',' {$$ = new ParserVal(null);}
+			| declaracionClase {$$ = $1;}
 ;
 
 sentenciaDeclarativaMetodo: declaracionFuncionLocal
@@ -267,8 +266,6 @@ encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(Anali
                                                                	t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                                                	t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                                }
-                                                               if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                                                               	yyerror("No se puede declarar un metodo con el mismo nombre que el de su ambito");
                                                                $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), (Nodo) $4.obj, "void"));
                                                                lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
                                                                agregarAmbito($2.sval);
@@ -290,8 +287,6 @@ encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(Anali
                                                                   t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                                                   t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                             }
-                                                            if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                                                            	yyerror("No se puede declarar un metodo con el mismo nombre que el de su ambito");
                                                             $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), null, "void"));
                                                             lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
                                                             agregarAmbito($2.sval);
@@ -302,12 +297,8 @@ declaracionMetodo: encabezadoMetodo '{' cuerpoMetodo '}' { System.out.println("L
                                                            $$ = new ParserVal(
                                                            new Nodo( "Funcion",
                                                                                     (Nodo) $1.obj ,
-                                                                                    (Nodo) $2.obj ,
+                                                                                    (Nodo) $3.obj ,
                                                                                     "void"));
-
-                                                           /* Acciones de desapilar */
-                                                           if (!verificarRetornoArbol((Nodo) $3.obj))
-                                                           	yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
                                                            chequeoAsignacionVariables();
                                                            salirAmbito();
                                                            funcLocales = 0;}
@@ -328,8 +319,6 @@ encabezadoFuncion: VOID ID '(' parametro ')' {
                                              	t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                              	t.agregarAtributo(t.obtenerID(), "uso", "nombre_funcion");
                                              }
-                                             if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                                             	yyerror("No se puede declarar una funcion con el mismo nombre que el de su ambito");
                                              $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), (Nodo) $4.obj, "void"));
                                              lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
                                              agregarAmbito($2.sval);
@@ -351,8 +340,6 @@ encabezadoFuncion: VOID ID '(' parametro ')' {
                                                 t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                                 t.agregarAtributo(t.obtenerID(), "uso", "nombre_funcion");
                                           }
-                                          if (val_peek(5).sval.equals(!Parser.ambito.isBlank() ? Parser.ambito.substring(1) : Parser.ambito))
-                                          	yyerror("No se puede declarar una funcion con el mismo nombre que el de su ambito");
                                           $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), null, "void"));
                                           lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
                                           agregarAmbito($2.sval);
@@ -574,30 +561,30 @@ private String validarTipos(Nodo x, Nodo obj, Nodo obj1) {
     		{
     			if (obj.getTipo().equals("FLOAT"))
     			{
-    				if (obj.getTipo().equals("SHORT"))
+    				if (obj1.getTipo().equals("SHORT"))
     				{
-    					var conv = new Nodo("STOF", obj, null);
-    					x.setIzq(conv);
+    					var conv = new Nodo("STOF", obj1, null);
+    					x.setDer(conv);
     				}else
     				{
-    					if (obj.getTipo().equals("LONG"))
+    					if (obj1.getTipo().equals("LONG"))
     					{
-    						var conv = new Nodo("LTOF", obj, null);
-    						x.setIzq(conv);
+    						var conv = new Nodo("LTOF", obj1, null);
+    						x.setDer(conv);
     					}
     				}
     			}
     			else{
-    				if (obj1.getTipo().equals("SHORT"))
+    				if (obj.getTipo().equals("SHORT"))
                             	{
-                            		var conv = new Nodo("STOF", obj1, null);
-                            		x.setDer(conv);
+                            		var conv = new Nodo("STOF", obj, null);
+                            		x.setIzq(conv);
                             	}else
                             	{
-                            		if (obj1.getTipo().equals("LONG"))
+                            		if (obj.getTipo().equals("LONG"))
                             		{
-                            			var conv = new Nodo("LTOF", obj1, null);
-                            			x.setDer(conv);
+                            			var conv = new Nodo("LTOF", obj, null);
+                            			x.setIzq(conv);
                             		}
                             	}
     			}

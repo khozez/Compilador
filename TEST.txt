@@ -1,9 +1,40 @@
 {
     SHORT x,
     SHORT y,
-    SHORT z,
+    FLOAT z,
 
     x = 4_s,
     y = 5_s,
-    z = 8_s,
+    z = x + 7.0,
+
+    CLASS cc,
+
+    CLASS final{
+        SHORT jaja,
+    }
+
+    CLASS ca{
+        SHORT h,
+
+        VOID func1(SHORT x){
+            h = h*x,
+        },
+        final,
+    }
+
+    CLASS cb{
+        SHORT n,
+
+        VOID func2(){
+            n = 4_s,
+            SHORT aux,
+            aux = n*7_s,
+            n = aux,
+        },
+
+        VOID set_n(SHORT numero){
+            n = numero,
+        },
+        ca,
+    }
 }
