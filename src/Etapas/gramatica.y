@@ -174,7 +174,16 @@ sentenciaDeclarativaMetodo: declaracionFuncionLocal
 asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");
 			      var x = new Nodo("Asignacion", new Nodo(getVariableConAmbitoTS($1.sval), getTipoVariableConAmbitoTS($1.sval)), (Nodo) $3.obj);
 			      x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
-			      $$ = new ParserVal(x);
+
+			      if (generarMenosMenos())
+                              {
+				      $$ = new ParserVal( new Nodo("sentencias", x, menosMenos));
+				      menosMenos = null;
+                              }
+                              else
+                              {
+                              	$$ = new ParserVal(x);
+                              }
 			      variables_no_asignadas.remove($1.sval + Parser.ambito);}
 	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 ;
@@ -199,8 +208,14 @@ sentenciaIf: IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecu
 
 condicion: expresion comparador expresion { var x = new Nodo($2.sval, (Nodo) $1.obj, (Nodo) $3.obj, null);
 					    x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
-					    $$ = new ParserVal(x);
-					  }
+
+					    if (generarMenosMenos())
+                                            {
+						    $$ = new ParserVal( new Nodo("sentencias", x, menosMenos));
+						    menosMenos = null;
+                                            }
+                                            else
+                                            	$$ = new ParserVal(x);}
 			| comparador expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el primer miembro de la condicion");}
 			| expresion comparador {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el segundo miembro de la condicion");}
 ;
@@ -401,7 +416,15 @@ listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo
 
 invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
 					var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
-					$$ = new ParserVal(x);
+					if (generarMenosMenos())
+                                        {
+						$$ = new ParserVal( new Nodo("sentencias", x, menosMenos));
+						menosMenos = null;
+                                        }
+                                        else
+                                        {
+                                        	$$ = new ParserVal(x);
+                                        }
 					chequearLlamadoFuncion($1.sval);
 					}
 		  | ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
@@ -452,22 +475,22 @@ tipo: SHORT  { $$ = $1; }
     	| ID { $$ = $1; }
 ;
 
-expresion: termino { $$ = $1; }
+expresion: termino { $$ = $1;}
     	| expresion '+' termino { var x = new Nodo("+", (Nodo) $1.obj, (Nodo)  $3.obj, null);
                                   x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
-                                  $$ = new ParserVal(x); }
+                                  $$ = new ParserVal(x);}
     	| expresion '-' termino { var x = new Nodo("-", (Nodo) $1.obj, (Nodo)  $3.obj, null);
     				  x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
-    				  $$ = new ParserVal(x); }
+    				  $$ = new ParserVal(x);}
 ;
 
 termino: factor { $$ = $1; }
     	| termino '*' factor { var x = new Nodo("*", (Nodo) $1.obj, (Nodo)  $3.obj);
     			       x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
-    			       $$ = new ParserVal(x); }
+    			       $$ = new ParserVal(x);}
     	| termino '/' factor { var x = new Nodo("/", (Nodo) $1.obj, (Nodo)  $3.obj);
                                x.setTipo(validarTipos(x, (Nodo) $1.obj, (Nodo) $3.obj));
-                               $$ = new ParserVal(x); }
+                               $$ = new ParserVal(x);}
 ;
 
 factor: ID {String x = getTipoVariableConAmbitoTS($1.sval);
@@ -478,7 +501,15 @@ factor: ID {String x = getTipoVariableConAmbitoTS($1.sval);
                 yyerror("No se encontro esta variable en un ambito adecuado");
                 }
             }
-	| ID MENOSMENOS
+	| ID MENOSMENOS {String x = getTipoVariableConAmbitoTS($1.sval);
+                         if (x != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
+                         	$$ =  new ParserVal( new Nodo(getVariableConAmbitoTS($1.sval), x));
+                         else{
+                                $$ =  new ParserVal( new Nodo("variableNoEncontrada", x));
+                                yyerror("No se encontro esta variable en un ambito adecuado");
+                         }
+                         menosMenos = (Nodo) $$.obj;
+        }
     	| CTE { $$ = new ParserVal( new Nodo($1.sval, getTipo($1.sval))); }
     	| '-' CTE { String x = comprobarRango($2.sval); $$ = new ParserVal( new Nodo(x, getTipo(x))); }
     	| '(' expresion ')' { $$ = $2; }
@@ -496,6 +527,7 @@ comparador: MAYORIGUAL   { $$ = new ParserVal(">="); }
 %%
 
 public static Nodo raiz = null;
+private static Nodo menosMenos = null;
 public static String ambito = ":main";
 public static String variableAmbitoClase = ":main";
 public static String ambitoClase = ":main";
@@ -526,6 +558,35 @@ public String getTipo(String lexema){
 	if (tipo.equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE))
     		yyerror("La variable no esta declarada");
   	return tipo;
+}
+
+public Boolean generarMenosMenos()
+{
+	if (menosMenos != null)
+	{
+        	String tipo = menosMenos.getTipo();
+                String uno = "";
+                switch(tipo){
+        		case("FLOAT"):
+        			uno = "1.0";
+        			break;
+        		case("SHORT"):
+        			uno = "1_s";
+        			break;
+        		case("LONG"):
+        			uno = "1_ul";
+        			break;
+        		default:
+        			yyerror("La variable no tiene tipo");
+        			break;
+                }
+                var y = new Nodo(uno, null, null, tipo);
+                var z = new Nodo("-", menosMenos, y, tipo);
+                var w = new Nodo("Asignacion", menosMenos, z, tipo);
+                menosMenos = w;
+                return true;
+	}
+	return false;
 }
 
 public void parametro(Nodo n){
