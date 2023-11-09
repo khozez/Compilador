@@ -215,7 +215,7 @@ condicion: expresion comparador expresion { var x = new Nodo($2.sval, (Nodo) $1.
 						    menosMenos = null;
                                             }
                                             else
-                                            $$ = new ParserVal(x);}
+                                            	$$ = new ParserVal(x);}
 			| comparador expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el primer miembro de la condicion");}
 			| expresion comparador {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el segundo miembro de la condicion");}
 ;
@@ -256,7 +256,8 @@ sentenciaWhile: WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' {System.out.
 ;
 
 print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");
-		    $$ = new ParserVal( new Nodo("Print", new Nodo(getVariableConAmbitoTS($2.sval)), null, "string"));}
+		     var x = new Nodo($2.sval, null, null, "STRING");
+		     $$ = new ParserVal( new Nodo("Print", x, null, "STRING"));}
        | CADENA {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
 ;
 
@@ -416,7 +417,15 @@ listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo
 
 invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
 					var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
-					$$ = new ParserVal(x);
+					if (generarMenosMenos())
+                                        {
+						$$ = new ParserVal( new Nodo("sentencias", x, menosMenos));
+						menosMenos = null;
+                                        }
+                                        else
+                                        {
+                                        	$$ = new ParserVal(x);
+                                        }
 					chequearLlamadoFuncion($1.sval);
 					}
 		  | ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
@@ -803,7 +812,7 @@ private void chequearHerenciaVariable(String variableConAmbito)
 	var t = AnalizadorLexico.TS;
 	int entrada = t.obtenerSimbolo(variableConAmbito);
 	if (entrada == TablaSimbolos.NO_ENCONTRADO)
-        	yyerror("La clase a la que se desea heredar no fue declarada.");
+        	yyerror("No se puede acceder al atributo de la clase.");
         else{
         	String x = t.obtenerAtributo(entrada, "herencia");
         	if (!x.equals(t.NO_ENCONTRADO_MESSAGE) && t.obtenerAtributo(entrada, "tipo").equals("void"))

@@ -2,42 +2,32 @@
     SHORT x,
     SHORT y,
     FLOAT z,
+    FLOAT aux,
 
     x = 4_s,
     y = 5_s,
     z = x + 7.0,
+    PRINT %variable mayor a
+    8%,
 
-    CLASS cc,
+    IF (x>=4_s)
+    {
+        aux = x + 4.0,
+        IF (aux > 8.0)
+            z = 9.0,
+        END_IF,
+        z = aux,
+    }ELSE
+    {
+        aux = 0.0,
+        z = 8.0,
+    }END_IF,
 
-    CLASS final{
-        SHORT jaja,
-    }
+    WHILE (z !! 10.0) DO
+    {
+        aux = 1_s,
+        z = z + aux,
+    },
 
-    CLASS ca{
-        SHORT h,
 
-        VOID func1(SHORT x){
-            h = h*x,
-        },
-        final,
-    }
-
-    CLASS cb{
-        SHORT n,
-
-        VOID func2(){
-            n = 4_s,
-            SHORT aux,
-            aux = n*7_s,
-            n = aux,
-        },
-
-        VOID set_n(SHORT numero){
-            n = numero,
-        },
-        ca,
-    }
-
-    y = y--,
-    z = x-- + y,
 }

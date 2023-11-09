@@ -256,7 +256,8 @@ sentenciaWhile: WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' {System.out.
 ;
 
 print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");
-		    $$ = new ParserVal( new Nodo("Print", new Nodo(getVariableConAmbitoTS($2.sval)), null, "string"));}
+		     var x = new Nodo($2.sval, null, null, "STRING");
+		     $$ = new ParserVal( new Nodo("Print", x, null, "STRING"));}
        | CADENA {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
 ;
 
@@ -811,7 +812,7 @@ private void chequearHerenciaVariable(String variableConAmbito)
 	var t = AnalizadorLexico.TS;
 	int entrada = t.obtenerSimbolo(variableConAmbito);
 	if (entrada == TablaSimbolos.NO_ENCONTRADO)
-        	yyerror("La clase a la que se desea heredar no fue declarada.");
+        	yyerror("No se puede acceder al atributo de la clase.");
         else{
         	String x = t.obtenerAtributo(entrada, "herencia");
         	if (!x.equals(t.NO_ENCONTRADO_MESSAGE) && t.obtenerAtributo(entrada, "tipo").equals("void"))
