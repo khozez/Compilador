@@ -83,9 +83,14 @@ referenciaClase: listaReferencia asignacionClase {$$ = $2;}
 
 asignacionClase: ID '=' expresion {
 				   var t = AnalizadorLexico.TS;
-                                   variableAmbitoClase = ":" + $1.sval + ambitoClase;
-                                   chequearHerenciaVariable(variableAmbitoClase);
-                                   var x = new Nodo("Asignacion", new Nodo(variableAmbitoClase, t.obtenerAtributo(t.obtenerSimbolo(variableAmbitoClase), "tipo")), (Nodo) $3.obj);
+                                   variableAmbitoClase = $1.sval + variableAmbitoClase;
+                                   String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
+                                   if (!chequearReferencia($1.sval, claseBase, variableAmbitoClase))
+                                   	yyerror("No existe el atributo en la clase a la que se intenta hacer referencia.");
+                                   if (claseActual != "") //SE INTENTA SOBREESCRIBIR UN ATRIBUTO DE UNA CLASE HEREDADA
+                                   	yyerror("No se puede sobreescribir un atributo heredado de clase.");
+                                   String nombre_nodo = $1.sval+":"+claseBase+":main";
+                                   var x = new Nodo("Asignacion", new Nodo(nombre_nodo, t.obtenerAtributo(t.obtenerSimbolo(nombre_nodo), "tipo")), (Nodo) $3.obj);
                                    x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
                                    out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación a atributo de clase");
                                    $$ = new ParserVal(x);
@@ -95,8 +100,8 @@ asignacionClase: ID '=' expresion {
 referenciaMetodo: ID '(' ')' {
 			      out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                               var t = AnalizadorLexico.TS;
-                              variableAmbitoClase = ":" + $1.sval + ambitoClase;
-                              chequearHerenciaVariable(variableAmbitoClase);
+                              variableAmbitoClase = $1.sval + ambitoClase;
+                              chequearMetodoClase(variableAmbitoClase);
                               var x = new Nodo("LlamadaFuncion", new Nodo(variableAmbitoClase, null, null, "void"), null);
                               $$ = new ParserVal(x);
                               chequearLlamadoFuncion($1.sval);
@@ -150,7 +155,9 @@ herenciaNombre: ID ',' { var t = AnalizadorLexico.TS;
                                  t.agregarSimbolo($1.sval+Parser.ambito);
                                  t.agregarAtributo(t.obtenerID(), "uso", "herencia");
                          }
-                         t.aplicarHerencia($1.sval, claseActual, Parser.ambito);
+                         herencia = true;
+                         if (!t.aplicarHerencia($1.sval, claseActual, Parser.ambito))
+                         	yyerror("No se puede sobreescribir atributos de clase.");
 			 chequearNivelesHerencia(Parser.ambito.substring(1));
  		       }
 ;
@@ -549,6 +556,7 @@ public static final String ERROR_LEXICO = "Error_lexico";
 public static final String ERROR_SINTACTICO = "Error_sintactico";
 private static int funcLocales = 0;
 public static String claseActual = "";
+private static Boolean herencia = false;
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
 public static ArrayList<String> lista_variables = new ArrayList<>();
@@ -820,17 +828,12 @@ private void chequearLlamadoFuncion(String funcion) {
     		yyerror("La funcion a la que se desea llamar tiene parametro");
 }
 
-private void chequearHerenciaVariable(String variableConAmbito)
+private void chequearMetodoClase(String variableConAmbito)
 {
 	var t = AnalizadorLexico.TS;
 	int entrada = t.obtenerSimbolo(variableConAmbito);
 	if (entrada == TablaSimbolos.NO_ENCONTRADO)
-        	yyerror("No se puede acceder al atributo de la clase.");
-        else{
-        	String x = t.obtenerAtributo(entrada, "herencia");
-        	if (!x.equals(t.NO_ENCONTRADO_MESSAGE) && t.obtenerAtributo(entrada, "tipo").equals("void"))
-        		yyerror("No se puede sobreescribir un atributo heredado.");
-        }
+        	yyerror("No existe el metodo al que se intenta invocar en la clase.");
 }
 
 private void chequearNivelesHerencia(String clase_actual)
@@ -922,6 +925,19 @@ private static void modificar_referencias(boolean agregado, String numero, Strin
         TablaSimbolos.modificarAtributo(TablaSimbolos.obtenerSimbolo(numero), "referencias", Integer.toString(ref+1));
     }
 
+}
+
+private static Boolean chequearReferencia(String atributo, String claseBase, String referenciaCompleta){
+	var t = AnalizadorLexico.TS;
+	int clave = t.obtenerSimbolo(atributo+":"+claseBase+":main");
+	if (clave != t.NO_ENCONTRADO)
+	{
+		if (!t.obtenerAtributo(clave, "herencia").equals(referenciaCompleta))
+			return false;
+		else
+			return true;
+	}
+	return false;
 }
 
 int yylex(){
