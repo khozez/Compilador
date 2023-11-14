@@ -77,8 +77,8 @@ cuerpoClase: cuerpoClase seccionAtributos
 ;
 
 
-referenciaClase: listaReferencia asignacionClase {$$ = $2;}
-		 | listaReferencia referenciaMetodo {$$ = $2;}
+referenciaClase: listaReferencia asignacionClase {$$ = $2; variableAmbitoClase = ":main";}
+		 | listaReferencia referenciaMetodo {$$ = $2; variableAmbitoClase = ":main";}
 ;
 
 asignacionClase: ID '=' expresion {
@@ -87,8 +87,6 @@ asignacionClase: ID '=' expresion {
                                    String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
                                    if (!chequearReferencia($1.sval, claseBase, variableAmbitoClase))
                                    	yyerror("No existe el atributo en la clase a la que se intenta hacer referencia.");
-                                   if (claseActual != "") //SE INTENTA SOBREESCRIBIR UN ATRIBUTO DE UNA CLASE HEREDADA
-                                   	yyerror("No se puede sobreescribir un atributo heredado de clase.");
                                    String nombre_nodo = $1.sval+":"+claseBase+":main";
                                    var x = new Nodo("Asignacion", new Nodo(nombre_nodo, t.obtenerAtributo(t.obtenerSimbolo(nombre_nodo), "tipo")), (Nodo) $3.obj);
                                    x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
