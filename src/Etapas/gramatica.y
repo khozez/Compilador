@@ -117,11 +117,12 @@ seccionAtributos: tipo listaAtributos
                                              lista_variables
                                                  .forEach( x ->
                                                      {
-                                                       int clave = t.obtenerSimbolo(x);
+                                                       int clave = t.obtenerSimbolo(x.substring(0, x.indexOf(":")-1);
                                                        if (clave != t.NO_ENCONTRADO){
                                                          if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
                                                          	t.agregarAtributo(clave, "uso", "variable");
                                                          	t.agregarAtributo(clave, "tipo", $1.sval);
+                                                         	t.modificarAtributo(clave, "lexema", x);
                                                          } else {
                                                            	yyerror("La variable declarada ya existe " + (x.contains(":") ? x.substring(0, x.indexOf(':')) : "en ambito global"));
                                                        	 }
@@ -461,11 +462,12 @@ declaracion: tipo listaDeclaracion
                      lista_variables
                          .forEach( x ->
                              {
-                               int clave = t.obtenerSimbolo(x);
+                               int clave = t.obtenerSimbolo(x.substring(0, x.indexOf(":")-1);
                                if (clave != t.NO_ENCONTRADO){
                                  if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
                                  	t.agregarAtributo(clave, "uso", "variable");
                                  	t.agregarAtributo(clave, "tipo", $1.sval);
+                                 	t.modificarAtributo(clave, "lexema", x);
                                  } else {
                                    	yyerror("La variable declarada ya existe " + (x.contains(":") ? x.substring(0, x.indexOf(':')) : "en ambito global"));
                                	 }
