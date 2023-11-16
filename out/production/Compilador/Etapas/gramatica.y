@@ -19,8 +19,8 @@
 %%
 
 programa: '{' cuerpoPrograma '}' {raiz = new Nodo("program", (Nodo) $2.obj , null);
-				  System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de programa");
-				  chequeoAsignacionVariables();}
+				  chequeoAsignacionVariables();
+				  out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de programa");}
 		| '{' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Programa vacio");}
 		| cuerpoPrograma '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de apertura '{'");}
 		| '{' cuerpoPrograma {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta llave de cierre '}'");}
@@ -59,14 +59,14 @@ declaracionClase: encabezadoClase '{' cuerpoClase '}'  {lista_clases_fd.remove(P
 							chequeoAsignacionVariables();
                                                         salirAmbito();
                                                         claseActual = "";
-							System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");
+                                                        out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");
 							$$ = new ParserVal( new Nodo("Clase", (Nodo) $1.obj, (Nodo) $3.obj) );}
 		 | encabezadoClase ',' {lista_clases_fd.add(Parser.ambito.substring(1));
 		 			chequeoAsignacionVariables();
                                         salirAmbito();
                                         claseActual = "";
                                         ambitoClase = "";
-		 			System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
+                                        out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
 		 | encabezadoClase {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
@@ -81,17 +81,19 @@ referenciaClase: listaReferencia asignacionClase {$$ = $2;}
 		 | listaReferencia referenciaMetodo {$$ = $2;}
 ;
 
-asignacionClase: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación a atributo de clase");
+asignacionClase: ID '=' expresion {
 				   var t = AnalizadorLexico.TS;
                                    variableAmbitoClase = ":" + $1.sval + ambitoClase;
                                    chequearHerenciaVariable(variableAmbitoClase);
                                    var x = new Nodo("Asignacion", new Nodo(variableAmbitoClase, t.obtenerAtributo(t.obtenerSimbolo(variableAmbitoClase), "tipo")), (Nodo) $3.obj);
                                    x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
+                                   out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación a atributo de clase");
                                    $$ = new ParserVal(x);
 				  }
 ;
 
-referenciaMetodo: ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
+referenciaMetodo: ID '(' ')' {
+			      out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                               var t = AnalizadorLexico.TS;
                               variableAmbitoClase = ":" + $1.sval + ambitoClase;
                               chequearHerenciaVariable(variableAmbitoClase);
@@ -171,7 +173,8 @@ sentenciaDeclarativaMetodo: declaracionFuncionLocal
 ;
 
 
-asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");
+asignacion: ID '=' expresion {
+			      out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación");
 			      var x = new Nodo("Asignacion", new Nodo(getVariableConAmbitoTS($1.sval), getTipoVariableConAmbitoTS($1.sval)), (Nodo) $3.obj);
 			      x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
 
@@ -188,20 +191,20 @@ asignacion: ID '=' expresion {System.out.println("LINEA "+(AnalizadorLexico.getC
 	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 ;
 
-sentenciaIf: IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+sentenciaIf: IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 												$$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $6.obj, null), new Nodo("else", (Nodo) $10.obj, null)))); }
 			| IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
-			| IF '(' condicion ')' '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+			| IF '(' condicion ')' '{' bloque_ejecucion '}' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 										$$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $6.obj, null), new Nodo("else", null, null))));
 										}
 			| IF '(' condicion ')' '{' bloque_ejecucion '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
-			| IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+			| IF '(' condicion ')' sentenciaEjecutable ',' ELSE sentenciaEjecutable ',' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 													     $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", (Nodo) $8.obj, null))));
 													   }
-			| IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+			| IF '(' condicion ')' sentenciaEjecutable ',' ELSE '{' bloque_ejecucion '}' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 													     $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", (Nodo) $9.obj, null))));
 													    }
-			| IF '(' condicion ')' sentenciaEjecutable ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+			| IF '(' condicion ')' sentenciaEjecutable ',' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
 										$$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", null, null))));
 									      }
 ;
@@ -220,13 +223,23 @@ condicion: expresion comparador expresion { var x = new Nodo($2.sval, (Nodo) $1.
 			| expresion comparador {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el segundo miembro de la condicion");}
 ;
 
-sentenciaIfRetorno: IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+sentenciaIfRetorno: IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+														          $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $6.obj, null), new Nodo("else", (Nodo) $10.obj, null))));
+														         }
 			| IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
-			| IF '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+										       $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $6.obj, null), new Nodo("else", null, null))));
+										      }
 			| IF '(' condicion ')' '{' bloque_ejecucion_return '}' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta 'END_IF'");}
-			| IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
-			| IF '(' condicion ')' sentencia_ejecutable_return ',' END_IF {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");}
+			| IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+															    $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", (Nodo) $8.obj, null))));
+															   }
+			| IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+															        $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", (Nodo) $9.obj, null))));
+															       }
+			| IF '(' condicion ')' sentencia_ejecutable_return ',' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
+										       $$ = new ParserVal( new Nodo("if", (Nodo) $3.obj, new Nodo("cuerpoIf", new Nodo("then", (Nodo) $5.obj, null), new Nodo("else", null, null))));
+										      }
 ;
 
 sentencia_ejecutable_return:  print {$$ = new ParserVal( $1.obj);}
@@ -247,15 +260,15 @@ bloque_ejecucion_return: bloque_ejecucion_return sentencia_ejecutable_return ','
 		     | sentencia_ejecutable_return ',' {$$ = new ParserVal( $1.obj);}
 ;
 
-sentenciaWhile: WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
+sentenciaWhile: WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
 								     $$ = new ParserVal( new Nodo("while", (Nodo) $3.obj, (Nodo) $7.obj));
 								    }
-               | WHILE '(' condicion ')' DO sentenciaEjecutable {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
+               | WHILE '(' condicion ')' DO sentenciaEjecutable {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia WHILE");
                							 $$ = new ParserVal( new Nodo("while", (Nodo) $3.obj, (Nodo) $6.obj));
                							}
 ;
 
-print: PRINT CADENA {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena");
+print: PRINT CADENA {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena.");
 		     var x = new Nodo($2.sval, null, null, "STRING");
 		     $$ = new ParserVal( new Nodo("Print", x, null, "STRING"));}
        | CADENA {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
@@ -267,7 +280,7 @@ return: RETURN {$$ = new ParserVal( new Nodo($1.sval, null));}
 parametro: tipo ID {$$ = new ParserVal( new Nodo($2.sval, $1.sval));}
 ;
 
-encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
+encabezadoMetodo: VOID ID '(' parametro ')' {
                   					     var t = AnalizadorLexico.TS;
                   					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                                                if (clave != t.NO_ENCONTRADO)
@@ -288,7 +301,7 @@ encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(Anali
                                                                parametro((Nodo) $4.obj);
                   					   }
                   		   | VOID ID '(' ID ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
-                  		   | VOID ID '('')'	{ System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Metodo");
+                  		   | VOID ID '('')'	{
                   		   			  var t = AnalizadorLexico.TS;
                                                             int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                                             if (clave != t.NO_ENCONTRADO)
@@ -309,7 +322,7 @@ encabezadoMetodo: VOID ID '(' parametro ')' { System.out.println("LINEA "+(Anali
                                                             }
 ;
 
-declaracionMetodo: encabezadoMetodo '{' cuerpoMetodo '}' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
+declaracionMetodo: encabezadoMetodo '{' cuerpoMetodo '}' { out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de metodo.");
                                                            $$ = new ParserVal(
                                                            new Nodo( "Funcion",
                                                                                     (Nodo) $1.obj ,
@@ -362,7 +375,7 @@ encabezadoFuncion: VOID ID '(' parametro ')' {
                                           }
 ;
 
-declaracionFuncion: encabezadoFuncion '{' cuerpoFuncion '}' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
+declaracionFuncion: encabezadoFuncion '{' cuerpoFuncion '}' { out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de función VOID.");
                                                             $$ = new ParserVal(
                                                             new Nodo( "Funcion",
                                                                          	    (Nodo) $1.obj ,
@@ -376,7 +389,7 @@ declaracionFuncion: encabezadoFuncion '{' cuerpoFuncion '}' { System.out.println
                                                             salirAmbito();}
 ;
 
-declaracionFuncionLocal: encabezadoFuncion '{' cuerpoFuncion '}' { System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de Función");
+declaracionFuncionLocal: encabezadoFuncion '{' cuerpoFuncion '}' { out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de función VOID local a metodo.");
 								var x = (Nodo) $1.obj;
 								String nombre = x.getIzq().getNombre();
 								funcLocales += 1;
@@ -415,8 +428,8 @@ listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo
                        	| sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", null, (Nodo) $1.obj));}
 ;
 
-invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
-					var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
+invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo de clase.");
+					var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), (Nodo) $3.obj, "void");
 					if (generarMenosMenos())
                                         {
 						$$ = new ParserVal( new Nodo("sentencias", x, menosMenos));
@@ -428,7 +441,7 @@ invocacionMetodo: ID '(' expresion ')' {System.out.println("LINEA "+(AnalizadorL
                                         }
 					chequearLlamadoFuncion($1.sval);
 					}
-		  | ID '(' ')' {System.out.println("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a función");
+		  | ID '(' ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo de clase.");
 		  		var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
 		  		$$ = new ParserVal(x);
 		  		chequearLlamadoFuncion($1.sval);
@@ -544,6 +557,7 @@ public static ArrayList<String> lista_funciones = new ArrayList<>();
 public static ArrayList<String> lista_clases = new ArrayList<>();
 public static ArrayList<String> lista_clases_fd = new ArrayList<>();
 public static OutputManager out_arbol = new OutputManager("./Arbol.txt");
+public static OutputManager out_estructura = new OutputManager("./Estructura.txt");
 
 public void setYylval(ParserVal yylval) {
 	this.yylval = yylval;
@@ -706,7 +720,7 @@ private boolean verificarRetornoArbol( Nodo n ){
     		return false;
   	switch (n.getNombre()) {
     		case "if":
-    		case "for":
+    		case "while":
       			return verificarRetornoArbol(n.getDer());
     		case "Return":
       			return true;
@@ -781,7 +795,6 @@ private String getAmbito(String nombreVar){
         	if (ambito_actual.contains(":"))
         	{
             		ambito_actual = ambito_actual.substring(ambito_actual.indexOf(':'));
-            		System.out.println(ambito_actual);
                 }
         	else
             		ambito_actual = "";

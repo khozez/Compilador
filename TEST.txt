@@ -7,27 +7,22 @@
     x = 4_s,
     y = 5_s,
     z = x + 7.0,
-    PRINT %variable mayor a
-    8%,
 
-    IF (x>=4_s)
-    {
-        aux = x + 4.0,
-        IF (aux > 8.0)
-            z = 9.0,
-        END_IF,
-        z = aux,
-    }ELSE
-    {
-        aux = 0.0,
-        z = 8.0,
-    }END_IF,
+    CLASS ca{
+        SHORT x_a,
 
-    WHILE (z !! 10.0) DO
-    {
-        aux = 1_s,
-        z = z + aux,
-    },
+        VOID aumentar()
+        {
+                x_a = x_a + 1_s,
+        },
+    }
+
+    CLASS cb{
+        ca,
+        SHORT y,
+    }
+
+    cb.ca.x_a = 4_s,
 
 
 }
