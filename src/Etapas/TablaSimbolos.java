@@ -52,7 +52,7 @@ public class TablaSimbolos {
         return NO_ENCONTRADO;
     }
 
-    public static void aplicarHerencia(String heredada, String heredera, String ambito)
+    public static Boolean aplicarHerencia(String heredada, String heredera, String ambito)
     {
         for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
             String lexema_actual = entrada.getValue().get(LEXEMA);
@@ -65,12 +65,23 @@ public class TablaSimbolos {
         for (Integer clave : clave_variables_herencia)
         {
             String lexema_actual = simbolos.get(clave).get(LEXEMA);
-            String variable = lexema_actual.substring(0, lexema_actual.indexOf(heredada.charAt(heredada.length()-1))+1);
-            variable = variable + ":" + heredera + ":main";
-            agregarSimbolo(variable);
-            simbolos.put(obtenerID(), obtenerAtributos(clave));
-            modificarAtributo(obtenerID(), "lexema", variable);
-            agregarAtributo(obtenerID(), "herencia", "variable");
+            if (obtenerAtributo(clave, "uso").equals("variable"))
+            {
+                String variable = lexema_actual.substring(0, lexema_actual.indexOf(":"));
+                variable = variable + heredera + ":main";
+                if (!agregarSimbolo(variable))
+                    return false;
+                simbolos.put(obtenerID(), obtenerAtributos(clave));
+                modificarAtributo(obtenerID(), "lexema", variable);
+                String herencia = lexema_actual.substring(0, lexema_actual.indexOf(heredada.charAt(heredada.length()-1))+1)+":"+heredera+":main";
+                agregarAtributo(obtenerID(), "herencia", herencia);
+            }else {
+                String variable = lexema_actual.substring(0, lexema_actual.indexOf(heredada.charAt(heredada.length()-1))+1);
+                variable = variable + ":" + heredera + ":main";
+                agregarSimbolo(variable);
+                simbolos.put(obtenerID(), obtenerAtributos(clave));
+                modificarAtributo(obtenerID(), "lexema", variable);
+            }
         }
 
         int clave_heredera = obtenerSimbolo(ambito.substring(1));
@@ -80,7 +91,10 @@ public class TablaSimbolos {
 
         if (obtenerAtributo(clave_heredada, "niveles_herencia") == NO_ENCONTRADO_MESSAGE)
             agregarAtributo(clave_heredada, "niveles_herencia", "0");
+
+        return true;
     }
+
 
     public static void eliminarSimbolo(int clave) {
         simbolos.remove(clave);
