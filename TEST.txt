@@ -1,28 +1,19 @@
 {
-    SHORT x,
-    SHORT y,
-    FLOAT z,
-    FLOAT aux,
-
-    x = 4_s,
-    y = 5_s,
-    z = x + 7.0,
+    SHORT h,
 
     CLASS ca{
-        SHORT x_a,
-
-        VOID aumentar()
+        VOID metodo (SHORT x)
         {
-                x_a = x_a + 1_s,
+            x = 4_s,
         },
     }
 
-    CLASS cb{
-        ca,
-        SHORT y,
+    VOID funcion (SHORT y)
+    {
+        y = 4_s,
+        RETURN,
     }
 
-    cb.ca.x_a = 4_s,
-
-
+    ca.metodo(h),
+    funcion(h),
 }

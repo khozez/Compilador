@@ -1,9 +1,8 @@
 LINEA 7: Asignación
-LINEA 8: Asignación
-LINEA 9: Asignación
-LINEA 16: Asignación
-LINEA 17: Fin de declaración de metodo.
-LINEA 18: Fin de declaración de clase.
-LINEA 23: Fin de declaración de clase.
-LINEA 25: Asignación a atributo de clase
-LINEA 28: Fin de programa
+LINEA 8: Fin de declaración de metodo.
+LINEA 9: Fin de declaración de clase.
+LINEA 13: Asignación
+LINEA 15: Fin de declaración de función VOID.
+LINEA 17: Llamado a metodo de clase
+LINEA 18: Invocación a metodo de clase.
+LINEA 19: Fin de programa

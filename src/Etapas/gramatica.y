@@ -99,12 +99,20 @@ referenciaMetodo: ID '(' ')' {
 			      out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                               var t = AnalizadorLexico.TS;
                               variableAmbitoClase = $1.sval + variableAmbitoClase + ":main";
-                              chequearMetodoClase(variableAmbitoClase);
-                              var x = new Nodo("LlamadaFuncion", new Nodo(variableAmbitoClase, null, null, "void"), null);
+                              if(chequearMetodoClase(variableAmbitoClase))
+                              	yyerror("El metodo al que se desea llamar tiene parametro");
+                              var x = new Nodo("LlamadoMetodo", new Nodo(variableAmbitoClase, null, null, "void"), null);
                               $$ = new ParserVal(x);
-                              chequearLlamadoFuncion($1.sval);
                               }
-                 | ID '(' expresion ')'
+                 | ID '(' expresion ')' {
+                                        out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
+                                        var t = AnalizadorLexico.TS;
+                                        variableAmbitoClase = $1.sval + variableAmbitoClase + ":main";
+                                        if(!chequearMetodoClase(variableAmbitoClase))
+                                        	yyerror("El metodo al que se desea llamar no acepta parametros.");
+                                        var x = new Nodo("LlamadoMetodo", new Nodo(variableAmbitoClase), (Nodo) $3.obj, "void");
+                                        $$ = new ParserVal(x);
+                                        }
 ;
 
 listaReferencia: listaReferencia ID '.' {variableAmbitoClase = ":" + $2.sval + variableAmbitoClase;}
@@ -172,7 +180,7 @@ sentenciaEjecutable: asignacion {$$ = new ParserVal( $1.obj);}
 
 sentenciaDeclarativa: declaracionFuncion {$$ = new ParserVal(null);}
 			| declaracion ',' {$$ = new ParserVal(null);}
-			| declaracionClase {$$ = $1;}
+			| declaracionClase {$$ = new ParserVal(null);}
 ;
 
 sentenciaDeclarativaMetodo: declaracionFuncionLocal
@@ -446,12 +454,14 @@ invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(Analizado
                                         {
                                         	$$ = new ParserVal(x);
                                         }
-					chequearLlamadoFuncion($1.sval);
+					if (!chequearLlamadoFuncion($1.sval))
+						yyerror("La funcion a la que se desea llamar no acepta parametros.");
 					}
 		  | ID '(' ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo de clase.");
 		  		var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
 		  		$$ = new ParserVal(x);
-		  		chequearLlamadoFuncion($1.sval);
+		  		if (chequearLlamadoFuncion($1.sval))
+		  			yyerror("La funcion a la que se desea llamar tiene parametro.");
 		  		}
 		  | ID '(' asignacion ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una asignación como parametro.");}
 		  | ID '(' tipo asignacion ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una declaración como parametro.");}
@@ -731,7 +741,7 @@ private boolean verificarRetornoArbol( Nodo n ){
     		case "if":
     		case "while":
       			return verificarRetornoArbol(n.getDer());
-    		case "Return":
+    		case "RETURN":
       			return true;
     		case "Funcion":
    		case "Print":
@@ -740,7 +750,7 @@ private boolean verificarRetornoArbol( Nodo n ){
     		case "cuerpoIf":
       			return verificarRetornoArbol(n.getIzq()) && verificarRetornoArbol(n.getDer());
     		default:
-      		return verificarRetornoArbol(n.getIzq()) || verificarRetornoArbol(n.getDer());
+      			return verificarRetornoArbol(n.getIzq()) || verificarRetornoArbol(n.getDer());
   	}
 }
 
@@ -820,21 +830,29 @@ public void chequeoAsignacionVariables()
 }
 
 //CHEQUEO DE LLAMADO A FUNCION SIN PARAMETROS
-private void chequearLlamadoFuncion(String funcion) {
+private Boolean chequearLlamadoFuncion(String funcion) {
   	var t = AnalizadorLexico.TS;
   	int entrada = t.obtenerSimbolo(funcion + getAmbito(funcion));
 
-	//SI LA FUNCION TIENE UN PARAMETRO, SE NOTIFICA ERROR
+	//SI LA FUNCION TIENE UN PARAMETRO, RETORNA TRUE
   	if (!t.obtenerAtributo(entrada, "parametro").equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE))
-    		yyerror("La funcion a la que se desea llamar tiene parametro");
+  		return true;
+  	return false;
 }
 
-private void chequearMetodoClase(String variableConAmbito)
+private Boolean chequearMetodoClase(String variableConAmbito)
 {
 	var t = AnalizadorLexico.TS;
 	int entrada = t.obtenerSimbolo(variableConAmbito);
 	if (entrada == TablaSimbolos.NO_ENCONTRADO)
         	yyerror("No existe el metodo al que se intenta invocar en la clase.");
+        else
+        {
+        	if (!t.obtenerAtributo(entrada, "parametro").equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE))
+                  	return true;
+                return false;
+        }
+        return true;
 }
 
 private void chequearNivelesHerencia(String clase_actual)
