@@ -1,7 +1,7 @@
-package Assembler;
+package Etapas;
 
 import Etapas.Nodo;
 
 public interface GeneradorEstructura {
-    String public generar(Nodo nodo);
+    public String generar(Nodo nodo);
 }

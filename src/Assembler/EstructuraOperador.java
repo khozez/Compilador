@@ -1,53 +1,110 @@
 package Assembler;
 
-import Etapas.Nodo;
-import Etapas.TablaSimbolos;
+import Etapas.*;
 
-public class EstructuraOperador implements GeneradorEstructura{
+public class EstructuraOperador extends Generador implements GeneradorEstructura {
 
-    String operando;
+    private String operando;
 
     public EstructuraOperador(String operando) {
         this.operando = operando;
     }
 
-    String generar(Nodo nodo){
-        String codigo;
+    public String generar(Nodo nodo) {
+        var ts = AnalizadorLexico.TS;
+        String codigo = "";
         String subArbol1 = nodo.getIzq().getNombre();
         String subArbol2 = nodo.getDer().getNombre();
         String tipo = nodo.getTipo();
 
-        if (tipo.equals("SHORT")){ // operaciones para tipo de dato SHORT (8 bits)
-
-            if (operando.equals("DIV")){ // Division
-                codigo = "MOV AH, 0\nMOV AX, " + subArbol1 + "\nMOV BL, " + subArbol2 + "\nCMP BL, 0\nJE division_por_cero\nDIV BL\nMOV @aux" + aux + ", AL\n";
-                TablaSimbolos.agregarSimbolo("aux" + aux);
-                TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), tipo, "", "auxiliar");
-                setNodoAux(nodo, aux);
-                aux++;
-
-            } else if (operando.equals("ADD")) {
-                codigo = "MOV";
-                
-            }
-
-        } else if (tipo.equals("ULONG")){
-            if (operando.equals("DIV")){
-                codigo = "MOV DX, 0\nMOV AX, " + subArbol1 + "\nMOV BX, " + subArbol2 + "\nCMP BX, 0\nJE division_por_cero\nDIV BX\nMOV @aux" + aux + ", AX\n";
-                TablaSimbolos.agregarSimbolo("aux" + aux);
-                TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), tipo, "", "auxiliar");
-                setNodoAux(nodo, aux);
-                aux++;
-            }
-        } else if (tipo.equals("FLOAT")){
-            if (operando.equals("DIV")) {
-                codigo = "FLD " + subArbol1 + "\nFLD " + subArbol2 + "\nFLDZ\nFCOM\nFSTSW aux_mem_2bytes\nSAHF\nJE division_por_cero\nFDIV\nFSTP @aux" + aux + "\n";
-                TablaSimbolos.agregarSimbolo("aux" + aux);
-                TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), tipo, "", "auxiliar");
-                setNodoAux(nodo, aux);
-                aux++;
-            }
+        switch (operando) {
+            case "DIV":
+            case "ADD":
+            case "SUB":
+            case "MUL":
+                codigo = generarOperacion(tipo, operando, subArbol1, subArbol2, nodo);
+                break;
         }
 
+        return codigo;
     }
+    public static void agregarAuxiliar(String tipo, Nodo nodo) {
+        var ts = AnalizadorLexico.TS;
+        ts.agregarSimbolo("aux" + aux);
+        ts.agregarAtributo(ts.obtenerID(), "tipo", tipo);
+        ts.agregarAtributo(ts.obtenerID(), "uso", "auxiliar");
+        setNodoVarAuxiliar(nodo, aux);
+        aux++;
+    }
+
+    private String generarOperacion(String tipo, String operando, String subArbol1, String subArbol2, Nodo nodo) {
+        String codigo = "";
+
+        switch (tipo) {
+            case "SHORT":
+                switch (operando) {
+                    case "DIV":
+                        codigo = String.format("MOV AH, 0\nMOV AX, %s\nMOV BL, %s\nCMP BL, 0\nJE division_por_cero\nDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "ADD":
+                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nADD AL, BL\nMOV @aux%d, AL\nJO error_overflow", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "SUB":
+                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nSUB AL, BL\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "MUL":
+                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nMUL AL, BL\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                }
+                break;
+            case "ULONG":
+                switch (operando) {
+                    case "DIV":
+                        codigo = String.format("MOV DX, 0\nMOV AX, %s\nMOV BX, %s\nCMP BX, 0\nJE division_por_cero\nDIV BX\nMOV @aux%d, AX\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "ADD":
+                        codigo = String.format("MOV AX, %s\nMOV BX, %s\nADD AX, BX\nMOV @aux%d, AX\nJO error_overflow", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "SUB":
+                        codigo = String.format("MOV AX, %s\nMOV BX, %s\nSUB AX, BX\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "MUL":
+                        codigo = String.format("MOV AX, %s\nMOV BX, %s\nMUL AX, BX\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                }
+                break;
+            case "FLOAT":
+                switch (operando) {
+                    case "DIV":
+                        codigo = String.format("FLD %s\nFLD %s\nFLDZ\nFCOM\nFSTSW aux_mem_2bytes\nSAHF\nJE division_por_cero\nFDIV\nFSTP @aux%d\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "ADD":
+                        codigo = String.format("FLD %s\nFLD %s\nFADD\nFSTP @aux%d\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "SUB":
+                        codigo = String.format("FLD %s\nFLD %s\nFSUB\nFSTP @aux%d\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                    case "MUL":
+                        codigo = String.format("FLD %s\nFLD %s\nFMUL\nFSTP @aux%d\nFSTSW aux_mem_2bytes\nSAHF\nJO error_overflow\n", subArbol1, subArbol2, aux);
+                        agregarAuxiliar(tipo, nodo);
+                        break;
+                }
+                break;
+        }
+
+        return codigo;
+    }
+
 }
+

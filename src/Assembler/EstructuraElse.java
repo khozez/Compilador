@@ -1,10 +1,12 @@
 package Assembler;
 
+import Etapas.Generador;
+import Etapas.GeneradorEstructura;
 import Etapas.Nodo;
 
-public class EstructuraElse implements GeneradorEstructura{
-    String generar(Nodo nodo){
-        comprimirNodo(nodo);
-        return "etiqueta" + etiquetas.pop() + ": \n";
+public class EstructuraElse extends Generador implements GeneradorEstructura {
+    public String generar(Nodo nodo){
+        pilaEtiquetas.pop();
+        return "etiqueta" + etiqueta + ": \n";
     }
 }

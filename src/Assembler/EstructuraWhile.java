@@ -1,15 +1,12 @@
 package Assembler;
 
+import Etapas.Generador;
+import Etapas.GeneradorEstructura;
 import Etapas.Nodo;
 
-public class EstructuraWhile implements GeneradorEstructura {
-    String generar(Nodo nodo){
-       /* label1; // evaluar condicion
-        CMP;
-        jg label2;
-        cuerpowhile;
-        label2; */
-
-
+public class EstructuraWhile extends Generador implements GeneradorEstructura {
+    public String generar(Nodo nodo){
+        int etiqueta1 = pilaEtiquetas.pop();
+        return "JMP etiqueta" + pilaEtiquetas.pop() + "\netiqueta" + etiqueta1 + ":";
     }
 }
