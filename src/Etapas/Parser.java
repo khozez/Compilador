@@ -595,12 +595,12 @@ final static String yyrule[] = {
 "comparador : '='",
 };
 
-//#line 549 "gramatica.y"
+//#line 550 "gramatica.y"
 
 public static Nodo raiz = null;
 private static Nodo menosMenos = null;
 public static String ambito = ":main";
-public static String variableAmbitoClase = ":main";
+public static String variableAmbitoClase = "";
 public static String ambitoClase = ":main";
 public static final String ERROR_LEXICO = "Error_lexico";
 public static final String ERROR_SINTACTICO = "Error_sintactico";
@@ -990,6 +990,42 @@ private static Boolean chequearReferencia(String atributo, String claseBase, Str
 	return false;
 }
 
+private static Boolean aplicarHerencia(String heredada, String heredera)
+{
+	var t = AnalizadorLexico.TS;
+	ArrayList<Integer> clave_variables_herencia = new ArrayList<>();
+	clave_variables_herencia = t.variablesEnHerencia(heredada);
+	for (Integer clave : clave_variables_herencia)
+                {
+                    String lexema_actual = t.obtenerAtributo(clave, "lexema");
+                    if (t.obtenerAtributo(clave, "uso").equals("variable"))
+                    {
+                        String variable = lexema_actual.substring(0, lexema_actual.indexOf(":"));
+                        variable = variable + ":" + heredera + ":main";
+                        if (!t.agregarSimbolo(variable))
+                            return false;
+                        t.agregarAtributos(t.obtenerID(), t.obtenerAtributos(clave));
+                        t.modificarAtributo(t.obtenerID(), "lexema", variable);
+                        String herencia = lexema_actual.substring(0, lexema_actual.lastIndexOf(":"))+":"+heredera+":main";
+                        t.agregarAtributo(t.obtenerID(), "herencia", herencia);
+                    }else {
+                        String variable = lexema_actual.substring(0, lexema_actual.lastIndexOf(":"))+":"+heredera+":main";
+                        t.agregarSimbolo(variable);
+                        t.agregarAtributos(t.obtenerID(), t.obtenerAtributos(clave));
+                        t.modificarAtributo(t.obtenerID(), "lexema", variable);
+                    }
+                }
+
+        int clave_heredera = t.obtenerSimbolo(Parser.ambito.substring(1));
+        int clave_heredada = t.obtenerSimbolo(heredada+":main");
+        t.agregarAtributo(clave_heredera, "clase_heredada", heredada+":main");
+        t.agregarAtributo(clave_heredera, "niveles_herencia", "0");
+
+        if (t.obtenerAtributo(clave_heredada, "niveles_herencia") == t.NO_ENCONTRADO_MESSAGE)
+        	t.agregarAtributo(clave_heredada, "niveles_herencia", "0");
+        return true;
+}
+
 int yylex(){
     int IDtoken = 0; // IDtoken va a guardar el ID del token que genere el AL
     AnalizadorLexico.estado = 0;
@@ -1052,14 +1088,15 @@ public static void main(String[] args) {
                 }
                 Parser.imprimir(errorLexico, "Errores Lexicos");
                 Parser.imprimir(errorSintactico, "Errores Sintacticos");
-                TablaSimbolos.imprimirTabla();
+                AnalizadorLexico.TS.limpiarTabla();
+                AnalizadorLexico.TS.imprimirTabla();
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }
 }
-//#line 991 "Parser.java"
+//#line 1028 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1301,11 +1338,11 @@ case 15:
 break;
 case 17:
 //#line 80 "gramatica.y"
-{yyval = val_peek(0);}
+{yyval = val_peek(0); variableAmbitoClase = "";}
 break;
 case 18:
 //#line 81 "gramatica.y"
-{yyval = val_peek(0);}
+{yyval = val_peek(0); variableAmbitoClase = "";}
 break;
 case 19:
 //#line 84 "gramatica.y"
@@ -1313,10 +1350,8 @@ case 19:
 				   var t = AnalizadorLexico.TS;
                                    variableAmbitoClase = val_peek(2).sval + variableAmbitoClase;
                                    String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
-                                   if (!chequearReferencia(val_peek(2).sval, claseBase, variableAmbitoClase))
+                                   if (!chequearReferencia(val_peek(2).sval, claseBase, variableAmbitoClase+":main"))
                                    	yyerror("No existe el atributo en la clase a la que se intenta hacer referencia.");
-                                   if (claseActual != "") /*SE INTENTA SOBREESCRIBIR UN ATRIBUTO DE UNA CLASE HEREDADA*/
-                                   	yyerror("No se puede sobreescribir un atributo heredado de clase.");
                                    String nombre_nodo = val_peek(2).sval+":"+claseBase+":main";
                                    var x = new Nodo("Asignacion", new Nodo(nombre_nodo, t.obtenerAtributo(t.obtenerSimbolo(nombre_nodo), "tipo")), (Nodo) val_peek(0).obj);
                                    x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
@@ -1325,11 +1360,11 @@ case 19:
 				  }
 break;
 case 20:
-//#line 100 "gramatica.y"
+//#line 98 "gramatica.y"
 {
 			      out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                               var t = AnalizadorLexico.TS;
-                              variableAmbitoClase = val_peek(2).sval + ambitoClase;
+                              variableAmbitoClase = val_peek(2).sval + variableAmbitoClase + ":main";
                               chequearMetodoClase(variableAmbitoClase);
                               var x = new Nodo("LlamadaFuncion", new Nodo(variableAmbitoClase, null, null, "void"), null);
                               yyval = new ParserVal(x);
@@ -1337,15 +1372,15 @@ case 20:
                               }
 break;
 case 22:
-//#line 112 "gramatica.y"
+//#line 110 "gramatica.y"
 {variableAmbitoClase = ":" + val_peek(1).sval + variableAmbitoClase;}
 break;
 case 23:
-//#line 113 "gramatica.y"
+//#line 111 "gramatica.y"
 {variableAmbitoClase = ":"+ val_peek(1).sval + variableAmbitoClase;}
 break;
 case 24:
-//#line 117 "gramatica.y"
+//#line 115 "gramatica.y"
 {
                                              var t = AnalizadorLexico.TS;
                                              lista_variables
@@ -1356,6 +1391,7 @@ case 24:
                                                          if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
                                                          	t.agregarAtributo(clave, "uso", "variable");
                                                          	t.agregarAtributo(clave, "tipo", val_peek(1).sval);
+                                                         	t.modificarAtributo(clave, "lexema", x);
                                                          } else {
                                                            	yyerror("La variable declarada ya existe " + (x.contains(":") ? x.substring(0, x.indexOf(':')) : "en ambito global"));
                                                        	 }
@@ -1369,19 +1405,19 @@ case 24:
                           		}
 break;
 case 26:
-//#line 141 "gramatica.y"
+//#line 140 "gramatica.y"
 { lista_variables.add(val_peek(2).sval + Parser.ambito); }
 break;
 case 27:
-//#line 142 "gramatica.y"
+//#line 141 "gramatica.y"
 { lista_variables.add(val_peek(1).sval + Parser.ambito); }
 break;
 case 28:
-//#line 143 "gramatica.y"
+//#line 142 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la lista de variables.");}
 break;
 case 29:
-//#line 146 "gramatica.y"
+//#line 145 "gramatica.y"
 { var t = AnalizadorLexico.TS;
 			 int clave = t.obtenerSimbolo(val_peek(1).sval+Parser.ambito);
  		       	 if (clave != t.NO_ENCONTRADO){
@@ -1395,7 +1431,8 @@ case 29:
                                  t.agregarAtributo(t.obtenerID(), "uso", "herencia");
                          }
                          herencia = true;
-                         if (!t.aplicarHerencia(val_peek(1).sval, claseActual, Parser.ambito))
+
+                         if (!aplicarHerencia(val_peek(1).sval, claseActual))
                          	yyerror("No se puede sobreescribir atributos de clase.");
 			 chequearNivelesHerencia(Parser.ambito.substring(1));
  		       }
@@ -1641,9 +1678,9 @@ case 77:
                                                                   	t.agregarAtributo(clave, "uso", "nombre_metodo");
                                                                    }
                                                                else {
-                                                               	t.agregarSimbolo(val_peek(3).sval + Parser.ambito);
-                                                               	t.agregarAtributo(t.obtenerID(), "tipo", "void");
-                                                               	t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
+                                                                t.agregarSimbolo(val_peek(3).sval + Parser.ambito);
+                                                                t.agregarAtributo(t.obtenerID(), "tipo", "void");
+                                                                t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                                }
                                                                yyval = new ParserVal(new Nodo("Encabezado", new Nodo(val_peek(3).sval + Parser.ambito), (Nodo) val_peek(1).obj, "void"));
                                                                lista_funciones.add(val_peek(3).sval + Parser.ambito.replace(':','_'));
@@ -1843,6 +1880,7 @@ case 100:
                                  if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
                                  	t.agregarAtributo(clave, "uso", "variable");
                                  	t.agregarAtributo(clave, "tipo", val_peek(1).sval);
+                                 	t.modificarAtributo(clave, "lexema", x);
                                  } else {
                                    	yyerror("La variable declarada ya existe " + (x.contains(":") ? x.substring(0, x.indexOf(':')) : "en ambito global"));
                                	 }
@@ -1856,67 +1894,67 @@ case 100:
              	}
 break;
 case 101:
-//#line 485 "gramatica.y"
+//#line 486 "gramatica.y"
 {  lista_variables.add(val_peek(2).sval + Parser.ambito);
  					     variables_no_asignadas.add(val_peek(2).sval + Parser.ambito);
  					  }
 break;
 case 102:
-//#line 488 "gramatica.y"
+//#line 489 "gramatica.y"
 { lista_variables.add(val_peek(0).sval + Parser.ambito);
 		       variables_no_asignadas.add(val_peek(0).sval + Parser.ambito);
 		     }
 break;
 case 103:
-//#line 493 "gramatica.y"
-{ yyval = val_peek(0); }
-break;
-case 104:
 //#line 494 "gramatica.y"
 { yyval = val_peek(0); }
 break;
-case 105:
+case 104:
 //#line 495 "gramatica.y"
 { yyval = val_peek(0); }
 break;
-case 106:
+case 105:
 //#line 496 "gramatica.y"
 { yyval = val_peek(0); }
 break;
+case 106:
+//#line 497 "gramatica.y"
+{ yyval = val_peek(0); }
+break;
 case 107:
-//#line 499 "gramatica.y"
+//#line 500 "gramatica.y"
 { yyval = val_peek(0);}
 break;
 case 108:
-//#line 500 "gramatica.y"
+//#line 501 "gramatica.y"
 { var x = new Nodo("+", (Nodo) val_peek(2).obj, (Nodo)  val_peek(0).obj, null);
                                   x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
                                   yyval = new ParserVal(x);}
 break;
 case 109:
-//#line 503 "gramatica.y"
+//#line 504 "gramatica.y"
 { var x = new Nodo("-", (Nodo) val_peek(2).obj, (Nodo)  val_peek(0).obj, null);
     				  x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
     				  yyval = new ParserVal(x);}
 break;
 case 110:
-//#line 508 "gramatica.y"
+//#line 509 "gramatica.y"
 { yyval = val_peek(0); }
 break;
 case 111:
-//#line 509 "gramatica.y"
+//#line 510 "gramatica.y"
 { var x = new Nodo("*", (Nodo) val_peek(2).obj, (Nodo)  val_peek(0).obj);
     			       x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
     			       yyval = new ParserVal(x);}
 break;
 case 112:
-//#line 512 "gramatica.y"
+//#line 513 "gramatica.y"
 { var x = new Nodo("/", (Nodo) val_peek(2).obj, (Nodo)  val_peek(0).obj);
                                x.setTipo(validarTipos(x, (Nodo) val_peek(2).obj, (Nodo) val_peek(0).obj));
                                yyval = new ParserVal(x);}
 break;
 case 113:
-//#line 517 "gramatica.y"
+//#line 518 "gramatica.y"
 {String x = getTipoVariableConAmbitoTS(val_peek(0).sval);
             if (x != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
             	yyval =  new ParserVal( new Nodo(getVariableConAmbitoTS(val_peek(0).sval), x));
@@ -1927,7 +1965,7 @@ case 113:
             }
 break;
 case 114:
-//#line 525 "gramatica.y"
+//#line 526 "gramatica.y"
 {String x = getTipoVariableConAmbitoTS(val_peek(1).sval);
                          if (x != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
                          	yyval =  new ParserVal( new Nodo(getVariableConAmbitoTS(val_peek(1).sval), x));
@@ -1939,46 +1977,46 @@ case 114:
         }
 break;
 case 115:
-//#line 534 "gramatica.y"
+//#line 535 "gramatica.y"
 { yyval = new ParserVal( new Nodo(val_peek(0).sval, getTipo(val_peek(0).sval))); }
 break;
 case 116:
-//#line 535 "gramatica.y"
+//#line 536 "gramatica.y"
 { String x = comprobarRango(val_peek(0).sval); yyval = new ParserVal( new Nodo(x, getTipo(x))); }
 break;
 case 117:
-//#line 536 "gramatica.y"
+//#line 537 "gramatica.y"
 { yyval = val_peek(1); }
 break;
 case 118:
-//#line 539 "gramatica.y"
+//#line 540 "gramatica.y"
 { yyval = new ParserVal(">="); }
 break;
 case 119:
-//#line 540 "gramatica.y"
+//#line 541 "gramatica.y"
 { yyval = new ParserVal("<="); }
 break;
 case 120:
-//#line 541 "gramatica.y"
+//#line 542 "gramatica.y"
 { yyval = new ParserVal("=="); }
 break;
 case 121:
-//#line 542 "gramatica.y"
+//#line 543 "gramatica.y"
 { yyval = new ParserVal("!!"); }
 break;
 case 122:
-//#line 543 "gramatica.y"
-{ yyval = new ParserVal("<"); }
-break;
-case 123:
 //#line 544 "gramatica.y"
 { yyval = new ParserVal("<"); }
 break;
-case 124:
+case 123:
 //#line 545 "gramatica.y"
+{ yyval = new ParserVal("<"); }
+break;
+case 124:
+//#line 546 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal escrito el comparador ==");}
 break;
-//#line 1905 "Parser.java"
+//#line 1943 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

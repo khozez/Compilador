@@ -18,7 +18,7 @@ public class AS1 implements AccionSemantica{
         if (!simbolo_encontrado) {
             AnalizadorLexico.TS.agregarSimbolo(lexema);
         }
-        System.out.println("Identificador: "+lexema);
+        AnalizadorLexico.out_tokens.write("Identificador: "+lexema+" ("+AnalizadorLexico.IDENTIFICADOR+")");
         return AnalizadorLexico.IDENTIFICADOR;
     }
 }

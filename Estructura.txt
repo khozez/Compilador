@@ -1,0 +1,9 @@
+LINEA 7: Asignación
+LINEA 8: Asignación
+LINEA 9: Asignación
+LINEA 16: Asignación
+LINEA 17: Fin de declaración de metodo.
+LINEA 18: Fin de declaración de clase.
+LINEA 23: Fin de declaración de clase.
+LINEA 25: Asignación a atributo de clase
+LINEA 28: Fin de programa

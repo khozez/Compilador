@@ -32,7 +32,7 @@ public class AS4 implements AccionSemantica{
         }
 
         //RETORNAMOS EL ID DEL TOKEN DE UNA CONSTANTE
-        System.out.println("Constante float: "+AnalizadorLexico.lexema);
+        AnalizadorLexico.out_tokens.write("Constante float: "+AnalizadorLexico.lexema+" ("+AnalizadorLexico.CONSTANTE+")");
         return AnalizadorLexico.CONSTANTE;
     }
 }

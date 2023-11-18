@@ -12,7 +12,7 @@ public class AS7 implements AccionSemantica{
     public int ejecutar(BufferedInputStream lector, String lexema) {
         try {
             AnalizadorLexico.lexema += (char) lector.read();
-            System.out.println("Palabra reservada: "+AnalizadorLexico.lexema);
+            AnalizadorLexico.out_tokens.write("Palabra reservada: "+AnalizadorLexico.lexema+" ("+TablaPalabrasReservadas.obtenerIdentificador(AnalizadorLexico.lexema+")"));
             return TablaPalabrasReservadas.obtenerIdentificador(AnalizadorLexico.lexema);
         } catch (IOException e) {
             e.printStackTrace();

@@ -77,15 +77,18 @@ cuerpoClase: cuerpoClase seccionAtributos
 ;
 
 
-referenciaClase: listaReferencia asignacionClase {$$ = $2;}
-		 | listaReferencia referenciaMetodo {$$ = $2;}
+referenciaClase: listaReferencia asignacionClase {$$ = $2; variableAmbitoClase = "";}
+		 | listaReferencia referenciaMetodo {$$ = $2; variableAmbitoClase = "";}
 ;
 
 asignacionClase: ID '=' expresion {
 				   var t = AnalizadorLexico.TS;
-                                   variableAmbitoClase = ":" + $1.sval + ambitoClase;
-                                   chequearHerenciaVariable(variableAmbitoClase);
-                                   var x = new Nodo("Asignacion", new Nodo(variableAmbitoClase, t.obtenerAtributo(t.obtenerSimbolo(variableAmbitoClase), "tipo")), (Nodo) $3.obj);
+                                   variableAmbitoClase = $1.sval + variableAmbitoClase;
+                                   String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
+                                   if (!chequearReferencia($1.sval, claseBase, variableAmbitoClase+":main"))
+                                   	yyerror("No existe el atributo en la clase a la que se intenta hacer referencia.");
+                                   String nombre_nodo = $1.sval+":"+claseBase+":main";
+                                   var x = new Nodo("Asignacion", new Nodo(nombre_nodo, t.obtenerAtributo(t.obtenerSimbolo(nombre_nodo), "tipo")), (Nodo) $3.obj);
                                    x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
                                    out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignación a atributo de clase");
                                    $$ = new ParserVal(x);
@@ -95,8 +98,8 @@ asignacionClase: ID '=' expresion {
 referenciaMetodo: ID '(' ')' {
 			      out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                               var t = AnalizadorLexico.TS;
-                              variableAmbitoClase = ":" + $1.sval + ambitoClase;
-                              chequearHerenciaVariable(variableAmbitoClase);
+                              variableAmbitoClase = $1.sval + variableAmbitoClase + ":main";
+                              chequearMetodoClase(variableAmbitoClase);
                               var x = new Nodo("LlamadaFuncion", new Nodo(variableAmbitoClase, null, null, "void"), null);
                               $$ = new ParserVal(x);
                               chequearLlamadoFuncion($1.sval);
@@ -119,6 +122,7 @@ seccionAtributos: tipo listaAtributos
                                                          if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
                                                          	t.agregarAtributo(clave, "uso", "variable");
                                                          	t.agregarAtributo(clave, "tipo", $1.sval);
+                                                         	t.modificarAtributo(clave, "lexema", x);
                                                          } else {
                                                            	yyerror("La variable declarada ya existe " + (x.contains(":") ? x.substring(0, x.indexOf(':')) : "en ambito global"));
                                                        	 }
@@ -150,7 +154,10 @@ herenciaNombre: ID ',' { var t = AnalizadorLexico.TS;
                                  t.agregarSimbolo($1.sval+Parser.ambito);
                                  t.agregarAtributo(t.obtenerID(), "uso", "herencia");
                          }
-                         t.aplicarHerencia($1.sval, claseActual, Parser.ambito);
+                         herencia = true;
+
+                         if (!aplicarHerencia($1.sval, claseActual))
+                         	yyerror("No se puede sobreescribir atributos de clase.");
 			 chequearNivelesHerencia(Parser.ambito.substring(1));
  		       }
 ;
@@ -291,9 +298,9 @@ encabezadoMetodo: VOID ID '(' parametro ')' {
                                                                   	t.agregarAtributo(clave, "uso", "nombre_metodo");
                                                                    }
                                                                else {
-                                                               	t.agregarSimbolo($2.sval + Parser.ambito);
-                                                               	t.agregarAtributo(t.obtenerID(), "tipo", "void");
-                                                               	t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
+                                                                t.agregarSimbolo($2.sval + Parser.ambito);
+                                                                t.agregarAtributo(t.obtenerID(), "tipo", "void");
+                                                                t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                                }
                                                                $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), (Nodo) $4.obj, "void"));
                                                                lista_funciones.add($2.sval + Parser.ambito.replace(':','_'));
@@ -461,6 +468,7 @@ declaracion: tipo listaDeclaracion
                                  if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
                                  	t.agregarAtributo(clave, "uso", "variable");
                                  	t.agregarAtributo(clave, "tipo", $1.sval);
+                                 	t.modificarAtributo(clave, "lexema", x);
                                  } else {
                                    	yyerror("La variable declarada ya existe " + (x.contains(":") ? x.substring(0, x.indexOf(':')) : "en ambito global"));
                                	 }
@@ -543,12 +551,13 @@ comparador: MAYORIGUAL   { $$ = new ParserVal(">="); }
 public static Nodo raiz = null;
 private static Nodo menosMenos = null;
 public static String ambito = ":main";
-public static String variableAmbitoClase = ":main";
+public static String variableAmbitoClase = "";
 public static String ambitoClase = ":main";
 public static final String ERROR_LEXICO = "Error_lexico";
 public static final String ERROR_SINTACTICO = "Error_sintactico";
 private static int funcLocales = 0;
 public static String claseActual = "";
+private static Boolean herencia = false;
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
 public static ArrayList<String> lista_variables = new ArrayList<>();
@@ -820,17 +829,12 @@ private void chequearLlamadoFuncion(String funcion) {
     		yyerror("La funcion a la que se desea llamar tiene parametro");
 }
 
-private void chequearHerenciaVariable(String variableConAmbito)
+private void chequearMetodoClase(String variableConAmbito)
 {
 	var t = AnalizadorLexico.TS;
 	int entrada = t.obtenerSimbolo(variableConAmbito);
 	if (entrada == TablaSimbolos.NO_ENCONTRADO)
-        	yyerror("No se puede acceder al atributo de la clase.");
-        else{
-        	String x = t.obtenerAtributo(entrada, "herencia");
-        	if (!x.equals(t.NO_ENCONTRADO_MESSAGE) && t.obtenerAtributo(entrada, "tipo").equals("void"))
-        		yyerror("No se puede sobreescribir un atributo heredado.");
-        }
+        	yyerror("No existe el metodo al que se intenta invocar en la clase.");
 }
 
 private void chequearNivelesHerencia(String clase_actual)
@@ -924,6 +928,55 @@ private static void modificar_referencias(boolean agregado, String numero, Strin
 
 }
 
+private static Boolean chequearReferencia(String atributo, String claseBase, String referenciaCompleta){
+	var t = AnalizadorLexico.TS;
+	int clave = t.obtenerSimbolo(atributo+":"+claseBase+":main");
+	if (clave != t.NO_ENCONTRADO)
+	{
+		if (!t.obtenerAtributo(clave, "herencia").equals(referenciaCompleta))
+			return false;
+		else
+			return true;
+	}
+	return false;
+}
+
+private static Boolean aplicarHerencia(String heredada, String heredera)
+{
+	var t = AnalizadorLexico.TS;
+	ArrayList<Integer> clave_variables_herencia = new ArrayList<>();
+	clave_variables_herencia = t.variablesEnHerencia(heredada);
+	for (Integer clave : clave_variables_herencia)
+                {
+                    String lexema_actual = t.obtenerAtributo(clave, "lexema");
+                    if (t.obtenerAtributo(clave, "uso").equals("variable"))
+                    {
+                        String variable = lexema_actual.substring(0, lexema_actual.indexOf(":"));
+                        variable = variable + ":" + heredera + ":main";
+                        if (!t.agregarSimbolo(variable))
+                            return false;
+                        t.agregarAtributos(t.obtenerID(), t.obtenerAtributos(clave));
+                        t.modificarAtributo(t.obtenerID(), "lexema", variable);
+                        String herencia = lexema_actual.substring(0, lexema_actual.lastIndexOf(":"))+":"+heredera+":main";
+                        t.agregarAtributo(t.obtenerID(), "herencia", herencia);
+                    }else {
+                        String variable = lexema_actual.substring(0, lexema_actual.lastIndexOf(":"))+":"+heredera+":main";
+                        t.agregarSimbolo(variable);
+                        t.agregarAtributos(t.obtenerID(), t.obtenerAtributos(clave));
+                        t.modificarAtributo(t.obtenerID(), "lexema", variable);
+                    }
+                }
+
+        int clave_heredera = t.obtenerSimbolo(Parser.ambito.substring(1));
+        int clave_heredada = t.obtenerSimbolo(heredada+":main");
+        t.agregarAtributo(clave_heredera, "clase_heredada", heredada+":main");
+        t.agregarAtributo(clave_heredera, "niveles_herencia", "0");
+
+        if (t.obtenerAtributo(clave_heredada, "niveles_herencia") == t.NO_ENCONTRADO_MESSAGE)
+        	t.agregarAtributo(clave_heredada, "niveles_herencia", "0");
+        return true;
+}
+
 int yylex(){
     int IDtoken = 0; // IDtoken va a guardar el ID del token que genere el AL
     AnalizadorLexico.estado = 0;
@@ -986,7 +1039,8 @@ public static void main(String[] args) {
                 }
                 Parser.imprimir(errorLexico, "Errores Lexicos");
                 Parser.imprimir(errorSintactico, "Errores Sintacticos");
-                TablaSimbolos.imprimirTabla();
+                AnalizadorLexico.TS.limpiarTabla();
+                AnalizadorLexico.TS.imprimirTabla();
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
         } else {

@@ -26,6 +26,7 @@ public class AnalizadorLexico {
     public static BufferedInputStream lector;
     private static TablaPalabrasReservadas PR = new TablaPalabrasReservadas();
     public static TablaSimbolos TS = new TablaSimbolos();
+    public static OutputManager out_tokens = new OutputManager("./Tokens.txt");
 
     private static int cant_lineas = 1;
     private static int posicion = 0;

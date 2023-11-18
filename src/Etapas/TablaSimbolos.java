@@ -20,7 +20,6 @@ public class TablaSimbolos {
         return simbolos.keySet();
     }
     private static final Map<Integer, Map<String, String>> simbolos = new HashMap<>();
-    private static final ArrayList<Integer> clave_variables_herencia = new ArrayList<>();
     private static int identificador_siguiente = 1;
 
 
@@ -52,8 +51,9 @@ public class TablaSimbolos {
         return NO_ENCONTRADO;
     }
 
-    public static Boolean aplicarHerencia(String heredada, String heredera, String ambito)
+    public static ArrayList<Integer> variablesEnHerencia(String heredada)
     {
+        ArrayList<Integer> clave_variables_herencia = new ArrayList<>();
         for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
             String lexema_actual = entrada.getValue().get(LEXEMA);
 
@@ -61,38 +61,7 @@ public class TablaSimbolos {
                 clave_variables_herencia.add(entrada.getKey());
             }
         }
-
-        for (Integer clave : clave_variables_herencia)
-        {
-            String lexema_actual = simbolos.get(clave).get(LEXEMA);
-            if (obtenerAtributo(clave, "uso").equals("variable"))
-            {
-                String variable = lexema_actual.substring(0, lexema_actual.indexOf(":"));
-                variable = variable + heredera + ":main";
-                if (!agregarSimbolo(variable))
-                    return false;
-                simbolos.put(obtenerID(), obtenerAtributos(clave));
-                modificarAtributo(obtenerID(), "lexema", variable);
-                String herencia = lexema_actual.substring(0, lexema_actual.indexOf(heredada.charAt(heredada.length()-1))+1)+":"+heredera+":main";
-                agregarAtributo(obtenerID(), "herencia", herencia);
-            }else {
-                String variable = lexema_actual.substring(0, lexema_actual.indexOf(heredada.charAt(heredada.length()-1))+1);
-                variable = variable + ":" + heredera + ":main";
-                agregarSimbolo(variable);
-                simbolos.put(obtenerID(), obtenerAtributos(clave));
-                modificarAtributo(obtenerID(), "lexema", variable);
-            }
-        }
-
-        int clave_heredera = obtenerSimbolo(ambito.substring(1));
-        int clave_heredada = obtenerSimbolo(heredada+":main");
-        agregarAtributo(clave_heredera, "clase_heredada", heredada+":main");
-        agregarAtributo(clave_heredera, "niveles_herencia", "0");
-
-        if (obtenerAtributo(clave_heredada, "niveles_herencia") == NO_ENCONTRADO_MESSAGE)
-            agregarAtributo(clave_heredada, "niveles_herencia", "0");
-
-        return true;
+        return clave_variables_herencia;
     }
 
 
@@ -134,9 +103,18 @@ public class TablaSimbolos {
         return NO_ENCONTRADO_MESSAGE;
     }
 
+    public static void agregarAtributos(int clave, Map<String, String> atributos)
+    {
+        simbolos.put(clave, atributos);
+    }
+
     public static Map<String, String> obtenerAtributos(int clave) {
         if (simbolos.containsKey(clave)) {
-            return simbolos.get(clave);
+            Map<String, String> copia = new HashMap<>();
+            for (Map.Entry<String, String> entry : simbolos.get(clave).entrySet()) {
+                copia.put(entry.getKey(), entry.getValue());
+            }
+            return copia;
         }
         return null;
     }
@@ -154,5 +132,17 @@ public class TablaSimbolos {
 
             System.out.println();
         }
+    }
+
+    public static void limpiarTabla()
+    {
+        ArrayList<Integer> a_eliminar = new ArrayList<>();
+        for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
+            if (obtenerAtributo(entrada.getKey(), "tipo").equals(NO_ENCONTRADO_MESSAGE) && obtenerAtributo(entrada.getKey(), "uso").equals(NO_ENCONTRADO_MESSAGE) )
+            {
+                a_eliminar.add(entrada.getKey());
+            }
+        }
+        a_eliminar.forEach(n -> simbolos.remove(n));
     }
 }

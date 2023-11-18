@@ -17,54 +17,22 @@ program
    |  |  |        |-->STOF null
    |  |  |        |  '-->x:main SHORT
    |  |  |        '-->7.0 FLOAT
-   |  |  '-->Print STRING
-   |  |     '-->%variable mayor a    8% STRING
-   |  '-->if null
-   |     |-->>= SHORT
-   |     |  |-->x:main SHORT
-   |     |  '-->4_s SHORT
-   |     '-->cuerpoIf null
-   |        |-->then null
-   |        |  '-->sentencias null
-   |        |     |-->sentencias null
-   |        |     |  |-->Asignacion FLOAT
-   |        |     |  |  |-->aux:main FLOAT
-   |        |     |  |  '-->+ FLOAT
-   |        |     |  |     |-->STOF null
-   |        |     |  |     |  '-->x:main SHORT
-   |        |     |  |     '-->4.0 FLOAT
-   |        |     |  '-->if null
-   |        |     |     |-->< FLOAT
-   |        |     |     |  |-->aux:main FLOAT
-   |        |     |     |  '-->8.0 FLOAT
-   |        |     |     '-->cuerpoIf null
-   |        |     |        |-->then null
-   |        |     |        |  '-->Asignacion FLOAT
-   |        |     |        |     |-->z:main FLOAT
-   |        |     |        |     '-->9.0 FLOAT
-   |        |     |        '-->else null
-   |        |     '-->Asignacion FLOAT
-   |        |        |-->z:main FLOAT
-   |        |        '-->aux:main FLOAT
-   |        '-->else null
-   |           '-->sentencias null
-   |              |-->Asignacion FLOAT
-   |              |  |-->aux:main FLOAT
-   |              |  '-->1.17549435E-38 FLOAT
-   |              '-->Asignacion FLOAT
-   |                 |-->z:main FLOAT
-   |                 '-->8.0 FLOAT
-   '-->while null
-      |-->!! FLOAT
-      |  |-->z:main FLOAT
-      |  '-->10.0 FLOAT
-      '-->sentencias null
-         |-->Asignacion FLOAT
-         |  |-->aux:main FLOAT
-         |  '-->STOF null
-         |     '-->1_s SHORT
-         '-->Asignacion FLOAT
-            |-->z:main FLOAT
-            '-->+ FLOAT
-               |-->z:main FLOAT
-               '-->aux:main FLOAT
+   |  |  '-->Clase null
+   |  |     |-->EncabezadoClase null
+   |  |     |  '-->ca:main null
+   |  |     '-->cuerpoClase null
+   |  |        '-->Funcion void
+   |  |           |-->Encabezado void
+   |  |           |  '-->aumentar:ca:main null
+   |  |           '-->sentencias null
+   |  |              '-->Asignacion SHORT
+   |  |                 |-->x_a:ca:main SHORT
+   |  |                 '-->+ SHORT
+   |  |                    |-->x_a:ca:main SHORT
+   |  |                    '-->1_s SHORT
+   |  '-->Clase null
+   |     '-->EncabezadoClase null
+   |        '-->cb:main null
+   '-->Asignacion SHORT
+      |-->x_a:cb:main SHORT
+      '-->4_s SHORT
