@@ -16,7 +16,7 @@ public class EstructuraAsignacion implements GeneradorEstructura {
         if (nodo.getTipo().equals("SHORT"))
             codigo = "MOV AL, " + variable2 + "\nMOV " + variable1 + ", AL\n";
         else if (nodo.getTipo().equals("LONG"))
-            codigo = "MOV AX, " + variable2 + "\nMOV " + variable1 + ", AX\n";
+            codigo = "MOV EAX, " + variable2 + "\nMOV " + variable1 + ", EAX\n";
         else
             codigo = "FLD " + variable2 + "\nFSTP " + variable1 + "\n";
 

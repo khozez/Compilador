@@ -57,7 +57,7 @@ public class Generador {
             mapa.put("=!", new EstructuraComparador("JE"));
             mapa.put("Asignacion", new EstructuraAsignacion());
             mapa.put("while", nodo -> {var e = new EstructuraWhile();
-                return "etiqueta" + etiqueta + ":\n" + e.generar(nodo);});  //todo: revisar funcionamiento, creo esta mal
+                return "etiqueta" + etiqueta + ":\n" + GenerarCodigo(nodo.getIzq()) + e.generar(nodo);});  //todo: revisar funcionamiento, creo esta mal
             mapa.put("sentencias", noAction);
             mapa.put("cuerpoIf", noAction);
             mapa.put("if", noAction);

@@ -64,19 +64,19 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             case "ULONG":
                 switch (operando) {
                     case "DIV":
-                        codigo = String.format("MOV DX, 0\nMOV AX, %s\nMOV BX, %s\nCMP BX, 0\nJE division_por_cero\nDIV BX\nMOV @aux%d, AX\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EDX, 0\nMOV EAX, %s\nMOV EBX, %s\nCMP EBX, 0\nJE division_por_cero\nDIV BX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
-                        codigo = String.format("MOV AX, %s\nMOV BX, %s\nADD AX, BX\nMOV @aux%d, AX\nJO error_overflow", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nADD EAX, EBX\nMOV @aux%d, EAX\nJO error_overflow", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "SUB":
-                        codigo = String.format("MOV AX, %s\nMOV BX, %s\nSUB AX, BX\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nSUB EAX, EBX\nMOV @aux%d\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "MUL":
-                        codigo = String.format("MOV AX, %s\nMOV BX, %s\nMUL AX, BX\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nMUL EAX, EBX\nMOV @aux%d\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                 }
