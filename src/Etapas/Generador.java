@@ -91,7 +91,7 @@ public class Generador {
             mapa.put("Funcion", nodo -> {PopFuncion(nodo.getIzq().getIzq().getNombre());
                 return noAction.generar(nodo); });
             mapa.put("parametro", noAction);
-        mapa.put("Return", nodo -> "MOV __funcion_actual__, 0\n" +
+            mapa.put("Return", nodo -> "MOV __funcion_actual__, 0\n" +
                 (nodo.getTipo().equals("SHORT")
                         ? "MOV AL, " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq())
                         : (nodo.getTipo().equals("LONG")
@@ -104,8 +104,17 @@ public class Generador {
     public String GenerarCodigo(Nodo padre){
         if (mapa.isEmpty())
             generarMapa();
-        return mapa.get(padre.getNombre()) != null ?
-                mapa.get(padre.getNombre()).generar(padre) : "no Definido";
+        if (mapa.get(padre.getNombre()) != null){
+            if(!pilaFuncion.isEmpty()){
+                WriteFunc(mapa.get(padre.getNombre()).generar(padre))
+            }
+            else
+            {
+                codigoMain.append(mapa.get(padre.getNombre()).generar(padre)).append("\n");
+            }
+        }
+        else
+        return "no Definido";
     }
 
     protected static void setNodoVarAuxiliar(Nodo nodo, int aux){
@@ -152,5 +161,18 @@ public class Generador {
 
     public static void WriteClase(String S){
         pilaClases.peek().append(S);
+    }
+
+    public static String acomodarString(String i){
+        StringBuilder string = new StringBuilder();
+        char[] c = i.toCharArray();
+
+        for (char c1 : c){
+            if (!CharIdentifier.isletter(c1))
+                string.append((int)c1);
+            else
+                string.append(c1);
+        }
+        return string.toString();
     }
 }
