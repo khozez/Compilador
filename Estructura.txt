@@ -1,6 +1,2 @@
 LINEA 3: Asignación
-LINEA 9: Asignación
-LINEA 10: Fin de declaración de metodo.
-LINEA 11: Fin de declaración de clase.
-LINEA 13: Llamado a metodo de clase
-LINEA 14: Fin de programa
+LINEA 4: Fin de programa

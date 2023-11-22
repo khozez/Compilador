@@ -1,14 +1,4 @@
 {
     SHORT numero,
     numero = 4_s,
-
-    CLASS cb{
-        FLOAT x,
-        VOID func1(SHORT h)
-        {
-            x = h,
-        },
-    }
-
-    cb.func1(numero),
 }

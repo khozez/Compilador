@@ -1061,6 +1061,7 @@ public static void main(String[] args) {
                 AnalizadorLexico.TS.imprimirTabla();
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
+                Generador g = new Generador();
                 Estructura es = new Estructura();
                 es.generateCode(raiz);
         } else {

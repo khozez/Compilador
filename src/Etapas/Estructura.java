@@ -40,8 +40,8 @@ public class Estructura {
                                     "   ErrorOverflowProd DB \"Error por Overflow en un producto\", 10, 0\n");
         this.out_assembler.write("; constante para cada funcion a partir de su hashcode");
         Parser.lista_funciones.forEach(x-> this.out_assembler.write(x+" DD " + x.hashCode()));
-        //.DATA
-        writeTs();     //RARITO, CODIGO COMENTADO?
+        Generador.GenerarCodigo(padre);
+        writeTs(); //.DATA
         this.out_assembler.write(CODE);
         Generador.outFunciones.WriteFile();// --ERROR PISA EL ARCIVHO -- Ni idea porque
         this.out_assembler.write(START);
@@ -60,30 +60,32 @@ public class Estructura {
 
             String var1 = fila.get("lexema");
             if(fila.get("lexema") != null){
-                if(fila.get("uso").equals("variable")||fila.get("uso").equals("auxiliar") || fila.get("uso").equals("parametro") ) {
-                    var1 += "_";
+                var uso = fila.get("uso");
+                if (uso != null) {
+                    if (fila.get("uso").equals("variable") || fila.get("uso").equals("auxiliar") || fila.get("uso").equals("parametro")) {
+                        var1 += "_";
 
-                    String directiva;
-                    
-                    if(fila.get("uso").equals("auxiliar")) // el inicio depende de si es auxiliar o no
-                        directiva = "    @";
-                    else
-                        directiva = "    _";
+                        String directiva;
 
-                    if(fila.get("tipo").equals("SHORT")) {  //POR QUE SOLO SHORT? Indica que la cantidad de bytes es corta
-                               
-                        directiva += var1 + " DB " + "?";
-                        this.out_assembler.write(directiva);
+                        if (fila.get("uso").equals("auxiliar")) // el inicio depende de si es auxiliar o no
+                            directiva = "    @";
+                        else
+                            directiva = "    _";
 
-                    } else {   //La cantidad de bytes es larga, solo short usa una longitud corta
+                        if (fila.get("tipo").equals("SHORT")) {  //POR QUE SOLO SHORT? Indica que la cantidad de bytes es corta
 
-                        directiva += var1 + " DD " + "?";
-                        this.out_assembler.write(directiva);
+                            directiva += var1 + " DB " + "?";
+                            this.out_assembler.write(directiva);
+
+                        } else {   //La cantidad de bytes es larga, solo short usa una longitud corta
+
+                            directiva += var1 + " DD " + "?";
+                            this.out_assembler.write(directiva);
+                        }
                     }
-
-                }
                 }
             }
+        }
         }
 }
 
