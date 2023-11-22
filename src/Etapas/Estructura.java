@@ -29,6 +29,7 @@ public class Estructura {
 
     public void generateCode(Nodo padre) {
         // Generar código assembler en órden
+        Generador.GenerarCodigoArbol(padre);
         this.out_assembler.write(MODEL);
         this.out_assembler.write(INCLUDE);
         this.out_assembler.write(STACK);
@@ -40,7 +41,6 @@ public class Estructura {
                                     "   ErrorOverflowProd DB \"Error por Overflow en un producto\", 10, 0\n");
         this.out_assembler.write("; constante para cada funcion a partir de su hashcode");
         Parser.lista_funciones.forEach(x-> this.out_assembler.write(x+" DD " + x.hashCode()));
-        Generador.GenerarCodigoArbol(padre);
         writeTs(); //.DATA
         this.out_assembler.write(CODE);
         Generador.outFunciones.WriteFile();// --ERROR PISA EL ARCIVHO -- Ni idea porque
