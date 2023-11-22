@@ -29,6 +29,7 @@ public class AS5 implements AccionSemantica{
             AnalizadorLexico.lexema += "_ul";
             boolean agregado = TablaSimbolos.agregarSimbolo(AnalizadorLexico.lexema);
             int id = TablaSimbolos.obtenerSimbolo(AnalizadorLexico.lexema);
+            TablaSimbolos.agregarAtributo(id, "uso", "constante");
             if (agregado)
             {
                 TablaSimbolos.agregarAtributo(id, "tipo", "LONG");

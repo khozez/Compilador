@@ -2,7 +2,7 @@
 .CODE
 
 START:
-MOV AL, 
+MOV AL, 4_s
 MOV numero_main, AL
 
 
