@@ -11,9 +11,6 @@ public class Generador {
     public static int etiqueta = 1; //numero de etiqueta disponible
     public static int aux = 1; //Para asignar variables auxiliares
 
-    static final StringBuilder codigoMain = new StringBuilder("");
-    static final StringBuilder funciones = new StringBuilder(""); // Buffer pque guarda codigo de funciones antes de escribirlas en el archivo
-
     public static final OutputManager outAssembler = new OutputManager("./Assembler.asm");
     public static final OutputManager outFunciones = new OutputManager("./Assembler.asm");
 
@@ -110,7 +107,7 @@ public class Generador {
             }
             else
             {
-                codigoMain.append(mapa.get(padre.getNombre()).generar(padre)).append("\n");
+                outAssembler.escribirBuffer(mapa.get(padre.getNombre()).generar(padre));
             }
             return null;
         }
@@ -122,6 +119,60 @@ public class Generador {
     }
 
     private void generarMapa() {
+            var ts = AnalizadorLexico.TS;
+            GeneradorEstructura noAction = nodo -> "";
+            mapa.put("+", new EstructuraOperador("ADD"));
+            mapa.put("-", new EstructuraOperador("SUB"));
+            mapa.put("*", new EstructuraOperador("MUL"));
+            mapa.put("/", new EstructuraOperador("DIV"));
+            mapa.put(">", new EstructuraComparador("JBE"));
+            mapa.put("<", new EstructuraComparador("JAE"));
+            mapa.put("=", new EstructuraComparador("JNE"));
+            mapa.put(">=", new EstructuraComparador("JB"));
+            mapa.put("<=", new EstructuraComparador("JA"));
+            mapa.put("=!", new EstructuraComparador("JE"));
+            mapa.put("Asignacion", new EstructuraAsignacion());
+            mapa.put("while", nodo -> {var e = new EstructuraWhile();
+                return "etiqueta" + etiqueta + ":\n" + GenerarCodigo(nodo.getIzq()) + e.generar(nodo);});  //todo: revisar funcionamiento, creo esta mal
+            mapa.put("sentencias", noAction);
+            mapa.put("cuerpoIf", noAction);
+            mapa.put("if", noAction);
+            mapa.put("Print", nodo -> {
+                String aux ;
+                String variable_string = acomodarString(nodo.getIzq().getNombre().substring(1).replace("_", "__").replace(" ", "_s"));
+                if (nodo.getTipo().equals("STRING"))
+                    aux = "invoke StdOut, addr str_"+ variable_string +"\n";
+                else if (nodo.getTipo().equals("SHORT") || nodo.getTipo().equals("LONG"))
+                    aux = String.format("print str$(_%s), 13, 10", nodo.getIzq().getNombre().replace(":","_"))+"\n";
+                else
+                    aux = "invoke printf, cfm$(\"%.20Lf\\n\"), _" + nodo.getIzq().getNombre().replace(":", "_") + "\n";
+                return  aux + noAction.generar(nodo);
+            });
+            mapa.put("then", new EstructuraIf());
+            mapa.put("else", new EstructuraElse());
+            mapa.put("program", noAction);
+            mapa.put("STOF", nodo -> {
+                var codigo = "FILD "+ EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux"+ aux;
+                EstructuraOperador.agregarAuxiliar("FLOAT", nodo.getIzq());
+                aux ++;
+                return codigo;
+            });
+            mapa.put("LTOF", nodo -> {
+                var codigo = "FILD "+ EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux"+ aux;
+                EstructuraOperador.agregarAuxiliar("FLOAT", nodo.getIzq());
+                aux ++;
+                return codigo;
+            });
+            mapa.put("LlamadaFuncion", new EstructuraFuncion());
+            mapa.put("Funcion", nodo -> {PopFuncion(nodo.getIzq().getIzq().getNombre());
+                return noAction.generar(nodo); });
+            mapa.put("parametro", noAction);
+            mapa.put("Return", nodo -> "MOV __funcion_actual__, 0\n" +
+                (nodo.getTipo().equals("SHORT")
+                        ? "MOV AL, " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq())
+                        : (nodo.getTipo().equals("LONG")
+                        ? "MOV EAX, " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq())
+                        : "FLD " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq())) + "\nRET\n" + noAction.generar(nodo)));
     }
 
     public static boolean isFunctionEmpty(){
@@ -133,21 +184,13 @@ public class Generador {
     }
 
     public static void PopFuncion(String s) {
-        funciones.append(Generador.pilaFuncion.pop().toString());
-        funciones.append("_"+ s.replace(":", "_") + " ENDP\n" ).append("\n");
+        outFunciones.escribirBuffer(pilaFuncion.pop().toString());
+        outFunciones.escribirBuffer("_"+ s.replace(":", "_") + " ENDP\n" );
+        outFunciones.escribirBuffer("\n");
     }
 
     public static void WriteFunc(String S){
         pilaFuncion.peek().append(S);
-    }
-
-    public static void escribirFunciones() {
-        outFunciones.write(funciones.toString());
-
-    }
-
-    public static void escribirCodigo() {
-        outAssembler.write(codigoMain.toString());
     }
 
     public static void addClase(){
@@ -155,8 +198,9 @@ public class Generador {
     }
 
     public static void popClase(String s){
-        funciones.append(Generador.pilaClases.pop().toString());
-        funciones.append("_"+ s.replace(":", "_") + " ENDP\n" ).append("\n");
+        outFunciones.escribirBuffer(Generador.pilaClases.pop().toString());
+        outFunciones.escribirBuffer("_"+ s.replace(":", "_") + " ENDP\n" );
+        outFunciones.escribirBuffer("\n");
     }
 
     public static void WriteClase(String S){

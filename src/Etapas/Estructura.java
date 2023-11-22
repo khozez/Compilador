@@ -25,7 +25,6 @@ public class Estructura {
 
     private final OutputManager out_assembler = new OutputManager("./Assembler.asm");
 
-    //private final TsPentium ts;
     public Estructura() {}
 
     public void generateCode(Nodo padre) {
@@ -42,12 +41,12 @@ public class Estructura {
         this.out_assembler.write("; constante para cada funcion a partir de su hashcode");
         Parser.lista_funciones.forEach(x-> this.out_assembler.write(x+" DD " + x.hashCode()));
         //.DATA
-            writeTs();     //RARITO, CODIGO COMENTADO?
+        writeTs();     //RARITO, CODIGO COMENTADO?
         this.out_assembler.write(CODE);
-        //Generador.escribirFunciones();  --ERROR PISA EL ARCIVHO
+        Generador.outFunciones.WriteFile();// --ERROR PISA EL ARCIVHO -- Ni idea porque
         this.out_assembler.write(START);
             // Código intermedio
-        //Generador.escribirCodigo(); --ERROR PISA EL ARCIVHO
+        Generador.outAssembler.WriteFile(); //--ERROR PISA EL ARCIVHO
         this.out_assembler.write(ERRORES);
         this.out_assembler.write(END_START);
     }
@@ -61,50 +60,29 @@ public class Estructura {
 
             String var1 = fila.get("lexema");
             if(fila.get("lexema") != null){
-                //if() {
+                if(fila.get("uso").equals("variable")||fila.get("uso").equals("auxiliar") || fila.get("uso").equals("parametro") ) {
                     var1 += "_";
-                    if(fila.get("tipo").equals("SHORT")) {  //POR QUE SOLO SHORT? TAMBIEN FLOAT Y ULONG
 
-                        String directiva;
-                        
+                    String directiva;
+                    
+                    if(fila.get("uso").equals("auxiliar")) // el inicio depende de si es auxiliar o no
+                        directiva = "    @";
+                    else
                         directiva = "    _";
 
+                    if(fila.get("tipo").equals("SHORT")) {  //POR QUE SOLO SHORT? Indica que la cantidad de bytes es corta
+                               
                         directiva += var1 + " DB " + "?";
                         this.out_assembler.write(directiva);
 
-                    } else {   //EN LA RAMA ELSE SE ESTA TOMANDO POR IGUAL AL TIPO FLOAT Y ULONG, FALTARIA OTRO IF?
-
-                        String directiva;
-                        directiva = "    _";
+                    } else {   //La cantidad de bytes es larga, solo short usa una longitud corta
 
                         directiva += var1 + " DD " + "?";
                         this.out_assembler.write(directiva);
                     }
 
                 }
-                /*else if(fila.getUso().equals(TablaSimbolos.VARCONSTANTE)) {
-
-                    var par1 = (fila.getParametro1() != null) ? fila.getParametro1().getLexema() : "" ;
-
-                    // 32 bits
-                    String directiva;
-                    if(fila.getTipo().equals(TablaSimbolos.UI32)) {
-                        directiva = "    _" + var1 + " DD " + par1;
-                        // 64 bits
-                    } else {
-                        directiva = "    _" + var1 + " DQ " + par1;
-                    }
-                    this.out_assembler.write(directiva);
                 }
-                else if(fila.getUso().equals(TablaSimbolos.USOSTRING)) {
-
-                    String directiva = "    str_" + Generador.acomodarString(var1.substring(1).replace("_", "__").replace(" ", "_s")) + " DB " + "\"" + var1.substring(1) + "\", 10, 0";
-                    this.out_assembler.write(directiva);
-                }
-                else if(fila.getUso().equals(TablaSimbolos.USOCONSTANTE) && fila.getTipo().equals(TablaSimbolos.F64)){
-                    String directiva = "    _" + var1.replace(".", "_") + " DQ " + var1;
-                    this.out_assembler.write(directiva);
-                }*/
             }
         }
 }

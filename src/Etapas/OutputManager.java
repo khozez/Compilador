@@ -5,6 +5,7 @@ import java.io.*;
 public class OutputManager {
     File file;
     FileWriter fw;
+    final StringBuilder Buffer = new StringBuilder("");
 
     public OutputManager(String file) {
 
@@ -37,4 +38,14 @@ public class OutputManager {
             throw new RuntimeException(e);
         }
     }
+
+    
+    public void escribirBuffer(String text) {
+        Buffer.append(text).append("\n");
+    }
+
+    public void WriteFile() {
+        this.write(Buffer.toString());
+    }
+
 }
