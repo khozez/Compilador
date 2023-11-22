@@ -1,2 +1,7 @@
 LINEA 3: Asignación
-LINEA 4: Fin de programa
+LINEA 4: Asignación
+LINEA 5: Asignación
+LINEA 8: Asignación
+LINEA 11: Asignación
+LINEA 12: Fin de sentencia IF
+LINEA 14: Fin de programa

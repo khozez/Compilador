@@ -899,6 +899,7 @@ public static String comprobarRango(String valor){
             }
             valor_final = Integer.toString(numero)+"_s";
             agregado = TablaSimbolos.agregarSimbolo(valor_final);
+            TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
             modificar_referencias(agregado, valor_final, "short");
             TablaSimbolos.eliminarAtributo(id, "valor_original");
         }
@@ -906,6 +907,7 @@ public static String comprobarRango(String valor){
         {
             valor_final = "-"+valor;
             agregado = TablaSimbolos.agregarSimbolo(valor_final);
+            TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
             modificar_referencias(agregado, valor_final, "short");
         }
 	}
@@ -913,6 +915,7 @@ public static String comprobarRango(String valor){
 	if (tipo.equals("FLOAT")){
 		valor_final = "-"+valor;
         	agregado = TablaSimbolos.agregarSimbolo(valor_final);
+        	TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
         	modificar_referencias(agregado, valor_final, "float");
 	}
 
@@ -920,6 +923,7 @@ public static String comprobarRango(String valor){
         anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
         valor_final = "0_ul";
         agregado = TablaSimbolos.agregarSimbolo(valor_final);
+        TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
         modificar_referencias(agregado, valor_final, "long");
     }
 
@@ -1061,7 +1065,6 @@ public static void main(String[] args) {
                 AnalizadorLexico.TS.imprimirTabla();
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
-                Generador g = new Generador();
                 Estructura es = new Estructura();
                 es.generateCode(raiz);
         } else {

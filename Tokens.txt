@@ -1,9 +1,44 @@
 {
 Palabra reservada: SHORT (266)
-Identificador: numero (257)
+Identificador: x (257)
+;
+Identificador: y (257)
+;
+Identificador: z (257)
 ,
-Identificador: numero (257)
+Identificador: x (257)
 =
 Constante entera: 4_s (258)
+,
+Identificador: y (257)
+=
+Constante entera: 8_s (258)
+,
+Identificador: z (257)
+=
+Identificador: x (257)
++
+Identificador: y (257)
+,
+Palabra reservada: IF (261)
+(
+Identificador: z (257)
+>
+Identificador: x (257)
+)
+{
+Identificador: x (257)
+=
+Constante entera: 1_s (258)
+,
+}
+Palabra reservada: ELSE (262)
+{
+Identificador: z (257)
+=
+Constante entera: 1_s (258)
+,
+}
+Palabra reservada: END_IF (263)
 ,
 }

@@ -1,4 +1,14 @@
 {
-    SHORT numero,
-    numero = 4_s,
+    SHORT x;y;z,
+    x = 4_s,
+    y = 8_s,
+    z = x+y,
+
+    IF (z > x){
+        x = 1_s,
+    }ELSE
+    {
+        z = 1_s,
+    }END_IF,
+
 }

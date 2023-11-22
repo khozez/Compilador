@@ -938,6 +938,7 @@ public static String comprobarRango(String valor){
             }
             valor_final = Integer.toString(numero)+"_s";
             agregado = TablaSimbolos.agregarSimbolo(valor_final);
+            TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
             modificar_referencias(agregado, valor_final, "short");
             TablaSimbolos.eliminarAtributo(id, "valor_original");
         }
@@ -945,6 +946,7 @@ public static String comprobarRango(String valor){
         {
             valor_final = "-"+valor;
             agregado = TablaSimbolos.agregarSimbolo(valor_final);
+            TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
             modificar_referencias(agregado, valor_final, "short");
         }
 	}
@@ -952,6 +954,7 @@ public static String comprobarRango(String valor){
 	if (tipo.equals("FLOAT")){
 		valor_final = "-"+valor;
         	agregado = TablaSimbolos.agregarSimbolo(valor_final);
+        	TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
         	modificar_referencias(agregado, valor_final, "float");
 	}
 
@@ -959,6 +962,7 @@ public static String comprobarRango(String valor){
         anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
         valor_final = "0_ul";
         agregado = TablaSimbolos.agregarSimbolo(valor_final);
+        TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
         modificar_referencias(agregado, valor_final, "long");
     }
 
@@ -1106,7 +1110,7 @@ public static void main(String[] args) {
                 System.out.println("No se especifico el archivo a compilar");
         }
 }
-//#line 1038 "Parser.java"
+//#line 1043 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -2044,7 +2048,7 @@ case 124:
 //#line 556 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal escrito el comparador ==");}
 break;
-//#line 1971 "Parser.java"
+//#line 1976 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####
