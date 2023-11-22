@@ -1,19 +1,14 @@
 {
-    SHORT h,
+    SHORT numero,
+    numero = 4_s,
 
-    CLASS ca{
-        VOID metodo (SHORT x)
+    CLASS cb{
+        FLOAT x,
+        VOID func1(SHORT h)
         {
-            x = 4_s,
+            x = h,
         },
     }
 
-    VOID funcion (SHORT y)
-    {
-        y = 4_s,
-        RETURN,
-    }
-
-    ca.metodo(h),
-    funcion(h),
+    cb.func1(numero),
 }

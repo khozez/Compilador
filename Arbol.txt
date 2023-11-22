@@ -1,9 +1,23 @@
 program
 '-->sentencias null
    |-->sentencias null
-   |  '-->LlamadoMetodo void
-   |     |-->metodo:ca:main null
-   |     '-->h:main SHORT
-   '-->LlamadaFuncion void
-      |-->funcion:main null
-      '-->h:main SHORT
+   |  |-->sentencias null
+   |  |  '-->Asignacion SHORT
+   |  |     |-->numero:main SHORT
+   |  |     '-->4_s SHORT
+   |  '-->Clase null
+   |     |-->EncabezadoClase null
+   |     |  '-->cb:main null
+   |     '-->cuerpoClase null
+   |        '-->MetodoClase void
+   |           |-->Encabezado void
+   |           |  |-->func1:cb:main null
+   |           |  '-->h:func1:cb:main SHORT
+   |           '-->sentencias null
+   |              '-->Asignacion FLOAT
+   |                 |-->x:cb:main FLOAT
+   |                 '-->STOF null
+   |                    '-->h:func1:cb:main SHORT
+   '-->LlamadoMetodo void
+      |-->func1:cb:main null
+      '-->numero:main SHORT

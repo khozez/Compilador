@@ -1100,11 +1100,13 @@ public static void main(String[] args) {
                 AnalizadorLexico.TS.imprimirTabla();
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
+                Estructura es = new Estructura();
+                es.generateCode(raiz);
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }
 }
-//#line 1036 "Parser.java"
+//#line 1038 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1336,6 +1338,10 @@ case 12:
 //#line 70 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 break;
+case 13:
+//#line 73 "gramatica.y"
+{yyval = val_peek(1);}
+break;
 case 14:
 //#line 74 "gramatica.y"
 { yyval = new ParserVal( new Nodo("cuerpoClase", (Nodo) val_peek(2).obj, (Nodo) val_peek(1).obj));}
@@ -1483,7 +1489,7 @@ case 35:
 break;
 case 36:
 //#line 181 "gramatica.y"
-{yyval = new ParserVal(null);}
+{yyval = new ParserVal(val_peek(0).obj);}
 break;
 case 37:
 //#line 182 "gramatica.y"
@@ -1491,7 +1497,7 @@ case 37:
 break;
 case 38:
 //#line 183 "gramatica.y"
-{yyval = new ParserVal(null);}
+{yyval = new ParserVal(val_peek(0).obj);}
 break;
 case 41:
 //#line 191 "gramatica.y"
@@ -1738,7 +1744,7 @@ case 80:
 //#line 340 "gramatica.y"
 { out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de metodo.");
                                                            yyval = new ParserVal(
-                                                           new Nodo( "Funcion",
+                                                           new Nodo( "MetodoClase",
                                                                                     (Nodo) val_peek(3).obj ,
                                                                                     (Nodo) val_peek(1).obj ,
                                                                                     "void"));
@@ -2038,7 +2044,7 @@ case 124:
 //#line 556 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal escrito el comparador ==");}
 break;
-//#line 1965 "Parser.java"
+//#line 1971 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

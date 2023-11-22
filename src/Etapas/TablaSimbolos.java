@@ -39,6 +39,15 @@ public class TablaSimbolos {
         return identificador_siguiente-1;
     }
 
+    public static ArrayList<Map<String, String>> getElementos()
+    {
+        ArrayList<Map<String, String>> elements = new ArrayList<Map<String, String>>();
+        for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
+            elements.add(entrada.getValue());
+        }
+        return elements;
+    }
+
     public static int obtenerSimbolo(String lexema) {
         for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
             String lexema_actual = entrada.getValue().get(LEXEMA);

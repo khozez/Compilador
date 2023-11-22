@@ -70,7 +70,7 @@ declaracionClase: encabezadoClase '{' cuerpoClase '}'  {lista_clases_fd.remove(P
 		 | encabezadoClase {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
-cuerpoClase: cuerpoClase seccionAtributos
+cuerpoClase: cuerpoClase seccionAtributos {$$ = $1;}
 	     | cuerpoClase declaracionMetodo ',' { $$ = new ParserVal( new Nodo("cuerpoClase", (Nodo) $1.obj, (Nodo) $2.obj));}
 	     | declaracionMetodo ','  { $$ = $1; }
 	     | seccionAtributos
@@ -178,9 +178,9 @@ sentenciaEjecutable: asignacion {$$ = new ParserVal( $1.obj);}
 		   | referenciaClase {$$ = new ParserVal( $1.obj);}
 ;
 
-sentenciaDeclarativa: declaracionFuncion {$$ = new ParserVal(null);}
+sentenciaDeclarativa: declaracionFuncion {$$ = new ParserVal($1.obj);}
 			| declaracion ',' {$$ = new ParserVal(null);}
-			| declaracionClase {$$ = new ParserVal(null);}
+			| declaracionClase {$$ = new ParserVal($1.obj);}
 ;
 
 sentenciaDeclarativaMetodo: declaracionFuncionLocal
@@ -339,7 +339,7 @@ encabezadoMetodo: VOID ID '(' parametro ')' {
 
 declaracionMetodo: encabezadoMetodo '{' cuerpoMetodo '}' { out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de metodo.");
                                                            $$ = new ParserVal(
-                                                           new Nodo( "Funcion",
+                                                           new Nodo( "MetodoClase",
                                                                                     (Nodo) $1.obj ,
                                                                                     (Nodo) $3.obj ,
                                                                                     "void"));
@@ -1061,6 +1061,8 @@ public static void main(String[] args) {
                 AnalizadorLexico.TS.imprimirTabla();
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
+                Estructura es = new Estructura();
+                es.generateCode(raiz);
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }
