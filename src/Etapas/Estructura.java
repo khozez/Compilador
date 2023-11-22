@@ -40,7 +40,7 @@ public class Estructura {
                                     "   ErrorOverflowProd DB \"Error por Overflow en un producto\", 10, 0\n");
         this.out_assembler.write("; constante para cada funcion a partir de su hashcode");
         Parser.lista_funciones.forEach(x-> this.out_assembler.write(x+" DD " + x.hashCode()));
-        Generador.GenerarCodigo(padre);
+        Generador.GenerarCodigoArbol(padre);
         writeTs(); //.DATA
         this.out_assembler.write(CODE);
         Generador.outFunciones.WriteFile();// --ERROR PISA EL ARCIVHO -- Ni idea porque

@@ -2,6 +2,10 @@
 .CODE
 
 START:
+MOV AL, 
+MOV numero_main, AL
+
+
 
 
 JMP final

@@ -18,7 +18,7 @@ public abstract class Generador {
     public static final Stack<StringBuilder> pilaClases = new Stack<>();
 
 
-    public String GenerarCodigoArbol(Nodo padre){
+    public static String GenerarCodigoArbol(Nodo padre){
         if (padre != null && !padre.esHoja()){
             if( ((padre.getIzq() == null) || (padre.getIzq().esHoja()))
                 && ((padre.getDer() == null) || (padre.getDer().esHoja()))) { // Sus hijos son hojas??
@@ -49,7 +49,7 @@ public abstract class Generador {
             {
                 outAssembler.escribirBuffer(mapa.get(padre.getNombre()).generar(padre));
             }
-            return null;
+            return "";
         }
         else return "no Definido";
     }
