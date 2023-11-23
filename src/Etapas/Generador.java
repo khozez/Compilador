@@ -25,17 +25,32 @@ public abstract class Generador {
                 return GenerarCodigo(padre);
             }
             else{
+
+            if(padre.getNombre().equals("funcion"))
+                pilaFuncion.push(new StringBuilder(""));
+                else if(padre.getNombre().equals("While")){
+                    if (isFunctionEmpty()) {
+                        escribirWhile(outAssembler);
+                    }
+                    else
+                        escribirWhile(outFunciones);
+                }
             if (padre.getIzq() != null && !padre.getIzq().esHoja())
                 GenerarCodigoArbol(padre.getIzq());
             if ( padre.getDer() != null && !padre.getDer().esHoja())
                 GenerarCodigoArbol(padre.getDer());
-            if(padre.getNombre().equals("funcion"))
-                pilaFuncion.push(new StringBuilder(""));
-            
+
             return GenerarCodigo(padre);
             }
         }
         return "";
+    }
+
+    private static void escribirWhile(OutputManager A) {
+        String codigo = "JMP etiqueta" + etiqueta + "\n";
+        pilaEtiquetas.add(etiqueta);
+        etiqueta++;
+        A.escribirBuffer(codigo);
     }
 
     public static String GenerarCodigo(Nodo padre){
@@ -70,7 +85,7 @@ public abstract class Generador {
         mapa.put("=", new EstructuraComparador("JNE"));
         mapa.put(">=", new EstructuraComparador("JB"));
         mapa.put("<=", new EstructuraComparador("JA"));
-        mapa.put("!!", new EstructuraComparador("JE"));
+        mapa.put("=!", new EstructuraComparador("JE"));
         mapa.put("Asignacion", new EstructuraAsignacion());
         mapa.put("while", nodo -> {var e = new EstructuraWhile();
             return "etiqueta" + etiqueta + ":\n" + GenerarCodigo(nodo.getIzq()) + e.generar(nodo);});  //todo: revisar funcionamiento, creo esta mal
