@@ -26,7 +26,7 @@ public abstract class Generador {
             }
             else{
 
-            if(padre.getNombre().equals("funcion"))
+            if(padre.getNombre().equals("Funcion"))
                 pilaFuncion.push(new StringBuilder(""));
                 else if(padre.getNombre().equals("while")){
                     if (isFunctionEmpty()) {
@@ -121,7 +121,7 @@ public abstract class Generador {
         mapa.put("Funcion", nodo -> {PopFuncion(nodo.getIzq().getIzq().getNombre());
             return noAction.generar(nodo); });
         mapa.put("parametro", noAction);
-        mapa.put("Return", nodo -> "MOV __funcion_actual__, 0\n" +
+        mapa.put("RETURN", nodo -> "MOV __funcion_actual__, 0\n" +
                 (nodo.getTipo().equals("SHORT")
                         ? "MOV AL, " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq())
                         : (nodo.getTipo().equals("LONG")
