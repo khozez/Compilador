@@ -138,8 +138,9 @@ public abstract class Generador {
     }
 
     public static void PopFuncion(String s) {
+        outFunciones.escribirBuffer("_"+ s.replace(":", "_"));
         outFunciones.escribirBuffer(pilaFuncion.pop().toString());
-        outFunciones.escribirBuffer("_"+ s.replace(":", "_") + " ENDP\n" );
+        outFunciones.escribirBuffer(" ENDP\n" );
         outFunciones.escribirBuffer("\n");
     }
 
@@ -153,8 +154,9 @@ public abstract class Generador {
     }
 
     public static void popClase(String s){
+        outFunciones.escribirBuffer("_"+ s.replace(":", "_") );
         outFunciones.escribirBuffer(Generador.pilaClases.pop().toString());
-        outFunciones.escribirBuffer("_"+ s.replace(":", "_") + " ENDP\n" );
+        outFunciones.escribirBuffer(" ENDP\n" );
         outFunciones.escribirBuffer("\n");
     }
 
