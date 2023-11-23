@@ -25,6 +25,7 @@ MOV AL, 1_s
 MOV x_main, AL
 MOV AL, 1_s
 MOV y_main, AL
+RET
 
  END
 

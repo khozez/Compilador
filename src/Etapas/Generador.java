@@ -35,13 +35,17 @@ public abstract class Generador {
                     else
                         escribirWhile(outFunciones);
                 }
-            if (padre.getIzq() != null && !padre.getIzq().esHoja())
+
+            if (padre.getIzq() != null)
                 GenerarCodigoArbol(padre.getIzq());
-            if ( padre.getDer() != null && !padre.getDer().esHoja())
+            if ( padre.getDer() != null)
                 GenerarCodigoArbol(padre.getDer());
 
             return GenerarCodigo(padre);
             }
+        }
+        if (padre != null && padre.getNombre().equals("RETURN")) {
+            GenerarCodigo(padre);
         }
         return "";
     }
