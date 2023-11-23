@@ -28,7 +28,7 @@ public abstract class Generador {
 
             if(padre.getNombre().equals("funcion"))
                 pilaFuncion.push(new StringBuilder(""));
-                else if(padre.getNombre().equals("While")){
+                else if(padre.getNombre().equals("while")){
                     if (isFunctionEmpty()) {
                         escribirWhile(outAssembler);
                     }
@@ -47,7 +47,7 @@ public abstract class Generador {
     }
 
     private static void escribirWhile(OutputManager A) {
-        String codigo = "JMP etiqueta" + etiqueta + "\n";
+        String codigo = "etiqueta" + etiqueta + ":"+"\n";
         pilaEtiquetas.add(etiqueta);
         etiqueta++;
         A.escribirBuffer(codigo);

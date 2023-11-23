@@ -29,20 +29,22 @@ MOV AL, 8_s
 MOV y_main, AL
 
 
+etiqueta1:
+
 MOV AL, x_main
 MOV AH, 5_s
 CMP AL, AH
-JAE etiqueta1
+JAE etiqueta2
 MOV AL, 7_s
 MOV x_main, AL
 
 MOV AL, x_main
 MOV AH, 5_s
 CMP AL, AH
-JAE etiqueta2
-etiqueta2:
-JMP etiqueta1
-etiqueta2:
+JAE etiqueta3
+etiqueta3:
+JMP etiqueta2
+etiqueta3:
 
 
 
