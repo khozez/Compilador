@@ -27,15 +27,18 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
     }
 
     public static String obtenerNombreVariable(TablaSimbolos ts, Nodo subArbol) {
-        int id = ts.obtenerSimbolo(subArbol.getNombre());
-        String uso = ts.obtenerAtributo(id, "uso");
+        if (subArbol != null) {
+            int id = ts.obtenerSimbolo(subArbol.getNombre());
+            String uso = ts.obtenerAtributo(id, "uso");
 
-        if (uso.equals("auxiliar")) {
-            return "@" + subArbol.getNombre();
-        } else if (uso.equals("variable") || uso.equals("constante")) {
-            return subArbol.getNombre().replace(":", "_");
+            if (uso.equals("auxiliar")) {
+                return "@" + subArbol.getNombre();
+            } else if (uso.equals("variable") || uso.equals("constante")) {
+                return subArbol.getNombre().replace(":", "_");
+            }
+
+            return "";
         }
-
         return "";
     }
 }

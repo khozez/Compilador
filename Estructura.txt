@@ -2,4 +2,5 @@ LINEA 3: Asignación
 LINEA 4: Asignación
 LINEA 7: Asignación
 LINEA 9: Fin de declaración de función VOID.
-LINEA 11: Fin de programa
+LINEA 11: Invocación a metodo de clase.
+LINEA 13: Fin de programa

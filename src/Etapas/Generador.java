@@ -144,7 +144,8 @@ public abstract class Generador {
     }
 
     public static void WriteFunc(String S){
-        pilaFuncion.peek().append(S);
+        if (!pilaFuncion.isEmpty())
+            pilaFuncion.peek().append(S);
     }
 
     public static void addClase(){
