@@ -2,28 +2,16 @@ program
 '-->sentencias null
    |-->sentencias null
    |  |-->sentencias null
-   |  |  |-->sentencias null
-   |  |  |  '-->Asignacion SHORT
-   |  |  |     |-->x:main SHORT
-   |  |  |     '-->4_s SHORT
    |  |  '-->Asignacion SHORT
-   |  |     |-->y:main SHORT
-   |  |     '-->8_s SHORT
+   |  |     |-->x:main SHORT
+   |  |     '-->4_s SHORT
    |  '-->Asignacion SHORT
-   |     |-->z:main SHORT
-   |     '-->+ SHORT
-   |        |-->x:main SHORT
-   |        '-->y:main SHORT
-   '-->if null
+   |     |-->y:main SHORT
+   |     '-->8_s SHORT
+   '-->while null
       |-->< SHORT
-      |  |-->z:main SHORT
-      |  '-->x:main SHORT
-      '-->cuerpoIf null
-         |-->then null
-         |  '-->Asignacion SHORT
-         |     |-->x:main SHORT
-         |     '-->1_s SHORT
-         '-->else null
-            '-->Asignacion SHORT
-               |-->z:main SHORT
-               '-->1_s SHORT
+      |  |-->x:main SHORT
+      |  '-->5_s SHORT
+      '-->Asignacion SHORT
+         |-->x:main SHORT
+         '-->7_s SHORT

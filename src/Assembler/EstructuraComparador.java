@@ -34,7 +34,7 @@ public class EstructuraComparador extends Generador implements GeneradorEstructu
 
         if (uso.equals("auxiliar")) {
             return "@" + subArbol.getNombre();
-        } else if (uso.equals("variable")) {
+        } else if (uso.equals("variable") || uso.equals("constante")) {
             return subArbol.getNombre().replace(":", "_");
         }
 

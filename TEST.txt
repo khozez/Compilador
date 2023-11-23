@@ -1,14 +1,11 @@
 {
-    SHORT x;y;z,
+    SHORT x;y,
     x = 4_s,
     y = 8_s,
-    z = x+y,
 
-    IF (z > x){
-        x = 1_s,
-    }ELSE
+    WHILE (x < 5_s) DO
     {
-        z = 1_s,
-    }END_IF,
+        x = 7_s,
+    },
 
 }

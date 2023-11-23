@@ -3,8 +3,6 @@ Palabra reservada: SHORT (266)
 Identificador: x (257)
 ;
 Identificador: y (257)
-;
-Identificador: z (257)
 ,
 Identificador: x (257)
 =
@@ -14,31 +12,18 @@ Identificador: y (257)
 =
 Constante entera: 8_s (258)
 ,
-Identificador: z (257)
-=
-Identificador: x (257)
-+
-Identificador: y (257)
-,
-Palabra reservada: IF (261)
+Palabra reservada: WHILE (269)
 (
-Identificador: z (257)
->
 Identificador: x (257)
+<
+Constante entera: 5_s (258)
 )
+Palabra reservada: DO (276)
 {
 Identificador: x (257)
 =
-Constante entera: 1_s (258)
+Constante entera: 7_s (258)
 ,
 }
-Palabra reservada: ELSE (262)
-{
-Identificador: z (257)
-=
-Constante entera: 1_s (258)
-,
-}
-Palabra reservada: END_IF (263)
 ,
 }
