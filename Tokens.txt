@@ -28,4 +28,8 @@ Constante entera: 1_s (258)
 Palabra reservada: RETURN (270)
 ,
 }
+Identificador: f1 (257)
+(
+)
+,
 }

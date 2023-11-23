@@ -6,7 +6,7 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
     public String generar(Nodo nodo) {
         String codigo;
         var ts = AnalizadorLexico.TS;
-        String nombreMetodo = nodo.getIzq().getNombre();
+        String nombreMetodo = nodo.getIzq().getNombre().replaceAll(":", "_");
         Nodo subArbol = nodo.getDer();
         codigo = "MOV EAX, __" + nombreMetodo + "__\nCMP EAX, __funcion_actual__\nJE error_recursion\nMOV __funcion_actual__, EAX\n";
         String parametro = obtenerNombreVariable(ts, subArbol);
@@ -22,7 +22,7 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
             }
         }
 
-        codigo = codigo + "call _" + nombreMetodo + "\n";
+        codigo = codigo + "call __" + nombreMetodo + "\n";
         return codigo;
     }
 

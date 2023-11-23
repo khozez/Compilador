@@ -35,7 +35,7 @@ public class Estructura {
         this.out_assembler.write(STACK);
         this.out_assembler.write(DATA);
         this.out_assembler.write("    aux_mem_2bytes DW ?\n" +
-                                    "    funcion_actual DD 0\n" +
+                                    "    __funcion_actual__ DD 0\n" +
                                     "   ErrorOverflowSum DB \"Error por Overflow en una suma\", 10, 0\n"+
                                     "   ErrorDiv0 DB \"Error Division por Cero en ejecucion\", 10, 0\n"+
                                     "   ErrorOverflowProd DB \"Error por Overflow en un producto\", 10, 0\n");

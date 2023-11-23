@@ -126,7 +126,7 @@ public abstract class Generador {
         mapa.put("Funcion", nodo -> {PopFuncion(nodo.getIzq().getIzq().getNombre());
             return noAction.generar(nodo); });
         mapa.put("parametro", noAction);
-        mapa.put("RETURN", nodo -> "RET\n");
+        mapa.put("RETURN", nodo -> "MOV __funcion_actual__, 0\nRET\n");
     }
 
     public static boolean isFunctionEmpty(){
@@ -138,7 +138,7 @@ public abstract class Generador {
     }
 
     public static void PopFuncion(String s) {
-        outFunciones.escribirBuffer("_"+ s.replace(":", "_") + ":");
+        outFunciones.escribirBuffer("__"+ s.replaceAll(":", "_") + ":");
         outFunciones.escribirBuffer(pilaFuncion.pop().toString());
     }
 
