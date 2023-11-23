@@ -122,12 +122,7 @@ public abstract class Generador {
         mapa.put("Funcion", nodo -> {PopFuncion(nodo.getIzq().getIzq().getNombre());
             return noAction.generar(nodo); });
         mapa.put("parametro", noAction);
-        mapa.put("RETURN", nodo -> "MOV __funcion_actual__, 0\n" +
-                (nodo.getTipo().equals("SHORT")
-                        ? "MOV AL, " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq())
-                        : (nodo.getTipo().equals("LONG")
-                        ? "MOV EAX, " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq())
-                        : "FLD " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq())) + "\nRET\n" + noAction.generar(nodo)));
+        mapa.put("RETURN", nodo -> "RET\n");
     }
 
     public static boolean isFunctionEmpty(){

@@ -1868,7 +1868,7 @@ case 93:
 break;
 case 95:
 //#line 443 "gramatica.y"
-{ yyval = val_peek(1); }
+{ yyval = new ParserVal( new Nodo("sentencias", (Nodo) val_peek(1).obj, null));}
 break;
 case 96:
 //#line 446 "gramatica.y"

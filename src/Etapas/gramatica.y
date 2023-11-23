@@ -440,7 +440,7 @@ listaSentenciasMetodo: listaSentenciasMetodo sentenciaDeclarativaMetodo
 listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo {$$ = $1;}
                        	| listaSentenciasFuncion sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
                        	| sentenciaDeclarativaMetodo
-                       	| sentencia_ejecutable_return ',' { $$ = $1; }
+                       	| sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, null));}
 ;
 
 invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo de clase.");
