@@ -27,7 +27,6 @@ MOV AL, 1_s
 MOV y_main, AL
 RET
 
- END
 
 START:
 MOV AL, 4_s
