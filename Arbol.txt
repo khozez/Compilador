@@ -1,26 +1,27 @@
 program
 '-->sentencias null
    |-->sentencias null
-   |  |-->sentencias null
-   |  |  |-->sentencias null
-   |  |  |  '-->Asignacion SHORT
-   |  |  |     |-->x:main SHORT
-   |  |  |     '-->4_s SHORT
-   |  |  '-->Asignacion SHORT
-   |  |     |-->y:main SHORT
-   |  |     '-->8_s SHORT
-   |  '-->Funcion void
-   |     |-->Encabezado void
-   |     |  '-->f1:main null
-   |     '-->sentencias null
-   |        |-->sentencias null
-   |        |  |-->sentencias null
-   |        |  |  '-->Asignacion SHORT
-   |        |  |     |-->x:main SHORT
-   |        |  |     '-->1_s SHORT
-   |        |  '-->Asignacion SHORT
-   |        |     |-->y:main SHORT
-   |        |     '-->1_s SHORT
-   |        '-->RETURN null
-   '-->LlamadaFuncion void
-      '-->f1:main null
+   |  |-->Clase null
+   |  |  |-->EncabezadoClase null
+   |  |  |  '-->cb:main null
+   |  |  '-->cuerpoClase null
+   |  |     '-->MetodoClase void
+   |  |        |-->Encabezado void
+   |  |        |  |-->f2:cb:main null
+   |  |        |  '-->h:f2:cb:main SHORT
+   |  |        '-->Asignacion SHORT
+   |  |           |-->y:cb:main SHORT
+   |  |           '-->h:f2:cb:main SHORT
+   |  '-->Clase null
+   |     |-->EncabezadoClase null
+   |     |  '-->ca:main null
+   |     '-->cuerpoClase null
+   |        '-->MetodoClase void
+   |           |-->Encabezado void
+   |           |  '-->f1:ca:main null
+   |           '-->Asignacion SHORT
+   |              |-->x:ca:main SHORT
+   |              '-->1_s SHORT
+   '-->LlamadoMetodo void
+      |-->f2:cb:main null
+      '-->4_s SHORT

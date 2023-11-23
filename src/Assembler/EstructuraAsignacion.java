@@ -14,11 +14,11 @@ public class EstructuraAsignacion implements GeneradorEstructura {
         String variable2 = obtenerNombreVariable(ts, nodo.getDer());
 
         if (nodo.getTipo().equals("SHORT"))
-            codigo = "MOV AL, " + variable2 + "\nMOV " + variable1 + ", AL\n";
+            codigo = "MOV AL, " + variable2 + "\nMOV " + variable1 + ", AL";
         else if (nodo.getTipo().equals("LONG"))
-            codigo = "MOV EAX, " + variable2 + "\nMOV " + variable1 + ", EAX\n";
+            codigo = "MOV EAX, " + variable2 + "\nMOV " + variable1 + ", EAX";
         else
-            codigo = "FLD " + variable2 + "\nFSTP " + variable1 + "\n";
+            codigo = "FLD " + variable2 + "\nFSTP " + variable1;
 
         return codigo;
     }

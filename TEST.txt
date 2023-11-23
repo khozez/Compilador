@@ -1,15 +1,21 @@
 {
-    SHORT x;y,
-    x = 4_s,
-    y = 8_s,
-
-    VOID f1()
-    {
-        x = 1_s,
-        y = 1_s,
-        RETURN,
+    CLASS cb{
+        SHORT y,
+        VOID f2(SHORT h)
+        {
+            y = h,
+        },
     }
 
-    f1(),
+    CLASS ca{
+        SHORT x,
+        VOID f1()
+        {
+            x = 1_s,
+        },
+        cb,
+    }
 
+    ca a,
+    a.cb.f2(4_s),
 }

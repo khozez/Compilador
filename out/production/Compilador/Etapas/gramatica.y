@@ -42,10 +42,12 @@ encabezadoClase: CLASS ID {var t = AnalizadorLexico.TS;
                                 	yyerror("El nombre de la clase " + $2.sval +  " ya fue utilizado en este ambito");
                                 else { //la tabla de simbolos contiene la clase pero no tiene el uso asignado.
                                         t.agregarAtributo(clave, "uso", "nombre_clase");
+                                        t.agregarAtributo(clave, "tipo", $2.sval);
                                 }
                            else {
                                 t.agregarSimbolo($2.sval + Parser.ambito);
                                 t.agregarAtributo(t.obtenerID(), "uso", "nombre_clase");
+                                t.agregarAtributo(t.obtenerID(), "tipo", $2.sval);
                            }
                            $$ = new ParserVal(new Nodo("EncabezadoClase", new Nodo($2.sval + Parser.ambito), null));
                            lista_clases.add($2.sval + Parser.ambito.replace(':','_'));
@@ -99,24 +101,26 @@ referenciaMetodo: ID '(' ')' {
 			      out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                               var t = AnalizadorLexico.TS;
                               variableAmbitoClase = $1.sval + variableAmbitoClase + ":main";
+                              int clave = t.obtenerSimbolo(variableAmbitoClase);
                               if(chequearMetodoClase(variableAmbitoClase))
                               	yyerror("El metodo al que se desea llamar tiene parametro");
-                              var x = new Nodo("LlamadoMetodo", new Nodo(variableAmbitoClase, null, null, "void"), null);
+                              var x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "herencia"), null, null, "void"), null);
                               $$ = new ParserVal(x);
                               }
                  | ID '(' expresion ')' {
                                         out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                                         var t = AnalizadorLexico.TS;
                                         variableAmbitoClase = $1.sval + variableAmbitoClase + ":main";
+                                        int clave = t.obtenerSimbolo(variableAmbitoClase);
                                         if(!chequearMetodoClase(variableAmbitoClase))
                                         	yyerror("El metodo al que se desea llamar no acepta parametros.");
-                                        var x = new Nodo("LlamadoMetodo", new Nodo(variableAmbitoClase), (Nodo) $3.obj, "void");
+                                        var x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "herencia")), (Nodo) $3.obj, "void");
                                         $$ = new ParserVal(x);
                                         }
 ;
 
 listaReferencia: listaReferencia ID '.' {variableAmbitoClase = ":" + $2.sval + variableAmbitoClase;}
-		| ID '.' {variableAmbitoClase = ":"+ $1.sval + variableAmbitoClase;}
+		| ID '.' {variableAmbitoClase = ":"+ getTipo($1.sval+":main") + variableAmbitoClase;}
 ;
 
 seccionAtributos: tipo listaAtributos
@@ -476,7 +480,10 @@ declaracion: tipo listaDeclaracion
                                int clave = t.obtenerSimbolo(x);
                                if (clave != t.NO_ENCONTRADO){
                                  if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
-                                 	t.agregarAtributo(clave, "uso", "variable");
+                                 	if (!instanciaClase)
+                                 		t.agregarAtributo(clave, "uso", "variable");
+                                 	else
+                                 		t.agregarAtributo(clave, "uso", "instanciaClase");
                                  	t.agregarAtributo(clave, "tipo", $1.sval);
                                  	t.modificarAtributo(clave, "lexema", x);
                                  } else {
@@ -485,26 +492,33 @@ declaracion: tipo listaDeclaracion
                                } else {
                                		t.agregarSimbolo(x);
                                		t.agregarAtributo(t.obtenerID(), "tipo", $1.sval);
-                               		t.agregarAtributo(t.obtenerID(), "uso", "variable");
+                               		if (!instanciaClase)
+                                        	t.agregarAtributo(t.obtenerID(), "uso", "variable");
+                                        else
+                                                t.agregarAtributo(t.obtenerID(), "uso", "instanciaClase");
                                }
                              });
                          lista_variables.clear();
+                         instanciaClase = false;
              	}
 ;
 
 
 listaDeclaracion: ID ';' listaDeclaracion {  lista_variables.add($1.sval + Parser.ambito);
- 					     variables_no_asignadas.add($1.sval + Parser.ambito);
+					     if (!instanciaClase)
+ 					     	variables_no_asignadas.add($1.sval + Parser.ambito);
  					  }
 		| ID { lista_variables.add($1.sval + Parser.ambito);
-		       variables_no_asignadas.add($1.sval + Parser.ambito);
+		       if (!instanciaClase)
+                       	   variables_no_asignadas.add($1.sval + Parser.ambito);
 		     }
 ;
 
 tipo: SHORT  { $$ = $1; }
     	| ULONG { $$ = $1; }
 	| FLOAT { $$ = $1; }
-    	| ID { $$ = $1; }
+    	| ID { $$ = $1;
+    	        instanciaClase = true;}
 ;
 
 expresion: termino { $$ = $1;}
@@ -568,6 +582,7 @@ public static final String ERROR_SINTACTICO = "Error_sintactico";
 private static int funcLocales = 0;
 public static String claseActual = "";
 private static Boolean herencia = false;
+private static Boolean instanciaClase = false;
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
 public static ArrayList<String> lista_variables = new ArrayList<>();
@@ -986,6 +1001,7 @@ private static Boolean aplicarHerencia(String heredada, String heredera)
                         t.agregarSimbolo(variable);
                         t.agregarAtributos(t.obtenerID(), t.obtenerAtributos(clave));
                         t.modificarAtributo(t.obtenerID(), "lexema", variable);
+                        t.agregarAtributo(t.obtenerID(), "herencia", lexema_actual);
                     }
                 }
 

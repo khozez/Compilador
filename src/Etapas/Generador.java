@@ -26,7 +26,7 @@ public abstract class Generador {
             }
             else{
 
-            if(padre.getNombre().equals("Funcion"))
+            if(padre.getNombre().equals("Funcion") || padre.getNombre().equals("MetodoClase"))
                 pilaFuncion.push(new StringBuilder(""));
                 else if(padre.getNombre().equals("while")){
                     if (isFunctionEmpty()) {
@@ -43,9 +43,6 @@ public abstract class Generador {
 
             return GenerarCodigo(padre);
             }
-        }
-        if (padre != null && padre.getNombre().equals("RETURN")) {
-            GenerarCodigo(padre);
         }
         return "";
     }
@@ -122,11 +119,12 @@ public abstract class Generador {
             return codigo;
         });
         mapa.put("LlamadaFuncion", new EstructuraFuncion());
-        mapa.put("LlamadaMetodo", new EstructuraClase());
+        mapa.put("LlamadoMetodo", new EstructuraFuncion());
         mapa.put("Funcion", nodo -> {PopFuncion(nodo.getIzq().getIzq().getNombre());
             return noAction.generar(nodo); });
+        mapa.put("MetodoClase", nodo -> {PopFuncion(nodo.getIzq().getIzq().getNombre());
+            return noAction.generar(nodo); });
         mapa.put("parametro", noAction);
-        mapa.put("RETURN", nodo -> "MOV __funcion_actual__, 0\nRET\n");
     }
 
     public static boolean isFunctionEmpty(){
@@ -140,6 +138,8 @@ public abstract class Generador {
     public static void PopFuncion(String s) {
         outFunciones.escribirBuffer("__"+ s.replaceAll(":", "_") + ":");
         outFunciones.escribirBuffer(pilaFuncion.pop().toString());
+        outFunciones.escribirBuffer("MOV funcion_actual, 0");
+        outFunciones.escribirBuffer("RET");
     }
 
     public static void WriteFunc(String S){

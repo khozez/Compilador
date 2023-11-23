@@ -1,16 +1,29 @@
 {
+Palabra reservada: CLASS (260)
+Identificador: cb (257)
+{
+Palabra reservada: SHORT (266)
+Identificador: y (257)
+,
+Palabra reservada: VOID (265)
+Identificador: f2 (257)
+(
+Palabra reservada: SHORT (266)
+Identificador: h (257)
+)
+{
+Identificador: y (257)
+=
+Identificador: h (257)
+,
+}
+,
+}
+Palabra reservada: CLASS (260)
+Identificador: ca (257)
+{
 Palabra reservada: SHORT (266)
 Identificador: x (257)
-;
-Identificador: y (257)
-,
-Identificador: x (257)
-=
-Constante entera: 4_s (258)
-,
-Identificador: y (257)
-=
-Constante entera: 8_s (258)
 ,
 Palabra reservada: VOID (265)
 Identificador: f1 (257)
@@ -21,15 +34,21 @@ Identificador: x (257)
 =
 Constante entera: 1_s (258)
 ,
-Identificador: y (257)
-=
-Constante entera: 1_s (258)
+}
 ,
-Palabra reservada: RETURN (270)
+Identificador: cb (257)
 ,
 }
-Identificador: f1 (257)
+Identificador: ca (257)
+Identificador: a (257)
+,
+Identificador: a (257)
+.
+Identificador: cb (257)
+.
+Identificador: f2 (257)
 (
+Constante entera: 4_s (258)
 )
 ,
 }
