@@ -3,9 +3,9 @@
     x = 4_s,
     y = 8_s,
 
-    WHILE (x < 5_s) DO
-    {
-        x = 7_s,
-    },
+    VOID f1(){
+        x = 1_s,
+        RETURN,
+    }
 
 }

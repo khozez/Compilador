@@ -47,7 +47,7 @@ public abstract class Generador {
     }
 
     private static void escribirWhile(OutputManager A) {
-        String codigo = "etiqueta" + etiqueta + ":"+"\n";
+        String codigo = "etiqueta" + etiqueta + ":";
         pilaEtiquetas.add(etiqueta);
         etiqueta++;
         A.escribirBuffer(codigo);

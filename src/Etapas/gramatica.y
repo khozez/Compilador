@@ -289,7 +289,7 @@ print: PRINT CADENA {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLine
        | CADENA {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
 ;
 
-return: RETURN {$$ = new ParserVal( new Nodo($1.sval, null));}
+return: RETURN {$$ = new ParserVal( new Nodo($1.sval));}
 ;
 
 parametro: tipo ID {$$ = new ParserVal( new Nodo($2.sval, $1.sval));}
@@ -394,7 +394,7 @@ declaracionFuncion: encabezadoFuncion '{' cuerpoFuncion '}' { out_estructura.wri
                                                             $$ = new ParserVal(
                                                             new Nodo( "Funcion",
                                                                          	    (Nodo) $1.obj ,
-                                                                                    (Nodo) $2.obj ,
+                                                                                    (Nodo) $3.obj ,
                                                                                     		    "void"));
 
                                                             /* Acciones de desapilar */
@@ -412,7 +412,7 @@ declaracionFuncionLocal: encabezadoFuncion '{' cuerpoFuncion '}' { out_estructur
                                                             		$$ = new ParserVal(
                                                                 	new Nodo( "Funcion",
                                                                          	    (Nodo) $1.obj ,
-                                                                                    (Nodo) $2.obj ,
+                                                                                    (Nodo) $3.obj ,
                                                                                     		    "void"));
 
                                                                 	/* Acciones de desapilar */
@@ -434,13 +434,13 @@ cuerpoFuncion:  listaSentenciasFuncion { $$ = $1; }
 listaSentenciasMetodo: listaSentenciasMetodo sentenciaDeclarativaMetodo
                        	| listaSentenciasMetodo sentenciaEjecutable ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
                        	| sentenciaDeclarativaMetodo
-                       	| sentenciaEjecutable ',' { $$ = new ParserVal( new Nodo("sentencias", null, (Nodo) $1.obj));}
+                       	| sentenciaEjecutable ',' { $$ = $1; }
 ;
 
-listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo
+listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo {$$ = $1;}
                        	| listaSentenciasFuncion sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
                        	| sentenciaDeclarativaMetodo
-                       	| sentencia_ejecutable_return ',' { $$ = new ParserVal( new Nodo("sentencias", null, (Nodo) $1.obj));}
+                       	| sentencia_ejecutable_return ',' { $$ = $1; }
 ;
 
 invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo de clase.");

@@ -8,10 +8,11 @@ program
    |  '-->Asignacion SHORT
    |     |-->y:main SHORT
    |     '-->8_s SHORT
-   '-->while null
-      |-->< SHORT
-      |  |-->x:main SHORT
-      |  '-->5_s SHORT
-      '-->Asignacion SHORT
-         |-->x:main SHORT
-         '-->7_s SHORT
+   '-->Funcion void
+      |-->Encabezado void
+      |  '-->f1:main null
+      '-->sentencias null
+         |-->Asignacion SHORT
+         |  |-->x:main SHORT
+         |  '-->1_s SHORT
+         '-->RETURN null

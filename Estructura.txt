@@ -1,5 +1,5 @@
 LINEA 3: Asignación
 LINEA 4: Asignación
-LINEA 8: Asignación
-LINEA 9: Fin de sentencia WHILE
+LINEA 7: Asignación
+LINEA 9: Fin de declaración de función VOID.
 LINEA 11: Fin de programa

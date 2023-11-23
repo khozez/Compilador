@@ -1110,7 +1110,7 @@ public static void main(String[] args) {
                 System.out.println("No se especifico el archivo a compilar");
         }
 }
-//#line 1043 "Parser.java"
+//#line 1042 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1689,7 +1689,7 @@ case 74:
 break;
 case 75:
 //#line 292 "gramatica.y"
-{yyval = new ParserVal( new Nodo(val_peek(0).sval, null));}
+{yyval = new ParserVal( new Nodo(val_peek(0).sval));}
 break;
 case 76:
 //#line 295 "gramatica.y"
@@ -1811,7 +1811,7 @@ case 84:
                                                             yyval = new ParserVal(
                                                             new Nodo( "Funcion",
                                                                          	    (Nodo) val_peek(3).obj ,
-                                                                                    (Nodo) val_peek(2).obj ,
+                                                                                    (Nodo) val_peek(1).obj ,
                                                                                     		    "void"));
 
                                                             /* Acciones de desapilar */
@@ -1830,7 +1830,7 @@ case 85:
                                                             		yyval = new ParserVal(
                                                                 	new Nodo( "Funcion",
                                                                          	    (Nodo) val_peek(3).obj ,
-                                                                                    (Nodo) val_peek(2).obj ,
+                                                                                    (Nodo) val_peek(1).obj ,
                                                                                     		    "void"));
 
                                                                 	/* Acciones de desapilar */
@@ -1856,7 +1856,11 @@ case 89:
 break;
 case 91:
 //#line 437 "gramatica.y"
-{ yyval = new ParserVal( new Nodo("sentencias", null, (Nodo) val_peek(1).obj));}
+{ yyval = val_peek(1); }
+break;
+case 92:
+//#line 440 "gramatica.y"
+{yyval = val_peek(1);}
 break;
 case 93:
 //#line 441 "gramatica.y"
@@ -1864,7 +1868,7 @@ case 93:
 break;
 case 95:
 //#line 443 "gramatica.y"
-{ yyval = new ParserVal( new Nodo("sentencias", null, (Nodo) val_peek(1).obj));}
+{ yyval = val_peek(1); }
 break;
 case 96:
 //#line 446 "gramatica.y"
@@ -2048,7 +2052,7 @@ case 124:
 //#line 556 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal escrito el comparador ==");}
 break;
-//#line 1976 "Parser.java"
+//#line 1979 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

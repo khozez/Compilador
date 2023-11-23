@@ -12,18 +12,16 @@ Identificador: y (257)
 =
 Constante entera: 8_s (258)
 ,
-Palabra reservada: WHILE (269)
+Palabra reservada: VOID (265)
+Identificador: f1 (257)
 (
-Identificador: x (257)
-<
-Constante entera: 5_s (258)
 )
-Palabra reservada: DO (276)
 {
 Identificador: x (257)
 =
-Constante entera: 7_s (258)
+Constante entera: 1_s (258)
+,
+Palabra reservada: RETURN (270)
 ,
 }
-,
 }
