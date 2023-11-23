@@ -16,17 +16,9 @@ printf PROTO C :VARARG
    ErrorOverflowProd DB "Error por Overflow en un producto", 10, 0
 
 ; constante para cada funcion a partir de su hashcode
-f1_main DD 1824968941
     _y:main_ DB ?
     _x:main_ DB ?
 .CODE
-MOV AL, 1_s
-MOV x_main, AL
-
-_f1_main ENDP
-
-
-
 
 START:
 MOV AL, 4_s
@@ -37,13 +29,30 @@ MOV AL, 8_s
 MOV y_main, AL
 
 
+etiqueta1:
+MOV AL, x_main
+MOV AH, 4_s
+CMP AL, AH
+JAE etiqueta2
+MOV AL, y_main
+MOV AH, 8_s
+CMP AL, AH
+JAE etiqueta3
+MOV AL, 4_s
+MOV x_main, AL
 
-MOV EAX, __f1:main__
-CMP EAX, __funcion_actual__
-JE error_recursion
-MOV __funcion_actual__, EAX
-call _f1:main
+JMP etiqueta4
+etiqueta3: 
 
+MOV AL, 1_s
+MOV x_main, AL
+
+etiqueta4: 
+
+
+
+JMP etiqueta1
+etiqueta2:
 
 
 

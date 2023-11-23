@@ -12,20 +12,35 @@ Identificador: y (257)
 =
 Constante entera: 8_s (258)
 ,
-Palabra reservada: VOID (265)
-Identificador: f1 (257)
+Palabra reservada: WHILE (269)
 (
+Identificador: x (257)
+<
+Constante entera: 4_s (258)
 )
+Palabra reservada: DO (276)
+{
+Palabra reservada: IF (261)
+(
+Identificador: y (257)
+>
+Constante entera: 8_s (258)
+)
+{
+Identificador: x (257)
+=
+Constante entera: 4_s (258)
+,
+}
+Palabra reservada: ELSE (262)
 {
 Identificador: x (257)
 =
 Constante entera: 1_s (258)
 ,
-Palabra reservada: RETURN (270)
+}
+Palabra reservada: END_IF (263)
 ,
 }
-Identificador: f1 (257)
-(
-)
 ,
 }

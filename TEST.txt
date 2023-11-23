@@ -3,11 +3,15 @@
     x = 4_s,
     y = 8_s,
 
-    VOID f1(){
-        x = 1_s,
-        RETURN,
-    }
-
-    f1(),
+    WHILE (x < 4_s) DO
+    {
+        IF (y > 8_s)
+        {
+            x = 4_s,
+        }ELSE
+        {
+            x = 1_s,
+        }END_IF,
+    },
 
 }

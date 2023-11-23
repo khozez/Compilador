@@ -2,20 +2,26 @@ program
 '-->sentencias null
    |-->sentencias null
    |  |-->sentencias null
-   |  |  |-->sentencias null
-   |  |  |  '-->Asignacion SHORT
-   |  |  |     |-->x:main SHORT
-   |  |  |     '-->4_s SHORT
    |  |  '-->Asignacion SHORT
-   |  |     |-->y:main SHORT
-   |  |     '-->8_s SHORT
-   |  '-->Funcion void
-   |     |-->Encabezado void
-   |     |  '-->f1:main null
-   |     '-->sentencias null
-   |        |-->Asignacion SHORT
-   |        |  |-->x:main SHORT
-   |        |  '-->1_s SHORT
-   |        '-->RETURN null
-   '-->LlamadaFuncion void
-      '-->f1:main null
+   |  |     |-->x:main SHORT
+   |  |     '-->4_s SHORT
+   |  '-->Asignacion SHORT
+   |     |-->y:main SHORT
+   |     '-->8_s SHORT
+   '-->while null
+      |-->< SHORT
+      |  |-->x:main SHORT
+      |  '-->4_s SHORT
+      '-->if null
+         |-->< SHORT
+         |  |-->y:main SHORT
+         |  '-->8_s SHORT
+         '-->cuerpoIf null
+            |-->then null
+            |  '-->Asignacion SHORT
+            |     |-->x:main SHORT
+            |     '-->4_s SHORT
+            '-->else null
+               '-->Asignacion SHORT
+                  |-->x:main SHORT
+                  '-->1_s SHORT

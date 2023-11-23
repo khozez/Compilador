@@ -82,10 +82,10 @@ public abstract class Generador {
         mapa.put("/", new EstructuraOperador("DIV"));
         mapa.put(">", new EstructuraComparador("JBE"));
         mapa.put("<", new EstructuraComparador("JAE"));
-        mapa.put("=", new EstructuraComparador("JNE"));
+        mapa.put("==", new EstructuraComparador("JNE"));
         mapa.put(">=", new EstructuraComparador("JB"));
         mapa.put("<=", new EstructuraComparador("JA"));
-        mapa.put("=!", new EstructuraComparador("JE"));
+        mapa.put("!!", new EstructuraComparador("JE"));
         mapa.put("Asignacion", new EstructuraAsignacion());
         mapa.put("while", new EstructuraWhile()); 
         mapa.put("sentencias", noAction);
