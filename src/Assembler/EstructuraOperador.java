@@ -44,11 +44,11 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             case "SHORT":
                 switch (operando) {
                     case "DIV":
-                        codigo = String.format("MOV AH, 0\nMOV AX, %s\nMOV BL, %s\nCMP BL, 0\nJE division_por_cero\nDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AH, 0\nMOV AX, %s\nMOV BL, %s\nCMP BL, 0\nJE ErrorDiv0\nDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
-                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nADD AL, BL\nMOV @aux%d, AL\nJO error_overflow\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nADD AL, BL\nMOV @aux%d, AL\nJO ErrorOverflowSum\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "SUB":
@@ -64,11 +64,11 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             case "ULONG":
                 switch (operando) {
                     case "DIV":
-                        codigo = String.format("MOV EDX, 0\nMOV EAX, %s\nMOV EBX, %s\nCMP EBX, 0\nJE division_por_cero\nDIV BX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EDX, 0\nMOV EAX, %s\nMOV EBX, %s\nCMP EBX, 0\nJE ErrorDiv0\nDIV BX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
-                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nADD EAX, EBX\nMOV @aux%d, EAX\nJO error_overflow\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nADD EAX, EBX\nMOV @aux%d, EAX\nJO ErrorOverflowSum\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "SUB":
@@ -84,7 +84,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             case "FLOAT":
                 switch (operando) {
                     case "DIV":
-                        codigo = String.format("FLD %s\nFLD %s\nFLDZ\nFCOM\nFSTSW aux_mem_2bytes\nSAHF\nJE division_por_cero\nFDIV\nFSTP @aux%d\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("FLD %s\nFLD %s\nFLDZ\nFCOM\nFSTSW aux_mem_2bytes\nSAHF\nJE ErrorDiv0\nFDIV\nFSTP @aux%d\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
@@ -96,7 +96,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "MUL":
-                        codigo = String.format("FLD %s\nFLD %s\nFMUL\nFSTP @aux%d\nFSTSW aux_mem_2bytes\nSAHF\nJO error_overflow\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("FLD %s\nFLD %s\nFMUL\nFSTP @aux%d\nFSTSW aux_mem_2bytes\nSAHF\nJO ErrorOverflowProd\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                 }

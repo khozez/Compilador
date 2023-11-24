@@ -17,11 +17,10 @@ includelib \masm32\lib\masm32.lib
    ErrorDiv0 DB "Error Division por Cero en ejecucion", 0
    ErrorOverflowProd DB "Error por Overflow en un producto", 0
 
+    _y:main_ DB ?
     _z:main_ DB ?
     _x:main_ DB ?
-    Cadena0 DB "X ES 3", 0
     @aux1_ DB ?
-    @aux2_ DB ?
 .CODE
 
 START:
@@ -29,39 +28,20 @@ MOV AL, 4
 MOV _x:main, AL
 
 
-MOV AL, _x:main
-MOV BL, 1
-ADD AL, BL
+MOV AL, 0
+MOV _y:main, AL
+
+
+MOV AH, 0
+MOV AX, _y:main
+MOV BL, _x:main
+CMP BL, 0
+JE division_por_cero
+DIV BL
 MOV @aux1, AL
-JO error_overflow
 
 MOV AL, @aux1
 MOV _z:main, AL
-
-MOV AL, _x:main
-MOV BL, 1
-SUB AL, BL
-MOV @aux2
-
-MOV AL, @aux2
-MOV _x:main, AL
-
-
-
-MOV AL, x_main
-MOV AH, 3_s
-CMP AL, AH
-JNE etiqueta1
-
-invoke MessageBox, NULL, addr Cadena0, addr Cadena0, MB_OK
-invoke ExitProcess, 0
-
-JMP etiqueta2
-etiqueta1: 
-
-etiqueta2: 
-
-
 
 
 

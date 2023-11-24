@@ -5,23 +5,11 @@ program
    |  |  '-->Asignacion SHORT
    |  |     |-->x:main SHORT
    |  |     '-->4_s SHORT
-   |  '-->sentencias null
-   |     |-->Asignacion SHORT
-   |     |  |-->z:main SHORT
-   |     |  '-->+ SHORT
-   |     |     |-->x:main SHORT
-   |     |     '-->1_s SHORT
-   |     '-->Asignacion SHORT
-   |        |-->x:main SHORT
-   |        '-->- SHORT
-   |           |-->x:main SHORT
-   |           '-->1_s SHORT
-   '-->if null
-      |-->== SHORT
-      |  |-->x:main SHORT
-      |  '-->3_s SHORT
-      '-->cuerpoIf null
-         |-->then null
-         |  '-->Print STRING
-         |     '-->Cadena0 STRING
-         '-->else null
+   |  '-->Asignacion SHORT
+   |     |-->y:main SHORT
+   |     '-->0_s SHORT
+   '-->Asignacion SHORT
+      |-->z:main SHORT
+      '-->/ SHORT
+         |-->y:main SHORT
+         '-->x:main SHORT

@@ -3,26 +3,21 @@
  (257) --> Identificador: x
  (59) --> ;
  (257) --> Identificador: z
+ (59) --> ;
+ (257) --> Identificador: y
  (44) --> ,
  (257) --> Identificador: x
  (61) --> =
  (258) --> Constante entera: 4_s
  (44) --> ,
+ (257) --> Identificador: y
+ (61) --> =
+ (258) --> Constante entera: 0_s
+ (44) --> ,
  (257) --> Identificador: z
  (61) --> =
+ (257) --> Identificador: y
+ (47) --> /
  (257) --> Identificador: x
- (-1
- (43) --> +
- (258) --> Constante entera: 1_s
- (44) --> ,
- (261) --> Palabra reservada: IF
- (40) --> (
- (257) --> Identificador: x
- (-1
- (258) --> Constante entera: 3_s
- (41) --> )
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (263) --> Palabra reservada: END_IF
  (44) --> ,
  (125) --> }

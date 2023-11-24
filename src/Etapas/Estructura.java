@@ -19,9 +19,9 @@ public class Estructura {
     public static final String DATA = ".DATA";
     public static final String CODE = ".CODE";
     public static final String START = "START:";
-    public static final String ERRORES = "JMP final\nerror_overflow:\ninvoke MessageBox, NULL, addr ErrorOverflowSum, addr ErrorOverflowSum, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
-                                         "\ndivision_por_cero:\ninvoke MessageBox, NULL, addr ErrorDiv, addr ErrorDiv, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
-                                         "\nerror_overflow:\ninvoke MessageBox, NULL, addr ErrorOverflowProd, addr ErrorOverflowProd, MB_OK"+"\ninvoke ExitProcess, 0"+
+    public static final String ERRORES = "JMP final\nErrorOverflowSum:\ninvoke MessageBox, NULL, addr ErrorOverflowSum, addr ErrorOverflowSum, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
+                                         "\nErrorDiv0:\ninvoke MessageBox, NULL, addr ErrorDiv0, addr ErrorDiv0, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
+                                         "\nErrorOverflowProd:\ninvoke MessageBox, NULL, addr ErrorOverflowProd, addr ErrorOverflowProd, MB_OK"+"\ninvoke ExitProcess, 0"+
                                          "\nfinal:";
     public static final String END_START = "END START";
 
