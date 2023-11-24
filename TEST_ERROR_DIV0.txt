@@ -2,6 +2,6 @@
     SHORT x;z;y,
     x = 4_s,
     y = 0_s,
-    z = y/x,            
+    z = x/y,
 
 }

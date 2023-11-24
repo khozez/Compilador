@@ -44,7 +44,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             case "SHORT":
                 switch (operando) {
                     case "DIV":
-                        codigo = String.format("MOV AH, 0\nMOV AX, %s\nMOV BL, %s\nCMP BL, 0\nJE ErrorDiv0\nDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AH, 0\nMOV AL, %s\nMOV BL, %s\nCMP BL, 0\nJE ErrorDiv0\nDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
@@ -111,9 +111,9 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
         String uso = ts.obtenerAtributo(id, "uso");
 
         if (uso.equals("auxiliar")) {
-            return "@" + subArbol.getNombre();
+            return "@"+subArbol.getNombre();
         } else if (uso.equals("variable") || uso.equals("parametro")) {
-            return "_"+subArbol.getNombre();
+            return "_"+subArbol.getNombre().replaceAll(":", "_")+"_";
         } else if (uso.equals("constante")) {
             String tipo = ts.obtenerAtributo(id, "tipo");
             if (tipo.equals("SHORT"))

@@ -11,5 +11,5 @@ program
    '-->Asignacion SHORT
       |-->z:main SHORT
       '-->/ SHORT
-         |-->y:main SHORT
-         '-->x:main SHORT
+         |-->x:main SHORT
+         '-->y:main SHORT

@@ -12,16 +12,16 @@ public class Estructura {
     public static final String MODEL = ".386\n.MODEL flat, stdcall\noption casemap :none";
     public static final String INCLUDE =
             "include \\masm32\\include\\windows.inc\n" + "include \\masm32\\include\\kernel32.inc\n"
-            + "include \\masm32\\include\\user32.inc\n" + "includelib \\masm32\\lib\\user32.lib\n" +
-            "include \\masm32\\include\\masm32rt.inc\n" + "includelib \\masm32\\lib\\kernel32.lib\n" +
-            "includelib \\masm32\\lib\\masm32.lib\n";
+            +"include \\masm32\\include\\masm32.inc\n" +"include \\masm32\\include\\user32.inc\n"
+                    + "includelib \\masm32\\lib\\kernel32.lib\n" + "includelib \\masm32\\lib\\masm32.lib\n"
+                    +"includelib \\masm32\\lib\\user32.lib\n";
     public static final String STACK = ".STACK 200h";
     public static final String DATA = ".DATA";
     public static final String CODE = ".CODE";
     public static final String START = "START:";
-    public static final String ERRORES = "JMP final\nErrorOverflowSum:\ninvoke MessageBox, NULL, addr ErrorOverflowSum, addr ErrorOverflowSum, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
-                                         "\nErrorDiv0:\ninvoke MessageBox, NULL, addr ErrorDiv0, addr ErrorDiv0, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
-                                         "\nErrorOverflowProd:\ninvoke MessageBox, NULL, addr ErrorOverflowProd, addr ErrorOverflowProd, MB_OK"+"\ninvoke ExitProcess, 0"+
+    public static final String ERRORES = "JMP final\nErrorOverflowSum:\ninvoke MessageBox, NULL, addr _ErrorOverflowSum, addr _ErrorOverflowSum, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
+                                         "\nErrorDiv0:\ninvoke MessageBox, NULL, addr _ErrorDiv0, addr _ErrorDiv0, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
+                                         "\nErrorOverflowProd:\ninvoke MessageBox, NULL, addr _ErrorOverflowProd, addr _ErrorOverflowProd, MB_OK"+"\ninvoke ExitProcess, 0"+
                                          "\nfinal:";
     public static final String END_START = "END START";
 
@@ -38,9 +38,9 @@ public class Estructura {
         this.out_assembler.write(DATA);
         this.out_assembler.write("   aux_mem_2bytes DW ?\n" +
                                     "    __funcion_actual__ DD 0\n" +
-                                    "   ErrorOverflowSum DB \"Error por Overflow en una suma\", 0\n"+
-                                    "   ErrorDiv0 DB \"Error Division por Cero en ejecucion\", 0\n"+
-                                    "   ErrorOverflowProd DB \"Error por Overflow en un producto\", 0\n");
+                                    "   _ErrorOverflowSum DB \"Error por Overflow en una suma\", 0\n"+
+                                    "   _ErrorDiv0 DB \"Error Division por Cero en ejecucion\", 0\n"+
+                                    "   _ErrorOverflowProd DB \"Error por Overflow en un producto\", 0\n");
         writeTs(); //.DATA
         if (!Parser.lista_funciones.isEmpty()) {
             this.out_assembler.write("  ; constante para cada funcion a partir de su hashcode");
@@ -67,7 +67,10 @@ public class Estructura {
                 var uso = fila.get("uso");
                 if (uso != null) {
                     if (fila.get("uso").equals("variable") || fila.get("uso").equals("auxiliar") || fila.get("uso").equals("parametro")) {
-                        var1 += "_";
+                        if (fila.get("uso").equals("variable") || fila.get("uso").equals("parametro"))
+                        {
+                            var1 += "_";
+                        }
 
                         String directiva;
 
@@ -79,12 +82,12 @@ public class Estructura {
                         if (fila.get("tipo").equals("SHORT")) {  //POR QUE SOLO SHORT? Indica que la cantidad de bytes es corta
 
                             directiva += var1 + " DB " + "?";
-                            this.out_assembler.write(directiva);
+                            this.out_assembler.write(directiva.replaceAll(":", "_"));
 
                         } else {   //La cantidad de bytes es larga, solo short usa una longitud corta
 
                             directiva += var1 + " DD " + "?";
-                            this.out_assembler.write(directiva);
+                            this.out_assembler.write(directiva.replaceAll(":", "_"));
                         }
                     } else if (fila.get("uso").equals("cadena")) {
                         String directiva = "    "+fila.get("lexema")+" DB \""+fila.get("cadena")+"\", 0";
