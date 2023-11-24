@@ -1,31 +1,53 @@
 {
+Palabra reservada: CLASS (260)
+Identificador: ca (257)
+{
 Palabra reservada: SHORT (266)
-Identificador: x (257)
+Identificador: x_a (257)
 ,
-Palabra reservada: ULONG (267)
-Identificador: y (257)
-,
-Palabra reservada: FLOAT (268)
-Identificador: z (257)
-,
-Identificador: x (257)
+Palabra reservada: VOID (265)
+Identificador: aumentar (257)
+(
+)
+{
+Identificador: x_a (257)
 =
-Constante entera: 4_s (258)
-,
-Identificador: y (257)
-=
-Constante entera long: 4_ul (258)
-,
-Identificador: z (257)
-=
-Identificador: x (257)
+Identificador: x_a (257)
 +
-Constante float: 4.0 (258)
+Constante entera: 1_s (258)
 ,
-Identificador: z (257)
-=
-Identificador: z (257)
--
+}
+,
+}
+Palabra reservada: CLASS (260)
+Identificador: cb (257)
+{
+Identificador: ca (257)
+,
+Palabra reservada: SHORT (266)
 Identificador: y (257)
+,
+Palabra reservada: VOID (265)
+Identificador: aumentar (257)
+(
+)
+{
+Identificador: y (257)
+=
+Constante entera: 1_s (258)
+,
+}
+,
+}
+Identificador: cb (257)
+Identificador: b (257)
+,
+Identificador: b (257)
+.
+Identificador: ca (257)
+.
+Identificador: aumentar (257)
+(
+)
 ,
 }

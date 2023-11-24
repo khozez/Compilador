@@ -1,23 +1,27 @@
 program
 '-->sentencias null
    |-->sentencias null
-   |  |-->sentencias null
-   |  |  |-->sentencias null
-   |  |  |  '-->Asignacion SHORT
-   |  |  |     |-->x:main SHORT
-   |  |  |     '-->4_s SHORT
-   |  |  '-->Asignacion ULONG
-   |  |     |-->y:main ULONG
-   |  |     '-->4_ul ULONG
-   |  '-->Asignacion FLOAT
-   |     |-->z:main FLOAT
-   |     '-->+ FLOAT
-   |        |-->STOF null
-   |        |  '-->x:main SHORT
-   |        '-->4.0 FLOAT
-   '-->Asignacion FLOAT
-      |-->z:main FLOAT
-      '-->- FLOAT
-         |-->z:main FLOAT
-         '-->LTOF null
-            '-->y:main ULONG
+   |  |-->Clase null
+   |  |  |-->EncabezadoClase null
+   |  |  |  '-->ca:main null
+   |  |  '-->cuerpoClase null
+   |  |     '-->MetodoClase void
+   |  |        |-->Encabezado void
+   |  |        |  '-->aumentar:ca:main null
+   |  |        '-->Asignacion SHORT
+   |  |           |-->x_a:ca:main SHORT
+   |  |           '-->+ SHORT
+   |  |              |-->x_a:ca:main SHORT
+   |  |              '-->1_s SHORT
+   |  '-->Clase null
+   |     |-->EncabezadoClase null
+   |     |  '-->cb:main null
+   |     '-->cuerpoClase null
+   |        '-->MetodoClase void
+   |           |-->Encabezado void
+   |           |  '-->aumentar:cb:main null
+   |           '-->Asignacion SHORT
+   |              |-->y:cb:main SHORT
+   |              '-->1_s SHORT
+   '-->LlamadoMetodo null
+      '-->aumentar:cb:main void

@@ -107,29 +107,31 @@ asignacionClase: ID '=' expresion {
 referenciaMetodo: ID '(' ')' {
 			      out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                               var t = AnalizadorLexico.TS;
-                              variableAmbitoClase = $1.sval + variableAmbitoClase + ":main";
-                              int clave = t.obtenerSimbolo(variableAmbitoClase);
-                              if(chequearMetodoClase(variableAmbitoClase))
-                              	yyerror("El metodo al que se desea llamar tiene parametro");
-                              Nodo x;
-                              if (!claseActual.equals(""))
-                              	x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "herencia"), null, null, "void"), null);
+                              variableAmbitoClase = $1.sval + variableAmbitoClase;
+                              String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
+                              int clave = t.obtenerSimbolo($1.sval+":"+claseBase+":main");
+                              if(chequearMetodoClase(claseBase, $1.sval, variableAmbitoClase+":main"))
+                              	    if (tieneParametrosMetodo(claseBase, $1.sval))
+                              	    	  yyerror("El metodo al que desea llamar requiere parametros");
                               else
-                              	x = new Nodo("LlamadoMetodo", new Nodo(variableAmbitoClase, null, null, "void"), null);
+                              	    yyerror("No existe el metodo al que se intenta invocar en la clase.");
+                              Nodo x;
+                              x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "ref"), null, null, "void"), null);
                               $$ = new ParserVal(x);
                               }
                  | ID '(' expresion ')' {
                                         out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Llamado a metodo de clase");
                                         var t = AnalizadorLexico.TS;
-                                        variableAmbitoClase = $1.sval + variableAmbitoClase + ":main";
-                                        int clave = t.obtenerSimbolo(variableAmbitoClase);
-                                        if(!chequearMetodoClase(variableAmbitoClase))
-                                        	yyerror("El metodo al que se desea llamar no acepta parametros.");
-                                        Nodo x;
-                                        if (!claseActual.equals(""))
-                                        	x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "herencia"), null, null, "void"), null);
+                                        variableAmbitoClase = $1.sval + variableAmbitoClase;
+                                        String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
+                                        int clave = t.obtenerSimbolo($1.sval+":"+claseBase+":main");
+                                        if(chequearMetodoClase(claseBase, $1.sval, variableAmbitoClase+":main"))
+                                        	if (!tieneParametrosMetodo(claseBase, $1.sval))
+                                                	yyerror("El metodo al que desea llamar no acepta parametros");
                                         else
-                                        	x = new Nodo("LlamadoMetodo", new Nodo(variableAmbitoClase, null, null, "void"), null);
+                                                yyerror("No existe el metodo al que se intenta invocar en la clase.");
+                                        Nodo x;
+                                        x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "ref"), null, null, "void"), null);
                                         $$ = new ParserVal(x);
                                         }
 ;
@@ -338,14 +340,16 @@ encabezadoMetodo: VOID ID '(' parametro ')' {
                   					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                                                if (clave != t.NO_ENCONTRADO)
                                                                	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
-                                                                  	yyerror("El nombre del metodo " + $2.sval +  " ya fue utilizado en este ambito");
+                                                                  	t.modificarAtributo(clave, "ref", $2.sval + Parser.ambito);
                                                                  else { //la tabla de simbolos contiene la funcion pero no tiene el tipo asignado.
                                                                   	t.agregarAtributo(clave, "tipo", "void");
                                                                   	t.agregarAtributo(clave, "uso", "nombre_metodo");
+                                                                  	t.agregarAtributo(clave, "ref", $2.sval + Parser.ambito);
                                                                    }
                                                                else {
                                                                 t.agregarSimbolo($2.sval + Parser.ambito);
                                                                 t.agregarAtributo(t.obtenerID(), "tipo", "void");
+                                                                t.agregarAtributo(t.obtenerID(), "ref", $2.sval + Parser.ambito);
                                                                 t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                                }
                                                                $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), (Nodo) $4.obj, "void"));
@@ -359,14 +363,16 @@ encabezadoMetodo: VOID ID '(' parametro ')' {
                                                             int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                                             if (clave != t.NO_ENCONTRADO)
                                                             	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
-                                                                  	yyerror("El nombre del metodo " + $2.sval +  " ya fue utilizado en este ambito");
+                                                                  	t.modificarAtributo(clave, "ref", $2.sval + Parser.ambito);
                                                                   else { //la tabla de simbolos contiene el metodo pero no tiene el tipo asignado.
                                                                           t.agregarAtributo(clave, "tipo", "void");
                                                                           t.agregarAtributo(clave, "uso", "nombre_metodo");
+                                                                          t.agregarAtributo(clave, "ref", $2.sval + Parser.ambito);
                                                                   }
                                                             else {
                                                                   t.agregarSimbolo($2.sval + Parser.ambito);
                                                                   t.agregarAtributo(t.obtenerID(), "tipo", "void");
+                                                                  t.agregarAtributo(t.obtenerID(), "ref", $2.sval + Parser.ambito);
                                                                   t.agregarAtributo(t.obtenerID(), "uso", "nombre_metodo");
                                                             }
                                                             $$ = new ParserVal(new Nodo("Encabezado", new Nodo($2.sval + Parser.ambito), null, "void"));
@@ -392,12 +398,14 @@ encabezadoFuncion: VOID ID '(' parametro ')' {
                                              if (clave != t.NO_ENCONTRADO)
                                              	if (t.obtenerAtributo(clave, "uso") != t.NO_ENCONTRADO_MESSAGE)
                                                 	yyerror("El nombre de la funcion " + $2.sval +  " ya fue utilizado en este ambito");
-                                                else { //la tabla de simbolos contiene la funcion pero no tiene el tipo asignado.
+                                                else { //la tabla de simbolos contiene la funcion pero no tiene el uso asignado.
                                                 	t.agregarAtributo(clave, "tipo", "void");
                                                 	t.agregarAtributo(clave, "uso", "nombre_funcion");
+                                                	t.agregarAtributo(clave, "ref", $2.sval+Parser.ambito);
                                                  }
                                              else {
                                              	t.agregarSimbolo($2.sval + Parser.ambito);
+                                             	t.agregarAtributo(t.obtenerID(), "ref", $2.sval+Parser.ambito);
                                              	t.agregarAtributo(t.obtenerID(), "tipo", "void");
                                              	t.agregarAtributo(t.obtenerID(), "uso", "nombre_funcion");
                                              }
@@ -893,18 +901,26 @@ private Boolean chequearLlamadoFuncion(String funcion) {
   	return false;
 }
 
-private Boolean chequearMetodoClase(String variableConAmbito)
+private Boolean chequearMetodoClase(String claseBase, String metodo, String referenciaCompleta)
 {
 	var t = AnalizadorLexico.TS;
-	int entrada = t.obtenerSimbolo(variableConAmbito);
+	int entrada = t.obtenerSimbolo(metodo+claseBase+":main");
 	if (entrada == TablaSimbolos.NO_ENCONTRADO)
-        	yyerror("No existe el metodo al que se intenta invocar en la clase.");
+        	return false;
         else
         {
-        	if (!t.obtenerAtributo(entrada, "parametro").equals(TablaSimbolos.NO_ENCONTRADO_MESSAGE))
-                  	return true;
-                return false;
+        	if (t.obtenerAtributo(entrada, "herencia").equals(referenciaCompleta))
+        		return true;
+        	return false;
         }
+}
+
+private Boolean tieneParametrosMetodo(String claseBase, String metodo)
+{
+	var t = AnalizadorLexico.TS;
+        int entrada = t.obtenerSimbolo(metodo+claseBase+":main");
+        if (t.obtenerAtributo(entrada, "parametro").equals(t.NO_ENCONTRADO_MESSAGE))
+        	return false;
         return true;
 }
 
@@ -1035,11 +1051,22 @@ private static Boolean aplicarHerencia(String heredada, String heredera)
                         String herencia = lexema_actual.substring(0, lexema_actual.lastIndexOf(":"))+":"+heredera+":main";
                         t.agregarAtributo(t.obtenerID(), "herencia", herencia);
                     }else {
-                        String variable = lexema_actual.substring(0, lexema_actual.lastIndexOf(":"))+":"+heredera+":main";
-                        t.agregarSimbolo(variable);
-                        t.agregarAtributos(t.obtenerID(), t.obtenerAtributos(clave));
-                        t.modificarAtributo(t.obtenerID(), "lexema", variable);
-                        t.agregarAtributo(t.obtenerID(), "herencia", lexema_actual);
+                        String variable = lexema_actual.substring(0, lexema_actual.indexOf(":"))+":"+heredera+":main";
+                        if (t.agregarSimbolo(variable))
+                        {	//SE AGREGA METODO HEREDADO
+				t.agregarAtributos(t.obtenerID(), t.obtenerAtributos(clave));
+				t.modificarAtributo(t.obtenerID(), "lexema", variable);
+				variable = lexema_actual.substring(0, lexema_actual.lastIndexOf(":"))+":"+heredera+":main";
+				t.agregarAtributo(t.obtenerID(), "herencia", variable);
+			}else
+			{	//EL METODO HEREDADO YA FUE DEFINIDO EN CLASE DERIVADA, SE SOBREESCRIBE
+				t.modificarAtributo(clave, "ref", variable);
+				variable = lexema_actual.substring(0, lexema_actual.lastIndexOf(":"))+":"+heredera+":main";
+				if (t.obtenerAtributo(clave, "herencia") == t.NO_ENCONTRADO_MESSAGE)
+					t.agregarAtributo(clave, "herencia", lexema_actual);
+				else
+					t.modificarAtributo(clave, "herencia", lexema_actual);
+			}
                     }
                 }
 

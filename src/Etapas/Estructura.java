@@ -44,7 +44,7 @@ public class Estructura {
         writeTs(); //.DATA
         if (!Parser.lista_funciones.isEmpty()) {
             this.out_assembler.write("  ; constante para cada funcion a partir de su hashcode");
-            Parser.lista_funciones.forEach(x -> this.out_assembler.write(x + " DD " + x.hashCode()));
+            Parser.lista_funciones.forEach(x -> this.out_assembler.write("   __"+x+"__" + " DD " + x.hashCode()));
         }
         this.out_assembler.write(CODE);
         Generador.outFunciones.WriteFile();// --ERROR PISA EL ARCIVHO -- Ni idea porque

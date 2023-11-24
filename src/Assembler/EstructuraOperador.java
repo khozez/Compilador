@@ -13,8 +13,8 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
     public String generar(Nodo nodo) {
         var ts = AnalizadorLexico.TS;
         String codigo = "";
-        String subArbol1 = nodo.getIzq().getNombre();
-        String subArbol2 = nodo.getDer().getNombre();
+        String subArbol1 = obtenerNombreVariable(ts, nodo.getIzq());
+        String subArbol2 = obtenerNombreVariable(ts, nodo.getDer());
         String tipo = nodo.getTipo();
 
         switch (operando) {
@@ -42,15 +42,13 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
 
         switch (tipo) {
             case "SHORT":
-                subArbol1 = subArbol1.replaceAll("_s", "");
-                subArbol2 = subArbol2.replaceAll("_s", "");
                 switch (operando) {
                     case "DIV":
                         codigo = String.format("MOV AH, 0\nMOV AX, %s\nMOV BL, %s\nCMP BL, 0\nJE division_por_cero\nDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
-                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nADD AL, BL\nMOV @aux%d, AL\nJO error_overflow", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nADD AL, BL\nMOV @aux%d, AL\nJO error_overflow\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "SUB":
@@ -64,15 +62,13 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                 }
                 break;
             case "ULONG":
-                subArbol1 = subArbol1.replaceAll("_ul", "");
-                subArbol2 = subArbol2.replaceAll("_ul", "");
                 switch (operando) {
                     case "DIV":
                         codigo = String.format("MOV EDX, 0\nMOV EAX, %s\nMOV EBX, %s\nCMP EBX, 0\nJE division_por_cero\nDIV BX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
-                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nADD EAX, EBX\nMOV @aux%d, EAX\nJO error_overflow", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nADD EAX, EBX\nMOV @aux%d, EAX\nJO error_overflow\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "SUB":
@@ -108,6 +104,25 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
         }
 
         return codigo;
+    }
+
+    public static String obtenerNombreVariable(TablaSimbolos ts, Nodo subArbol) {
+        int id = ts.obtenerSimbolo(subArbol.getNombre());
+        String uso = ts.obtenerAtributo(id, "uso");
+
+        if (uso.equals("auxiliar")) {
+            return "@" + subArbol.getNombre();
+        } else if (uso.equals("variable") || uso.equals("parametro")) {
+            return "_"+subArbol.getNombre();
+        } else if (uso.equals("constante")) {
+            String tipo = ts.obtenerAtributo(id, "tipo");
+            if (tipo.equals("SHORT"))
+                return subArbol.getNombre().replaceAll("_s","");
+            if (tipo.equals("ULONG"))
+                return subArbol.getNombre().replaceAll("_ul","");
+            return subArbol.getNombre();
+        }
+        return "";
     }
 
 }

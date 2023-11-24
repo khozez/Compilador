@@ -17,42 +17,40 @@ includelib \masm32\lib\masm32.lib
    ErrorDiv0 DB "Error Division por Cero en ejecucion", 0
    ErrorOverflowProd DB "Error por Overflow en un producto", 0
 
-    _x:main_ DB ?
-    _y:main_ DD ?
-    _z:main_ DD ?
-    @aux1_ DD ?
-    @aux3_ DD ?
-    @aux4_ DD ?
-    @aux6_ DD ?
+    _x_a:ca:main_ DB ?
+    _x_a:cb:main_ DB ?
+    _y:cb:main_ DB ?
+    @aux1_ DB ?
+  ; constante para cada funcion a partir de su hashcode
+   __aumentar_ca_main__ DD -679688194
+   __aumentar_cb_main__ DD -651059043
 .CODE
+__aumentar_ca_main:
+MOV AL, _x_a:ca:main
+MOV BL, 1
+ADD AL, BL
+MOV @aux1, AL
+JO error_overflow
+MOV AL, @aux1
+MOV _x_a:ca:main, AL
+MOV funcion_actual, 0
+RET
+
+__aumentar_cb_main:
+MOV AL, 1
+MOV _y:cb:main, AL
+MOV funcion_actual, 0
+RET
+
 
 START:
-MOV AL, 4
-MOV _x:main, AL
 
+MOV EAX, __aumentar_cb_main__
+CMP EAX, __funcion_actual__
+JE error_recursion
+MOV __funcion_actual__, EAX
+call __aumentar_cb_main
 
-FLD 4
-FSTP _y:main
-
-FILD _x:main
-FSTP @aux1
-FLD aux1
-FLD 4.0
-FADD
-FSTP @aux3
-
-FLD @aux3
-FSTP _z:main
-
-FILD _y:main
-FSTP @aux4
-FLD z:main
-FLD aux4
-FSUB
-FSTP @aux6
-
-FLD @aux6
-FSTP _z:main
 
 
 
