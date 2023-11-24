@@ -2,14 +2,14 @@ program
 '-->sentencias null
    |-->sentencias null
    |  |-->sentencias null
-   |  |  '-->Asignacion SHORT
-   |  |     |-->x:main SHORT
-   |  |     '-->4_s SHORT
-   |  '-->Asignacion SHORT
-   |     |-->y:main SHORT
-   |     '-->0_s SHORT
-   '-->Asignacion SHORT
-      |-->z:main SHORT
-      '-->/ SHORT
-         |-->x:main SHORT
-         '-->y:main SHORT
+   |  |  '-->Asignacion FLOAT
+   |  |     |-->x:main FLOAT
+   |  |     '-->3.4E+38 FLOAT
+   |  '-->Asignacion FLOAT
+   |     |-->y:main FLOAT
+   |     '-->3.4E+38 FLOAT
+   '-->Asignacion FLOAT
+      |-->z:main FLOAT
+      '-->* FLOAT
+         |-->x:main FLOAT
+         '-->y:main FLOAT

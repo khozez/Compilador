@@ -39,7 +39,12 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
                     return subArbol.getNombre().replaceAll("_s","");
                 if (tipo.equals("ULONG"))
                     return subArbol.getNombre().replaceAll("_ul","");
-                return subArbol.getNombre();
+                else {
+                    String f = subArbol.getNombre().replace(".", "");
+                    f = f.replace("+", "");
+                    f = f.replaceAll("-", "");
+                    return "__"+f;
+                }
             }
             return "";
         }

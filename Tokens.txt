@@ -1,5 +1,5 @@
  (123) --> {
- (266) --> Palabra reservada: SHORT
+ (268) --> Palabra reservada: FLOAT
  (257) --> Identificador: x
  (59) --> ;
  (257) --> Identificador: z
@@ -8,16 +8,16 @@
  (44) --> ,
  (257) --> Identificador: x
  (61) --> =
- (258) --> Constante entera: 4_s
+ (258) --> Constante float: 3.4E+38
  (44) --> ,
  (257) --> Identificador: y
  (61) --> =
- (258) --> Constante entera: 0_s
+ (258) --> Constante float: 3.4E+38
  (44) --> ,
  (257) --> Identificador: z
  (61) --> =
  (257) --> Identificador: x
- (47) --> /
+ (42) --> *
  (257) --> Identificador: y
  (44) --> ,
  (125) --> }

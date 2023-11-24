@@ -34,8 +34,20 @@ public class EstructuraComparador extends Generador implements GeneradorEstructu
 
         if (uso.equals("auxiliar")) {
             return "@" + subArbol.getNombre();
-        } else if (uso.equals("variable") || uso.equals("constante")) {
+        } else if (uso.equals("variable")) {
             return subArbol.getNombre().replaceAll(":", "_")+"_";
+        } else if (uso.equals("constante")) {
+            String tipo = ts.obtenerAtributo(id, "tipo");
+            if (tipo.equals("SHORT"))
+                return subArbol.getNombre().replaceAll("_s","");
+            if (tipo.equals("ULONG"))
+                return subArbol.getNombre().replaceAll("_ul","");
+            else {
+                String f = subArbol.getNombre().replace(".", "");
+                f = f.replace("+", "");
+                f = f.replaceAll("-", "");
+                return "__"+f;
+            }
         }
 
         return "";

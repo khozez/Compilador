@@ -96,7 +96,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "MUL":
-                        codigo = String.format("FLD %s\nFLD %s\nFMUL\nFSTP @aux%d\nFSTSW aux_mem_2bytes\nSAHF\nJO ErrorOverflowProd\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("FLD %s\nFLD %s\nFMUL\nFSTP @aux%d\nFSTSW aux_mem_2bytes\nSAHF\nJC ErrorOverflowProd\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                 }
@@ -120,7 +120,11 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                 return subArbol.getNombre().replaceAll("_s","");
             if (tipo.equals("ULONG"))
                 return subArbol.getNombre().replaceAll("_ul","");
-            return subArbol.getNombre();
+            else {
+                String f = subArbol.getNombre().replaceAll("E", "e");
+                f = f.replace("+", "");
+                return "__"+f;
+            }
         }
         return "";
     }

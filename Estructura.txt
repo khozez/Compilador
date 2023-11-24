@@ -1,4 +1,4 @@
 LINEA 3: Asignación
 LINEA 4: Asignación
-LINEA 5: Asignación
-LINEA 7: Fin de programa
+LINEA 6: Asignación
+LINEA 8: Fin de programa

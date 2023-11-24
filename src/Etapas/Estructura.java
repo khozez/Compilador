@@ -92,6 +92,14 @@ public class Estructura {
                     } else if (fila.get("uso").equals("cadena")) {
                         String directiva = "    "+fila.get("lexema")+" DB \""+fila.get("cadena")+"\", 0";
                         this.out_assembler.write(directiva);
+                    } else if (fila.get("uso").equals("constante") ) {
+                        if (fila.get("tipo").equals("FLOAT")) {
+                            var1 = var1.replace(".", "");
+                            var1 = var1.replace("+", "");
+                            var1 = var1.replaceAll("-", "");
+                            var1 = "    __" + var1 + " DD " + fila.get("lexema");
+                            this.out_assembler.write(var1);
+                        }
                     }
                 }
             }
