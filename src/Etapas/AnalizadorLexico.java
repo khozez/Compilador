@@ -16,6 +16,7 @@ public class AnalizadorLexico {
     public static final int CONSTANTE = 258;
     public static final int CADENA = 259;
     public static final int MAX_LONG_ID = 20;
+    private static int idCadena = 0;
     public static final int MAX_SHORT_INT = (int) Math.pow(2, 7) - 1;
     public static final int MIN_SHORT_INT = (int) -Math.pow(2, 7);
     public static final long MAX_ULONG_INT = (long) Math.pow(2, 32) - 1;
@@ -38,6 +39,12 @@ public class AnalizadorLexico {
 
     public static void newLine(){
         cant_lineas += 1;
+    }
+
+    public static int getIdCadena(){
+        int x = idCadena;
+        idCadena++;
+        return x;
     }
 
     public static int getCantLineas(){ return cant_lineas;}

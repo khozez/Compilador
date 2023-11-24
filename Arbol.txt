@@ -1,27 +1,6 @@
 program
 '-->sentencias null
-   |-->sentencias null
-   |  |-->Clase null
-   |  |  |-->EncabezadoClase null
-   |  |  |  '-->cb:main null
-   |  |  '-->cuerpoClase null
-   |  |     '-->MetodoClase void
-   |  |        |-->Encabezado void
-   |  |        |  |-->f2:cb:main null
-   |  |        |  '-->h:f2:cb:main FLOAT
-   |  |        '-->Asignacion FLOAT
-   |  |           |-->y:cb:main FLOAT
-   |  |           '-->h:f2:cb:main FLOAT
-   |  '-->Clase null
-   |     |-->EncabezadoClase null
-   |     |  '-->ca:main null
-   |     '-->cuerpoClase null
-   |        '-->MetodoClase void
-   |           |-->Encabezado void
-   |           |  '-->f1:ca:main null
-   |           '-->Asignacion SHORT
-   |              |-->x:ca:main SHORT
-   |              '-->1_s SHORT
-   '-->LlamadoMetodo void
-      |-->f2:cb:main null
-      '-->4.0 FLOAT
+   '-->Asignacion FLOAT
+      |-->y:main FLOAT
+      '-->STOF null
+         '-->4_s SHORT

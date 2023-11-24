@@ -1,54 +1,9 @@
 {
-Palabra reservada: CLASS (260)
-Identificador: cb (257)
-{
 Palabra reservada: FLOAT (268)
 Identificador: y (257)
 ,
-Palabra reservada: VOID (265)
-Identificador: f2 (257)
-(
-Palabra reservada: FLOAT (268)
-Identificador: h (257)
-)
-{
 Identificador: y (257)
 =
-Identificador: h (257)
-,
-}
-,
-}
-Palabra reservada: CLASS (260)
-Identificador: ca (257)
-{
-Palabra reservada: SHORT (266)
-Identificador: x (257)
-,
-Palabra reservada: VOID (265)
-Identificador: f1 (257)
-(
-)
-{
-Identificador: x (257)
-=
-Constante entera: 1_s (258)
-,
-}
-,
-Identificador: cb (257)
-,
-}
-Identificador: ca (257)
-Identificador: a (257)
-,
-Identificador: a (257)
-.
-Identificador: cb (257)
-.
-Identificador: f2 (257)
-(
-Constante float: 4.0 (258)
-)
+Constante entera: 4_s (258)
 ,
 }

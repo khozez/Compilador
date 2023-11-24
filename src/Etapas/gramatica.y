@@ -86,7 +86,14 @@ referenciaClase: listaReferencia asignacionClase {$$ = $2; variableAmbitoClase =
 asignacionClase: ID '=' expresion {
 				   var t = AnalizadorLexico.TS;
                                    variableAmbitoClase = $1.sval + variableAmbitoClase;
-                                   String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
+                                   String claseBase;
+                                   if (claseActual.equals(""))
+                                   	claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
+                                   else
+                                   {
+                                   	claseBase = claseActual;
+                                   	variableAmbitoClase = variableAmbitoClase + ":" + claseBase;
+                                   }
                                    if (!chequearReferencia($1.sval, claseBase, variableAmbitoClase+":main"))
                                    	yyerror("No existe el atributo en la clase a la que se intenta hacer referencia.");
                                    String nombre_nodo = $1.sval+":"+claseBase+":main";
@@ -104,7 +111,11 @@ referenciaMetodo: ID '(' ')' {
                               int clave = t.obtenerSimbolo(variableAmbitoClase);
                               if(chequearMetodoClase(variableAmbitoClase))
                               	yyerror("El metodo al que se desea llamar tiene parametro");
-                              var x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "herencia"), null, null, "void"), null);
+                              Nodo x;
+                              if (!claseActual.equals(""))
+                              	x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "herencia"), null, null, "void"), null);
+                              else
+                              	x = new Nodo("LlamadoMetodo", new Nodo(variableAmbitoClase, null, null, "void"), null);
                               $$ = new ParserVal(x);
                               }
                  | ID '(' expresion ')' {
@@ -114,13 +125,31 @@ referenciaMetodo: ID '(' ')' {
                                         int clave = t.obtenerSimbolo(variableAmbitoClase);
                                         if(!chequearMetodoClase(variableAmbitoClase))
                                         	yyerror("El metodo al que se desea llamar no acepta parametros.");
-                                        var x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "herencia")), (Nodo) $3.obj, "void");
+                                        Nodo x;
+                                        if (!claseActual.equals(""))
+                                        	x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "herencia"), null, null, "void"), null);
+                                        else
+                                        	x = new Nodo("LlamadoMetodo", new Nodo(variableAmbitoClase, null, null, "void"), null);
                                         $$ = new ParserVal(x);
                                         }
 ;
 
-listaReferencia: listaReferencia ID '.' {variableAmbitoClase = ":" + $2.sval + variableAmbitoClase;}
-		| ID '.' {variableAmbitoClase = ":"+ getTipo($1.sval+":main") + variableAmbitoClase;}
+listaReferencia: listaReferencia ID '.' { var t = AnalizadorLexico.TS;
+                                          int clave = t.obtenerSimbolo($2.sval+":main");
+                                          String tipo = t.obtenerAtributo(clave, "tipo");
+                                          if (tipo != TablaSimbolos.NO_ENCONTRADO_MESSAGE && !tipo.equals("variable"))
+                                          	variableAmbitoClase = ":"+ tipo + variableAmbitoClase;
+                                          else
+                                        	variableAmbitoClase = ":"+ $2.sval + variableAmbitoClase;
+                                         }
+		| ID '.' { var t = AnalizadorLexico.TS;
+			   int clave = t.obtenerSimbolo($1.sval+":main");
+			   String tipo = t.obtenerAtributo(clave, "tipo");
+			   if (tipo != TablaSimbolos.NO_ENCONTRADO_MESSAGE && !tipo.equals("variable"))
+			   	variableAmbitoClase = ":"+ tipo + variableAmbitoClase;
+			   else
+			   	variableAmbitoClase = ":"+ $1.sval + variableAmbitoClase;
+			   }
 ;
 
 seccionAtributos: tipo listaAtributos
@@ -288,7 +317,12 @@ sentenciaWhile: WHILE '(' condicion ')' DO '{' bloque_ejecucion '}' {out_estruct
 ;
 
 print: PRINT CADENA {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de cadena.");
-		     var x = new Nodo($2.sval, null, null, "STRING");
+		     var t = AnalizadorLexico.TS;
+		     int clave = t.obtenerSimbolo($2.sval);
+		     t.agregarAtributo(clave, "cadena", $2.sval);
+		     String nombreNodo = "Cadena"+AnalizadorLexico.getIdCadena();
+		     t.modificarAtributo(clave, "lexema", nombreNodo);
+		     var x = new Nodo(nombreNodo, null, null, "STRING");
 		     $$ = new ParserVal( new Nodo("Print", x, null, "STRING"));}
        | CADENA {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la sentencia PRINT para el comentario.");}
 ;
@@ -970,7 +1004,7 @@ private static Boolean chequearReferencia(String atributo, String claseBase, Str
 	int clave = t.obtenerSimbolo(atributo+":"+claseBase+":main");
 	if (clave != t.NO_ENCONTRADO)
 	{
-		if (!t.obtenerAtributo(clave, "herencia").equals(referenciaCompleta))
+		if (!claseActual.equals("") && !t.obtenerAtributo(clave, "herencia").equals(referenciaCompleta))
 			return false;
 		else
 			return true;

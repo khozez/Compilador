@@ -93,14 +93,8 @@ public abstract class Generador {
         mapa.put("cuerpoIf", noAction);
         mapa.put("if", noAction);
         mapa.put("Print", nodo -> {
-            String aux ;
-            String variable_string = acomodarString(nodo.getIzq().getNombre().substring(1).replace("_", "__").replace(" ", "_s"));
-            if (nodo.getTipo().equals("STRING"))
-                aux = "invoke StdOut, addr str_"+ variable_string +"\n";
-            else if (nodo.getTipo().equals("SHORT") || nodo.getTipo().equals("LONG"))
-                aux = String.format("print str$(_%s), 13, 10", nodo.getIzq().getNombre().replace(":","_"))+"\n";
-            else
-                aux = "invoke printf, cfm$(\"%.20Lf\\n\"), _" + nodo.getIzq().getNombre().replace(":", "_") + "\n";
+            String variable_string = nodo.getIzq().getNombre();
+            String aux = "invoke MessageBox, NULL, addr "+ variable_string +", addr "+ variable_string +", MB_OK\ninvoke ExitProcess, 0\n";
             return  aux + noAction.generar(nodo);
         });
         mapa.put("then", new EstructuraIf());
@@ -136,43 +130,14 @@ public abstract class Generador {
     }
 
     public static void PopFuncion(String s) {
-        outFunciones.escribirBuffer("PUBLIC\n"+"__"+ s.replaceAll(":", "_") + " PROC");
+        outFunciones.escribirBuffer("__"+ s.replaceAll(":", "_"));
         outFunciones.escribirBuffer(pilaFuncion.pop().toString());
         outFunciones.escribirBuffer("MOV funcion_actual, 0");
         outFunciones.escribirBuffer("RET");
-        outFunciones.escribirBuffer("__"+s.replaceAll(":", "_") +" ENDP\n");
     }
 
     public static void WriteFunc(String S){
         if (!pilaFuncion.isEmpty())
             pilaFuncion.peek().append(S);
-    }
-
-    public static void addClase(){
-        pilaClases.push(new StringBuilder(""));
-    }
-
-    public static void popClase(String s){
-        outFunciones.escribirBuffer("_"+ s.replace(":", "_") + ":" );
-        outFunciones.escribirBuffer(Generador.pilaClases.pop().toString());
-    }
-
-    public static void WriteClase(String S){
-        pilaClases.peek().append(S);
-    }
-
-    public static String acomodarString(String i){
-        StringBuilder string = new StringBuilder();
-        char[] c = i.toCharArray();
-
-        for (char c1 : c){
-            int caracter = (int) c1;
-            Boolean es_letra = ( ( caracter >= 97 && caracter < 123) || ( caracter >= 65 && caracter < 90));
-            if (!es_letra)
-                string.append((int)c1);
-            else
-                string.append(c1);
-        }
-        return string.toString();
     }
 }

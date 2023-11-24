@@ -17,8 +17,10 @@ public class AS10 implements AccionSemantica{
             e.printStackTrace();
         }
         String lexema_sin_saltos = lexema.replaceAll("\\r|\\n", "");
+        lexema_sin_saltos = lexema_sin_saltos.replaceAll("%", "");
         if (TablaSimbolos.obtenerSimbolo(lexema_sin_saltos) == TablaSimbolos.NO_ENCONTRADO) {
             TablaSimbolos.agregarSimbolo(lexema_sin_saltos);
+            TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "cadena");
         }
         AnalizadorLexico.lexema = lexema_sin_saltos;
         return AnalizadorLexico.CADENA;

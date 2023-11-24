@@ -1,21 +1,4 @@
 {
-    CLASS cb{
-        FLOAT y,
-        VOID f2(FLOAT h)
-        {
-            y = h,
-        },
-    }
-
-    CLASS ca{
-        SHORT x,
-        VOID f1()
-        {
-            x = 1_s,
-        },
-        cb,
-    }
-
-    ca a,
-    a.cb.f2(4.0),
+    FLOAT y,
+    y = 4_s,
 }
