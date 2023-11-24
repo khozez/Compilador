@@ -1,7 +1,7 @@
 {
     CLASS cb{
-        SHORT y,
-        VOID f2(SHORT h)
+        FLOAT y,
+        VOID f2(FLOAT h)
         {
             y = h,
         },
@@ -17,5 +17,5 @@
     }
 
     ca a,
-    a.cb.f2(4_s),
+    a.cb.f2(4.0),
 }

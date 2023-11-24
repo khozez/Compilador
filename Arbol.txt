@@ -8,10 +8,10 @@ program
    |  |     '-->MetodoClase void
    |  |        |-->Encabezado void
    |  |        |  |-->f2:cb:main null
-   |  |        |  '-->h:f2:cb:main SHORT
-   |  |        '-->Asignacion SHORT
-   |  |           |-->y:cb:main SHORT
-   |  |           '-->h:f2:cb:main SHORT
+   |  |        |  '-->h:f2:cb:main FLOAT
+   |  |        '-->Asignacion FLOAT
+   |  |           |-->y:cb:main FLOAT
+   |  |           '-->h:f2:cb:main FLOAT
    |  '-->Clase null
    |     |-->EncabezadoClase null
    |     |  '-->ca:main null
@@ -24,4 +24,4 @@ program
    |              '-->1_s SHORT
    '-->LlamadoMetodo void
       |-->f2:cb:main null
-      '-->4_s SHORT
+      '-->4.0 FLOAT

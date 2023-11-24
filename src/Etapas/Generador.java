@@ -136,10 +136,11 @@ public abstract class Generador {
     }
 
     public static void PopFuncion(String s) {
-        outFunciones.escribirBuffer("__"+ s.replaceAll(":", "_") + ":");
+        outFunciones.escribirBuffer("PUBLIC\n"+"__"+ s.replaceAll(":", "_") + " PROC");
         outFunciones.escribirBuffer(pilaFuncion.pop().toString());
         outFunciones.escribirBuffer("MOV funcion_actual, 0");
         outFunciones.escribirBuffer("RET");
+        outFunciones.escribirBuffer("__"+s.replaceAll(":", "_") +" ENDP\n");
     }
 
     public static void WriteFunc(String S){

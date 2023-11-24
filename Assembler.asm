@@ -18,22 +18,28 @@ printf PROTO C :VARARG
 ; constante para cada funcion a partir de su hashcode
 f2_cb_main DD -119407386
 f1_ca_main DD 1659417926
-    _y:cb:main_ DB ?
-    _h:f2:cb:main_ DB ?
+    _y:cb:main_ DD ?
+    _h:f2:cb:main_ DD ?
     _x:ca:main_ DB ?
-    _y:ca:main_ DB ?
-    _h:f2:cb:ca:main_ DB ?
+    _y:ca:main_ DD ?
+    _h:f2:cb:ca:main_ DD ?
 .CODE
-__f2_cb_main:
-MOV AL, 
-MOV y_cb_main, AL
+PUBLIC
+__f2_cb_main PROC
+FLD _h:f2:cb:main
+FSTP y_cb_main
 MOV funcion_actual, 0
 RET
-__f1_ca_main:
+__f2_cb_main ENDP
+
+PUBLIC
+__f1_ca_main PROC
 MOV AL, 1_s
 MOV x_ca_main, AL
 MOV funcion_actual, 0
 RET
+__f1_ca_main ENDP
+
 
 START:
 
@@ -41,7 +47,8 @@ MOV EAX, __f2_cb_main__
 CMP EAX, __funcion_actual__
 JE error_recursion
 MOV __funcion_actual__, EAX
-MOV AL, 4_s
+FLD 4.0
+FSTP _h:f2:cb:main
 call __f2_cb_main
 
 

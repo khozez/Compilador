@@ -31,6 +31,9 @@ public class EstructuraAsignacion implements GeneradorEstructura {
             return "@" + subArbol.getNombre();
         } else if (uso.equals("variable") || uso.equals("constante")) {
             return subArbol.getNombre().replace(":", "_");
+        }else if (uso.equals("parametro"))
+        {
+            return "_"+subArbol.getNombre();
         }
 
         return "";
