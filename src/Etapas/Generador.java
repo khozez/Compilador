@@ -32,8 +32,12 @@ public abstract class Generador {
                     if (isFunctionEmpty()) {
                         escribirWhile(outAssembler);
                     }
-                    else
-                        escribirWhile(outFunciones);
+                    else{
+                        String codigo = "etiqueta" + etiqueta + ":";
+                        pilaEtiquetas.add(etiqueta);
+                        etiqueta++;
+                        WriteFunc(codigo);
+                    }
                 }
 
             if (padre.getIzq() != null)
