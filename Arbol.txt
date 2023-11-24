@@ -2,78 +2,26 @@ program
 '-->sentencias null
    |-->sentencias null
    |  |-->sentencias null
-   |  |  |-->sentencias null
-   |  |  |  |-->sentencias null
-   |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |  '-->Funcion void
-   |  |  |  |  |  |  |  |  |  |  |     |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |  |     |  |-->set_x:main null
-   |  |  |  |  |  |  |  |  |  |  |     |  '-->num:set_x:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |     '-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |        |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |        |  '-->Asignacion FLOAT
-   |  |  |  |  |  |  |  |  |  |  |        |     |-->z:main FLOAT
-   |  |  |  |  |  |  |  |  |  |  |        |     '-->STOF null
-   |  |  |  |  |  |  |  |  |  |  |        |        '-->num:set_x:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |        '-->RETURN null
-   |  |  |  |  |  |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |  |  |  |  |     |-->x:main SHORT
-   |  |  |  |  |  |  |  |  |  |     '-->4_s SHORT
-   |  |  |  |  |  |  |  |  |  '-->LlamadaFuncion void
-   |  |  |  |  |  |  |  |  |     |-->set_x:main null
-   |  |  |  |  |  |  |  |  |     '-->4.0 FLOAT
-   |  |  |  |  |  |  |  |  '-->Asignacion ULONG
-   |  |  |  |  |  |  |  |     |-->y:main ULONG
-   |  |  |  |  |  |  |  |     '-->88_ul ULONG
-   |  |  |  |  |  |  |  '-->LlamadaFuncion void
-   |  |  |  |  |  |  |     |-->set_x:main null
-   |  |  |  |  |  |  |     '-->y:main ULONG
-   |  |  |  |  |  |  '-->Asignacion FLOAT
-   |  |  |  |  |  |     |-->z:main FLOAT
-   |  |  |  |  |  |     '-->4.0 FLOAT
-   |  |  |  |  |  '-->Asignacion Error
-   |  |  |  |  |     |-->x:main SHORT
-   |  |  |  |  |     '-->+ Error
-   |  |  |  |  |        |-->x:main SHORT
-   |  |  |  |  |        '-->1_ul ULONG
-   |  |  |  |  '-->Asignacion Error
-   |  |  |  |     |-->x:main SHORT
-   |  |  |  |     '-->+ FLOAT
-   |  |  |  |        |-->STOF null
-   |  |  |  |        |  '-->x:main SHORT
-   |  |  |  |        '-->1.0 FLOAT
-   |  |  |  '-->Asignacion Error
-   |  |  |     |-->y:main ULONG
-   |  |  |     '-->+ Error
-   |  |  |        |-->y:main ULONG
-   |  |  |        '-->4_s SHORT
-   |  |  '-->Asignacion Error
-   |  |     |-->y:main ULONG
-   |  |     '-->+ FLOAT
-   |  |        |-->LTOF null
-   |  |        |  '-->y:main ULONG
-   |  |        '-->11.0 FLOAT
-   |  '-->if null
-   |     |-->== Error
-   |     |  |-->x:main SHORT
-   |     |  '-->4_ul ULONG
-   |     '-->cuerpoIf null
-   |        |-->then null
-   |        |  '-->Print STRING
-   |        |     '-->Cadena0 STRING
-   |        '-->else null
+   |  |  '-->Asignacion SHORT
+   |  |     |-->x:main SHORT
+   |  |     '-->4_s SHORT
+   |  '-->sentencias null
+   |     |-->Asignacion SHORT
+   |     |  |-->z:main SHORT
+   |     |  '-->+ SHORT
+   |     |     |-->x:main SHORT
+   |     |     '-->1_s SHORT
+   |     '-->Asignacion SHORT
+   |        |-->x:main SHORT
+   |        '-->- SHORT
+   |           |-->x:main SHORT
+   |           '-->1_s SHORT
    '-->if null
-      |-->!! Error
-      |  |-->y:main ULONG
-      |  '-->4_s SHORT
+      |-->== SHORT
+      |  |-->x:main SHORT
+      |  '-->3_s SHORT
       '-->cuerpoIf null
          |-->then null
          |  '-->Print STRING
-         |     '-->Cadena1 STRING
+         |     '-->Cadena0 STRING
          '-->else null

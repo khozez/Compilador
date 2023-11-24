@@ -1,88 +1,25 @@
  (123) --> {
  (266) --> Palabra reservada: SHORT
  (257) --> Identificador: x
- (44) --> ,
- (267) --> Palabra reservada: ULONG
- (257) --> Identificador: y
- (44) --> ,
- (268) --> Palabra reservada: FLOAT
+ (59) --> ;
  (257) --> Identificador: z
  (44) --> ,
- (265) --> Palabra reservada: VOID
- (257) --> Identificador: set_x
- (40) --> (
- (266) --> Palabra reservada: SHORT
- (257) --> Identificador: num
- (41) --> )
- (123) --> {
- (257) --> Identificador: z
- (61) --> =
- (257) --> Identificador: num
- (44) --> ,
- (270) --> Palabra reservada: RETURN
- (44) --> ,
- (125) --> }
  (257) --> Identificador: x
  (61) --> =
  (258) --> Constante entera: 4_s
  (44) --> ,
- (257) --> Identificador: set_x
- (40) --> (
- (258) --> Constante float: 4.0
- (41) --> )
- (44) --> ,
- (257) --> Identificador: y
- (61) --> =
- (258) --> Constante entera long: 88_ul
- (44) --> ,
- (257) --> Identificador: set_x
- (40) --> (
- (257) --> Identificador: y
- (41) --> )
- (44) --> ,
  (257) --> Identificador: z
  (61) --> =
- (258) --> Constante float: 4.0
- (44) --> ,
  (257) --> Identificador: x
- (61) --> =
- (257) --> Identificador: x
+ (-1
  (43) --> +
- (258) --> Constante entera long: 1_ul
- (44) --> ,
- (257) --> Identificador: x
- (61) --> =
- (257) --> Identificador: x
- (43) --> +
- (258) --> Constante float: 1.0
- (44) --> ,
- (257) --> Identificador: y
- (61) --> =
- (257) --> Identificador: y
- (43) --> +
- (258) --> Constante entera: 4_s
- (44) --> ,
- (257) --> Identificador: y
- (61) --> =
- (257) --> Identificador: y
- (43) --> +
- (258) --> Constante float: 11.0
+ (258) --> Constante entera: 1_s
  (44) --> ,
  (261) --> Palabra reservada: IF
  (40) --> (
  (257) --> Identificador: x
  (-1
- (258) --> Constante entera long: 4_ul
- (41) --> )
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (263) --> Palabra reservada: END_IF
- (44) --> ,
- (261) --> Palabra reservada: IF
- (40) --> (
- (257) --> Identificador: y
- (-1
- (258) --> Constante entera: 4_s
+ (258) --> Constante entera: 3_s
  (41) --> )
  (264) --> Palabra reservada: PRINT
  (44) --> ,

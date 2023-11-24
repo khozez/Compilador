@@ -1,0 +1,20 @@
+{
+    SHORT x;y;z,              **ERROR: La variable y nunca es usada en el ambito "main"
+    x = 4_s,
+    y = 9_s,
+
+    VOID func()
+    {
+        SHORT h,            **ERROR: La variable h nunca es usada en el ambito "func:main"
+        RETURN,
+    }
+
+    CLASS a{
+        SHORT n,
+
+        VOID m1(){
+            SHORT aux,      **ERROR: La variable h nunca es usada en el ambito "m1:a:main"
+            n = 1_s,
+        },
+    }
+}

@@ -1,0 +1,11 @@
+{
+    SHORT x;z,
+    x = 4_s,
+
+    z = x-- + 1_s,            **z = 4_s + 1_s
+                              **x = x - 1_s = 3_s
+
+    IF (x == 3_s)
+        PRINT %X ES 3%,
+    END_IF,
+}
