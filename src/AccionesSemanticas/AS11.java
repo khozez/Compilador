@@ -42,7 +42,7 @@ public class AS11 implements AccionSemantica{
             {
                 TablaSimbolos.agregarAtributo(id, "valor_original", valor_numerico);
             }
-            AnalizadorLexico.out_tokens.write("Constante entera: "+AnalizadorLexico.lexema+" ("+AnalizadorLexico.CONSTANTE+")");
+            AnalizadorLexico.out_tokens.write(" ("+AnalizadorLexico.CONSTANTE+") --> Constante entera: "+AnalizadorLexico.lexema);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

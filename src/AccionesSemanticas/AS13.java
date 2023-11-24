@@ -12,7 +12,7 @@ public class AS13 implements AccionSemantica{
         try {
             char c = (char) lector.read();
             AnalizadorLexico.lexema += c;
-            AnalizadorLexico.out_tokens.write(AnalizadorLexico.lexema);
+            AnalizadorLexico.out_tokens.write(" ("+(int)AnalizadorLexico.lexema.charAt(0)+") --> "+AnalizadorLexico.lexema);
             return c;
         } catch (IOException e) {
             throw new RuntimeException(e);

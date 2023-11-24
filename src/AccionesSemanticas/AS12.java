@@ -14,7 +14,7 @@ public class AS12 implements AccionSemantica{
             if (identificador.length() > AnalizadorLexico.MAX_LONG_ID) {
                 identificador = identificador.substring(0, AnalizadorLexico.MAX_LONG_ID);
             }
-            AnalizadorLexico.out_tokens.write("Identificador: "+identificador+" ("+AnalizadorLexico.IDENTIFICADOR+")");
+            AnalizadorLexico.out_tokens.write(" ("+AnalizadorLexico.IDENTIFICADOR+") --> Identificador: "+identificador);
             boolean simbolo_encontrado = TablaSimbolos.obtenerSimbolo(identificador) != TablaSimbolos.NO_ENCONTRADO;
             if (!simbolo_encontrado) {
                 AnalizadorLexico.TS.agregarSimbolo(identificador);
@@ -22,7 +22,7 @@ public class AS12 implements AccionSemantica{
             return AnalizadorLexico.IDENTIFICADOR;
         }
         else {
-            AnalizadorLexico.out_tokens.write("Palabra reservada: "+lexema+" ("+pr+")");
+            AnalizadorLexico.out_tokens.write(" ("+pr+") --> Palabra reservada: "+lexema);
             return pr;
         }
     }

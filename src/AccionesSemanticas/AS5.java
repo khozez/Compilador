@@ -39,7 +39,7 @@ public class AS5 implements AccionSemantica{
                 int ref = Integer.parseInt(TablaSimbolos.obtenerAtributo(id, "referencias"));
                 TablaSimbolos.modificarAtributo(id, "referencias", Integer.toString(ref+1));
             }
-            AnalizadorLexico.out_tokens.write("Constante entera long: "+AnalizadorLexico.lexema+" ("+AnalizadorLexico.CONSTANTE+")");
+            AnalizadorLexico.out_tokens.write(" ("+AnalizadorLexico.CONSTANTE+") --> Constante entera long: "+AnalizadorLexico.lexema);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

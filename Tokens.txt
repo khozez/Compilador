@@ -1,53 +1,53 @@
-{
-Palabra reservada: CLASS (260)
-Identificador: ca (257)
-{
-Palabra reservada: SHORT (266)
-Identificador: x_a (257)
-,
-Palabra reservada: VOID (265)
-Identificador: aumentar (257)
-(
-)
-{
-Identificador: x_a (257)
-=
-Identificador: x_a (257)
-+
-Constante entera: 1_s (258)
-,
-}
-,
-}
-Palabra reservada: CLASS (260)
-Identificador: cb (257)
-{
-Identificador: ca (257)
-,
-Palabra reservada: SHORT (266)
-Identificador: y (257)
-,
-Palabra reservada: VOID (265)
-Identificador: aumentar (257)
-(
-)
-{
-Identificador: y (257)
-=
-Constante entera: 1_s (258)
-,
-}
-,
-}
-Identificador: cb (257)
-Identificador: b (257)
-,
-Identificador: b (257)
-.
-Identificador: ca (257)
-.
-Identificador: aumentar (257)
-(
-)
-,
-}
+ (123) --> {
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: ca
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: x_a
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: aumentar
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: x_a
+ (61) --> =
+ (257) --> Identificador: x_a
+ (43) --> +
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: cb
+ (123) --> {
+ (257) --> Identificador: ca
+ (44) --> ,
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: y
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: aumentar
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: y
+ (61) --> =
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (257) --> Identificador: cb
+ (257) --> Identificador: b
+ (44) --> ,
+ (257) --> Identificador: b
+ (46) --> .
+ (257) --> Identificador: ca
+ (46) --> .
+ (257) --> Identificador: aumentar
+ (40) --> (
+ (41) --> )
+ (44) --> ,
+ (125) --> }
