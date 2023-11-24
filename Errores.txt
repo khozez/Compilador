@@ -1,7 +1,11 @@
 Errores Semanticos:
-LINEA: 17 ERROR SEMANTICO! En la función: 'cliente_mas:paga_cuotas:manejador:main' el nivel maximo de anidamiento (1) es superado.
-LINEA: 36 ERROR SEMANTICO! No se puede sobreescribir atributos de clase.
-LINEA: 56 ERROR SEMANTICO! El nombre de la clase sillon ya fue utilizado en este ambito
-LINEA: 77 ERROR SEMANTICO! No existe el metodo al que se intenta invocar en la clase.
+LINEA: 14 ERROR SEMANTICO! Incompatibilidad de tipos en llamado a función
+LINEA: 16 ERROR SEMANTICO! Incompatibilidad de tipos en llamado a función
+LINEA: 19 ERROR SEMANTICO! Incompatibilidad de tipos
+LINEA: 20 ERROR SEMANTICO! Incompatibilidad de tipos en la asignación.
+LINEA: 21 ERROR SEMANTICO! Incompatibilidad de tipos
+LINEA: 22 ERROR SEMANTICO! Incompatibilidad de tipos en la asignación.
+LINEA: 24 ERROR SEMANTICO! Incompatibilidad de tipos
+LINEA: 28 ERROR SEMANTICO! Incompatibilidad de tipos
 
 

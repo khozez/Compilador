@@ -58,7 +58,6 @@ encabezadoClase: CLASS ID {var t = AnalizadorLexico.TS;
 ;
 
 encabezadoForward: CLASS ID {lista_clases_fd.add($2.sval+Parser.ambito);
-                            chequeoAsignacionVariables();
                             salirAmbito();
                             claseActual = "";
                             ambitoClase = "";
@@ -66,7 +65,6 @@ encabezadoForward: CLASS ID {lista_clases_fd.add($2.sval+Parser.ambito);
 ;
 
 declaracionClase: encabezadoClase '{' cuerpoClase '}'  {lista_clases_fd.remove(Parser.ambito.substring(1));
-							chequeoAsignacionVariables();
                                                         salirAmbito();
                                                         claseActual = "";
                                                         out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");
@@ -403,7 +401,6 @@ declaracionMetodo: encabezadoMetodo '{' cuerpoMetodo '}' { out_estructura.write(
                                                                                     (Nodo) $1.obj ,
                                                                                     (Nodo) $3.obj ,
                                                                                     "void"));
-                                                           chequeoAsignacionVariables();
                                                            salirAmbito();}
 ;
 
@@ -461,7 +458,6 @@ declaracionFuncion: encabezadoFuncion '{' cuerpoFuncion '}' { out_estructura.wri
                                                             /* Acciones de desapilar */
                                                             if (!verificarRetornoArbol((Nodo) $3.obj))
                                                             	yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
-                                                            chequeoAsignacionVariables();
                                                             salirAmbito();}
 ;
 
@@ -479,7 +475,6 @@ declaracionFuncionLocal: encabezadoFuncion '{' cuerpoFuncion '}' { out_estructur
                                                                 	/* Acciones de desapilar */
                                                                 	if (!verificarRetornoArbol((Nodo) $3.obj))
                                                                 		yyerror("La Funcion declarada '" + Parser.ambito.substring(1) + "' no tiene retorno o existe camino sin retorno");
-                                                                	chequeoAsignacionVariables();
                                                                 	salirAmbito();
                                                             	}
                                                             	else
@@ -570,11 +565,15 @@ declaracion: tipo listaDeclaracion
 
 listaDeclaracion: ID ';' listaDeclaracion {  lista_variables.add($1.sval + Parser.ambito);
 					     if (!instanciaClase)
+					     {
  					     	variables_no_asignadas.add($1.sval + Parser.ambito);
+ 					     }
  					  }
 		| ID { lista_variables.add($1.sval + Parser.ambito);
 		       if (!instanciaClase)
+		       {
                        	   variables_no_asignadas.add($1.sval + Parser.ambito);
+                       }
 		     }
 ;
 

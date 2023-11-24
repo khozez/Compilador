@@ -1,0 +1,31 @@
+{
+    SHORT x,
+    ULONG y,
+    FLOAT z,
+
+    VOID set_x(SHORT num)
+    {
+        z = num,
+        RETURN,
+    }
+
+
+    x = 4_s,
+    set_x(4.0),     **ERROR: Incompatibilidad de tipos
+    y = 88_ul,
+    set_x(y),       **ERROR:  Incompatibilidad de tipos
+    z = 4.0,
+
+    x = x + 1_ul,   **ERROR:  Incompatibilidad de tipos
+    x = x + 1.0,    **ERROR:  Incompatibilidad de tipos
+    y = y + 4_s,    **ERROR:  Incompatibilidad de tipos
+    y = y + 11.0,   **ERROR:  Incompatibilidad de tipos
+
+    IF (x == 4_ul)                **ERROR:  Incompatibilidad de tipos
+        PRINT %X MAYOR A 4_ul%,
+    END_IF,
+
+    IF (y !! 4_s)                 **ERROR:  Incompatibilidad de tipos
+            PRINT %Y MAYOR A 4_s%,
+    END_IF,
+}
