@@ -125,13 +125,16 @@ referenciaMetodo: ID '(' ')' {
                                         variableAmbitoClase = $1.sval + variableAmbitoClase;
                                         String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
                                         int clave = t.obtenerSimbolo($1.sval+":"+claseBase+":main");
+                                        Nodo x;
+                                        x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "ref")), (Nodo) $3.obj, "void");
                                         if(chequearMetodoClase(claseBase, $1.sval, variableAmbitoClase+":main"))
                                         	if (!tieneParametrosMetodo(claseBase, $1.sval))
                                                 	yyerror("El metodo al que desea llamar no acepta parametros");
+                                                else
+                                                        if (!validarParametro(x, clave))
+                                                        	yyerror("Incompatibilidad de tipos en llamado a función");
                                         else
                                                 yyerror("No existe el metodo al que se intenta invocar en la clase.");
-                                        Nodo x;
-                                        x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "ref"), null, null, "void"), null);
                                         $$ = new ParserVal(x);
                                         }
 ;
@@ -490,6 +493,7 @@ listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo {$$ = 
 ;
 
 invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a funcion VOID.");
+					int clave = AnalizadorLexico.TS.obtenerSimbolo(getVariableConAmbitoTS($1.sval));
 					var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), (Nodo) $3.obj, "void");
 					if (generarMenosMenos())
                                         {
@@ -502,6 +506,9 @@ invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(Analizado
                                         }
 					if (!chequearLlamadoFuncion($1.sval))
 						yyerror("La funcion a la que se desea llamar no acepta parametros.");
+					else
+						if (!validarParametro(x, clave))
+                                                	yyerror("Incompatibilidad de tipos en llamado a función");
 					}
 		  | ID '(' ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo de clase.");
 		  		var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
@@ -626,9 +633,9 @@ private static int funcLocales = 0;
 public static String claseActual = "";
 private static Boolean herencia = false;
 private static Boolean instanciaClase = false;
-private static Boolean erroresSemanticos = false;
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
+public static List<String> errorSemantico = new ArrayList<>();
 public static List<String> warnings = new ArrayList<>();
 public static ArrayList<String> lista_variables = new ArrayList<>();
 public static ArrayList<String> variables_no_asignadas = new ArrayList<>();
@@ -637,6 +644,7 @@ public static ArrayList<String> lista_clases = new ArrayList<>();
 public static ArrayList<String> lista_clases_fd = new ArrayList<>();
 public static OutputManager out_arbol = new OutputManager("./Arbol.txt");
 public static OutputManager out_estructura = new OutputManager("./Estructura.txt");
+public static OutputManager out_errores = new OutputManager("./Errores.txt");
 
 public void setYylval(ParserVal yylval) {
 	this.yylval = yylval;
@@ -644,8 +652,8 @@ public void setYylval(ParserVal yylval) {
 
 void yyerror(String mensaje) {
         // funcion utilizada para imprimir errores que produce yacc
-        System.out.println("Error yacc: " + mensaje);
-        erroresSemanticos = true;
+        String error = "LINEA: "+AnalizadorLexico.getCantLineas()+" ERROR SEMANTICO! "+mensaje;
+        errorSemantico.add(error);
 }
 
 public String getTipo(String lexema){
@@ -1032,6 +1040,40 @@ private static Boolean chequearReferencia(String atributo, String claseBase, Str
 	return false;
 }
 
+private static Boolean validarParametro (Nodo funcion, int clave_funcion)
+{
+	var t = AnalizadorLexico.TS;
+	Nodo parametro = funcion.getDer();
+	int clave_atributo = t.obtenerSimbolo(parametro.getNombre());
+	String tipo = t.obtenerAtributo(clave_atributo, "tipo");
+	String uso = t.obtenerAtributo(clave_atributo, "uso");
+	String nombre_parametro_func = t.obtenerAtributo(clave_funcion, "parametro");
+	int clave_p = t.obtenerSimbolo(nombre_parametro_func);
+	String tipo_parametro_func = t.obtenerAtributo(clave_p, "tipo");
+	if (uso.equals("constante"))
+	{
+		if (tipo_parametro_func.equals(tipo))
+			return true;
+		else
+			return false;
+	}else
+	{
+		if (!tipo_parametro_func.equals(tipo) && tipo_parametro_func.equals("FLOAT"))
+                {
+                	if (tipo.equals("SHORT"))
+                	{
+                		var x = new Nodo("STOF", parametro, null);
+                		funcion.setDer(x);
+                	}else{
+                		var x = new Nodo("LTOF", parametro, null);
+                		funcion.setDer(x);
+                	}
+                	return true;
+               	}else
+               		return false;
+	}
+}
+
 private static Boolean aplicarHerencia(String heredada, String heredera)
 {
 	var t = AnalizadorLexico.TS;
@@ -1122,11 +1164,11 @@ public static void anotar (String tipo, String descripcion){ // Agrega un error 
 
 public static void imprimir(List<String> lista, String cabecera) {
         if (!lista.isEmpty()) {
-                System.out.println();
-                System.out.println(cabecera + ":");
+                out_errores.write(cabecera+":");
                 for (String x: lista) {
-                        System.out.println(x);
+                         out_errores.write(x);
                 }
+                out_errores.write("\n");
         }
 }
 
@@ -1146,12 +1188,13 @@ public static void main(String[] args) {
                 Parser.imprimir(warnings, "Warnings:");
                 Parser.imprimir(errorLexico, "Errores Lexicos");
                 Parser.imprimir(errorSintactico, "Errores Sintacticos");
+                Parser.imprimir(errorSemantico, "Errores Semanticos");
                 AnalizadorLexico.TS.limpiarTabla();
                 AnalizadorLexico.TS.imprimirTabla();
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
                 Estructura es = new Estructura();
-                if (errorLexico.isEmpty() && errorSintactico.isEmpty() && !erroresSemanticos)
+                if (errorLexico.isEmpty() && errorSintactico.isEmpty() && errorSemantico.isEmpty())
                 	es.generateCode(raiz);
                 else
                 	System.out.println("\nHay errores, no se genera codigo.");

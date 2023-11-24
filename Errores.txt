@@ -1,0 +1,11 @@
+Errores Semanticos:
+LINEA: 10 ERROR SEMANTICO! La Funcion declarada 'set_cuotas:main' no tiene retorno o existe camino sin retorno
+LINEA: 18 ERROR SEMANTICO! El nombre de la funcion aumentar_cuota ya fue utilizado en este ambito
+LINEA: 35 ERROR SEMANTICO! No se encontro esta variable en un ambito adecuado
+LINEA: 35 ERROR SEMANTICO! Incompatibilidad de tipos
+LINEA: 50 ERROR SEMANTICO! Incompatibilidad de tipos en llamado a función
+LINEA: 51 ERROR SEMANTICO! La funcion a la que se desea llamar tiene parametro.
+LINEA: 52 ERROR SEMANTICO! La funcion a la que se desea llamar no acepta parametros.
+LINEA: 53 ERROR SEMANTICO! La variable: 'resetear_cuota' no fue encontrada en un ambito permitido.
+
+

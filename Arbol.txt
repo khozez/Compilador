@@ -10,24 +10,34 @@ program
    |  |  |  |  |  |  |  |-->sentencias null
    |  |  |  |  |  |  |  |  |-->sentencias null
    |  |  |  |  |  |  |  |  |  |-->sentencias null
+   |  |  |  |  |  |  |  |  |  |  |-->sentencias null
+   |  |  |  |  |  |  |  |  |  |  |  '-->Asignacion SHORT
+   |  |  |  |  |  |  |  |  |  |  |     |-->cuotas:main SHORT
+   |  |  |  |  |  |  |  |  |  |  |     '-->0_s SHORT
    |  |  |  |  |  |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |  |  |  |  |     |-->cuotas:main SHORT
+   |  |  |  |  |  |  |  |  |  |     |-->pagas:main SHORT
    |  |  |  |  |  |  |  |  |  |     '-->0_s SHORT
    |  |  |  |  |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |  |  |  |     |-->pagas:main SHORT
+   |  |  |  |  |  |  |  |  |     |-->deuda:main SHORT
    |  |  |  |  |  |  |  |  |     '-->0_s SHORT
-   |  |  |  |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |  |  |     |-->deuda:main SHORT
-   |  |  |  |  |  |  |  |     '-->0_s SHORT
+   |  |  |  |  |  |  |  |  '-->Funcion void
+   |  |  |  |  |  |  |  |     |-->Encabezado void
+   |  |  |  |  |  |  |  |     |  |-->set_cuotas:main null
+   |  |  |  |  |  |  |  |     |  '-->cant:set_cuotas:main SHORT
+   |  |  |  |  |  |  |  |     '-->sentencias null
+   |  |  |  |  |  |  |  |        '-->Asignacion SHORT
+   |  |  |  |  |  |  |  |           |-->cuotas:main SHORT
+   |  |  |  |  |  |  |  |           '-->cant:set_cuotas:main SHORT
    |  |  |  |  |  |  |  '-->Funcion void
    |  |  |  |  |  |  |     |-->Encabezado void
-   |  |  |  |  |  |  |     |  |-->set_cuotas:main null
-   |  |  |  |  |  |  |     |  '-->cant:set_cuotas:main SHORT
+   |  |  |  |  |  |  |     |  '-->aumentar_cuota:main null
    |  |  |  |  |  |  |     '-->sentencias null
    |  |  |  |  |  |  |        |-->sentencias null
    |  |  |  |  |  |  |        |  '-->Asignacion SHORT
    |  |  |  |  |  |  |        |     |-->cuotas:main SHORT
-   |  |  |  |  |  |  |        |     '-->cant:set_cuotas:main SHORT
+   |  |  |  |  |  |  |        |     '-->+ SHORT
+   |  |  |  |  |  |  |        |        |-->cuotas:main SHORT
+   |  |  |  |  |  |  |        |        '-->1_s SHORT
    |  |  |  |  |  |  |        '-->RETURN null
    |  |  |  |  |  |  '-->Funcion void
    |  |  |  |  |  |     |-->Encabezado void
@@ -38,7 +48,7 @@ program
    |  |  |  |  |  |        |     |-->cuotas:main SHORT
    |  |  |  |  |  |        |     '-->+ SHORT
    |  |  |  |  |  |        |        |-->cuotas:main SHORT
-   |  |  |  |  |  |        |        '-->1_s SHORT
+   |  |  |  |  |  |        |        '-->2_s SHORT
    |  |  |  |  |  |        '-->RETURN null
    |  |  |  |  |  '-->Funcion void
    |  |  |  |  |     |-->Encabezado void
@@ -46,11 +56,15 @@ program
    |  |  |  |  |     |  '-->cant:aumentar_cuotas:main SHORT
    |  |  |  |  |     '-->sentencias null
    |  |  |  |  |        |-->sentencias null
+   |  |  |  |  |        |  |-->sentencias null
+   |  |  |  |  |        |  |  '-->Asignacion SHORT
+   |  |  |  |  |        |  |     |-->aux:aumentar_cuotas:main SHORT
+   |  |  |  |  |        |  |     '-->cant:aumentar_cuotas:main SHORT
    |  |  |  |  |        |  '-->Asignacion SHORT
    |  |  |  |  |        |     |-->cuotas:main SHORT
    |  |  |  |  |        |     '-->+ SHORT
    |  |  |  |  |        |        |-->cuotas:main SHORT
-   |  |  |  |  |        |        '-->cant:aumentar_cuotas:main SHORT
+   |  |  |  |  |        |        '-->aux:aumentar_cuotas:main SHORT
    |  |  |  |  |        '-->RETURN null
    |  |  |  |  '-->Funcion void
    |  |  |  |     |-->Encabezado void
@@ -61,9 +75,11 @@ program
    |  |  |  |        |  |-->sentencias null
    |  |  |  |        |  |  |-->sentencias null
    |  |  |  |        |  |  |  '-->sentencias null
-   |  |  |  |        |  |  |     |-->Asignacion SHORT
+   |  |  |  |        |  |  |     |-->Asignacion Error
    |  |  |  |        |  |  |     |  |-->deuda:pagar_cuotas:main SHORT
-   |  |  |  |        |  |  |     |  '-->cuotas:main SHORT
+   |  |  |  |        |  |  |     |  '-->+ Error
+   |  |  |  |        |  |  |     |     |-->cuotas:main SHORT
+   |  |  |  |        |  |  |     |     '-->variableNoEncontrada No encontrado
    |  |  |  |        |  |  |     '-->Asignacion SHORT
    |  |  |  |        |  |  |        |-->cuotas:main SHORT
    |  |  |  |        |  |  |        '-->- SHORT
@@ -93,41 +109,13 @@ program
    |  |  |  |        |        |-->pagas:main SHORT
    |  |  |  |        |        '-->1_s SHORT
    |  |  |  |        '-->RETURN null
-   |  |  |  '-->Clase null
-   |  |  |     |-->EncabezadoClase null
-   |  |  |     |  '-->manejador:main null
-   |  |  |     '-->cuerpoClase null
-   |  |  |        '-->MetodoClase void
-   |  |  |           |-->Encabezado void
-   |  |  |           |  |-->paga_cuotas:manejador:main null
-   |  |  |           |  '-->cant:paga_cuotas:manejador:main SHORT
-   |  |  |           '-->sentencias null
-   |  |  |              |-->Funcion void
-   |  |  |              |  |-->Encabezado void
-   |  |  |              |  |  '-->cliente_menos:paga_cuotas:manejador:main null
-   |  |  |              |  '-->sentencias null
-   |  |  |              |     |-->sentencias null
-   |  |  |              |     |  '-->Asignacion SHORT
-   |  |  |              |     |     |-->clientes:manejador:main SHORT
-   |  |  |              |     |     '-->- SHORT
-   |  |  |              |     |        |-->clientes:manejador:main SHORT
-   |  |  |              |     |        '-->1_s SHORT
-   |  |  |              |     '-->RETURN null
-   |  |  |              '-->if null
-   |  |  |                 |-->< SHORT
-   |  |  |                 |  |-->cant:paga_cuotas:manejador:main SHORT
-   |  |  |                 |  '-->4_s SHORT
-   |  |  |                 '-->cuerpoIf null
-   |  |  |                    |-->then null
-   |  |  |                    |  '-->LlamadaFuncion void
-   |  |  |                    |     '-->cliente_menos:paga_cuotas:manejador:main null
-   |  |  |                    '-->else null
+   |  |  |  '-->LlamadaFuncion void
+   |  |  |     |-->set_cuotas:main null
+   |  |  |     '-->4.0 FLOAT
    |  |  '-->LlamadaFuncion void
-   |  |     |-->set_cuotas:main null
-   |  |     '-->20_s SHORT
+   |  |     '-->set_cuotas:main null
    |  '-->LlamadaFuncion void
-   |     |-->pagar_cuotas:main null
+   |     |-->aumentar_cuota:main null
    |     '-->4_s SHORT
    '-->LlamadaFuncion void
-      |-->pagar_cuotas:main null
-      '-->2_s SHORT
+      '-->resetear_cuota null

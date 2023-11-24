@@ -1,0 +1,54 @@
+{
+    SHORT cuotas;pagas;deuda,
+    cuotas = 0_s,
+    pagas = 0_s,
+    deuda = 0_s,
+
+    VOID set_cuotas (SHORT cant)
+    {
+        cuotas = cant,                                      **ERROR: falta sentencia RETURN
+    }
+
+    VOID aumentar_cuota()
+    {
+        cuotas = cuotas + 1_s,
+        RETURN,
+    }
+
+    VOID aumentar_cuota()                                   **ERROR: declaración de función en el mismo ambito
+    {
+        cuotas = cuotas + 2_s,
+        RETURN,
+    }
+
+    VOID aumentar_cuotas(SHORT cant)
+    {
+        SHORT aux,
+        aux = cant,
+        cuotas = cuotas + aux,
+        RETURN,
+    }
+
+    VOID pagar_cuotas(SHORT cant)
+    {
+        SHORT deuda,
+        deuda = cuotas-- + aux,                             **ERROR: quiere acceder a variable de función aumentar_cuotas
+        IF (deuda > 5_s){
+            PRINT %CANTIDAD DE DEUDAS MAYOR A 3
+                   SE AUMENTAN 2 CUOTAS%,
+            aumentar_cuotas(2_s),
+        }ELSE
+        {
+            PRINT %CANTIDAD DE DEUDAS MENOR A 3
+                   SE AUMENTA 1 CUOTAS%,
+            aumentar_cuota(),
+        }END_IF,
+        pagas = pagas + 1_s,
+        RETURN,
+    }
+
+    set_cuotas(4.0),                                        **ERROR: llamado a funcion con parametro real invalido
+    set_cuotas(),                                           **ERROR: llamado a función que espera parametros
+    aumentar_cuota(4_s),                                    **ERROR: llamado a función que no espera parametros
+    resetear_cuota(),                                       **ERROR: llamado a función que no existe
+}

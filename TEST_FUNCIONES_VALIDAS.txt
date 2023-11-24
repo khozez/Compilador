@@ -1,8 +1,16 @@
 {
     SHORT cuotas;pagas;deuda,
+    FLOAT y,
+    y = 1.0,
     cuotas = 0_s,
     pagas = 0_s,
     deuda = 0_s,
+
+    VOID set_y (FLOAT valor)
+    {
+        y = valor,
+        RETURN,
+    }
 
     VOID set_cuotas (SHORT cant)
     {
@@ -57,6 +65,7 @@
         },
     }
 
+    set_y(cuotas),                                      **LLAMADO A FUNCION CON CONVERSION DE PARAMETRO
     set_cuotas(20_s),
     pagar_cuotas(4_s),
     pagar_cuotas(2_s),
