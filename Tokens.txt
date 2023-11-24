@@ -1,23 +1,37 @@
  (123) --> {
- (268) --> Palabra reservada: FLOAT
+ (266) --> Palabra reservada: SHORT
  (257) --> Identificador: x
- (59) --> ;
- (257) --> Identificador: z
- (59) --> ;
- (257) --> Identificador: y
  (44) --> ,
  (257) --> Identificador: x
  (61) --> =
- (258) --> Constante float: 3.4E+38
+ (258) --> Constante entera: 4_s
  (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: func
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
  (257) --> Identificador: y
- (61) --> =
- (258) --> Constante float: 3.4E+38
+ (41) --> )
+ (123) --> {
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: y
+ (62) --> >
+ (258) --> Constante entera: 4_s
+ (41) --> )
+ (264) --> Palabra reservada: PRINT
  (44) --> ,
- (257) --> Identificador: z
- (61) --> =
- (257) --> Identificador: x
- (42) --> *
- (257) --> Identificador: y
+ (262) --> Palabra reservada: ELSE
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (257) --> Identificador: func
+ (40) --> (
+ (258) --> Constante entera: 4_s
+ (41) --> )
  (44) --> ,
  (125) --> }

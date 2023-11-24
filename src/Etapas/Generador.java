@@ -101,7 +101,8 @@ public abstract class Generador {
         mapa.put("else", new EstructuraElse());
         mapa.put("program", noAction);
         mapa.put("STOF", nodo -> {
-            var codigo = "FILD "+ EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux"+ aux+"\n";
+            String var = EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq());
+            var codigo = "MOV AL, "+var+"\nCBW+\nCWD\nFILD AX"+"\nFSTP @aux"+ aux+"\n";
             nodo.setNombre("aux"+aux);
             nodo.setTipo("FLOAT");
             EstructuraOperador.agregarAuxiliar("FLOAT", nodo.getIzq());
@@ -135,7 +136,7 @@ public abstract class Generador {
 
     public static void PopFuncion(String s) {
         outFunciones.escribirBuffer("__"+ s.replaceAll(":", "_")+":");
-        String directiva = String.valueOf(pilaFuncion.pop().append("MOV funcion_actual, 0\nRET\n"));
+        String directiva = String.valueOf(pilaFuncion.pop().append("MOV __funcion_actual__, 0\nRET\n"));
         outFunciones.escribirBuffer(directiva);
     }
 

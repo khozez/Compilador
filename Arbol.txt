@@ -2,14 +2,27 @@ program
 '-->sentencias null
    |-->sentencias null
    |  |-->sentencias null
-   |  |  '-->Asignacion FLOAT
-   |  |     |-->x:main FLOAT
-   |  |     '-->3.4E+38 FLOAT
-   |  '-->Asignacion FLOAT
-   |     |-->y:main FLOAT
-   |     '-->3.4E+38 FLOAT
-   '-->Asignacion FLOAT
-      |-->z:main FLOAT
-      '-->* FLOAT
-         |-->x:main FLOAT
-         '-->y:main FLOAT
+   |  |  '-->Asignacion SHORT
+   |  |     |-->x:main SHORT
+   |  |     '-->4_s SHORT
+   |  '-->Funcion void
+   |     |-->Encabezado void
+   |     |  |-->func:main null
+   |     |  '-->y:func:main SHORT
+   |     '-->sentencias null
+   |        |-->sentencias null
+   |        |  '-->if null
+   |        |     |-->< SHORT
+   |        |     |  |-->y:func:main SHORT
+   |        |     |  '-->4_s SHORT
+   |        |     '-->cuerpoIf null
+   |        |        |-->then null
+   |        |        |  '-->Print STRING
+   |        |        |     '-->Cadena0 STRING
+   |        |        '-->else null
+   |        |           '-->Print STRING
+   |        |              '-->Cadena1 STRING
+   |        '-->RETURN null
+   '-->LlamadaFuncion void
+      |-->func:main null
+      '-->4_s SHORT

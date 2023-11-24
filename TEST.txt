@@ -1,0 +1,16 @@
+{
+    SHORT x,
+    x = 4_s,
+
+    VOID func(SHORT y)
+    {
+        IF (y > 4_s)
+            PRINT %HOLA%,
+        ELSE
+            PRINT %CHAU%,
+        END_IF,
+        RETURN,
+    }
+
+    func(4_s),
+}

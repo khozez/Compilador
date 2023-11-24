@@ -15,34 +15,44 @@ includelib \masm32\lib\user32.lib
     __funcion_actual__ DD 0
    _ErrorOverflowSum DB "Error por Overflow en una suma", 0
    _ErrorDiv0 DB "Error Division por Cero en ejecucion", 0
+   _ErrorRec DB "Error recursion en funcion", 0
    _ErrorOverflowProd DB "Error por Overflow en un producto", 0
 
-    _y_main_ DD ?
-    _z_main_ DD ?
-    _x_main_ DD ?
-    __34E38 DD 3.4E+38
-    @aux1 DD ?
+    _x_main_ DB ?
+    _y_func_main_ DB ?
+    Cadena0 DB "HOLA", 0
+    Cadena1 DB "CHAU", 0
+  ; constante para cada funcion a partir de su hashcode
+   __func_main__ DD -159861164
 .CODE
+__func_main:
+MOV AL, _y_func_main_
+MOV AH, 4
+CMP AL, AH
+JAE etiqueta1
+invoke MessageBox, NULL, addr Cadena0, addr Cadena0, MB_OK
+invoke ExitProcess, 0
+JMP etiqueta2
+etiqueta1: 
+invoke MessageBox, NULL, addr Cadena1, addr Cadena1, MB_OK
+invoke ExitProcess, 0
+etiqueta2: 
+MOV __funcion_actual__, 0
+RET
+
 
 START:
-FLD __34E38
-FSTP _x_main_
+MOV AL, 4
+MOV _x_main_, AL
 
 
-FLD __34E38
-FSTP _y_main_
 
-
-FLD _x_main_
-FLD _y_main_
-FMUL
-FSTP @aux1
-FSTSW aux_mem_2bytes
-SAHF
-JC ErrorOverflowProd
-
-FLD @aux1
-FSTP _z_main_
+MOV EAX, __func_main__
+CMP EAX, __funcion_actual__
+JE error_recursion
+MOV __funcion_actual__, EAX
+MOV _y_func_main_, 4
+call __func_main
 
 
 
@@ -59,5 +69,7 @@ JMP final
 ErrorOverflowProd:
 invoke MessageBox, NULL, addr _ErrorOverflowProd, addr _ErrorOverflowProd, MB_OK
 invoke ExitProcess, 0
+error_recursion:
+invoke MessageBox, NULL, addr _ErrorRec, addr _ErrorRec, MB_OK
 final:
 END START

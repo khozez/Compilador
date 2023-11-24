@@ -14,7 +14,7 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
 
         if (!parametro.isEmpty()) {
             if (subArbol.getTipo().equals("SHORT") || subArbol.getTipo().equals("LONG")) {
-                codigo = codigo + "MOV "+nombreParametro+", " + parametro + "\n";
+                codigo = codigo + "MOV "+nombreParametro.replaceAll(":","_")+", " + parametro + "\n";
             } else {
                 codigo = codigo + "FLD " + parametro + "\n"+"FSTP "+nombreParametro+"\n";
             }
@@ -58,7 +58,7 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
         String parametro = ts.obtenerAtributo(clave, "parametro");
         if (parametro == ts.NO_ENCONTRADO_MESSAGE)
             return "";
-        return "_"+parametro;
+        return "_"+parametro+"_";
     }
 
 }

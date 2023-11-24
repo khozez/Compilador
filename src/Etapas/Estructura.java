@@ -22,7 +22,7 @@ public class Estructura {
     public static final String ERRORES = "JMP final\nErrorOverflowSum:\ninvoke MessageBox, NULL, addr _ErrorOverflowSum, addr _ErrorOverflowSum, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
                                          "\nErrorDiv0:\ninvoke MessageBox, NULL, addr _ErrorDiv0, addr _ErrorDiv0, MB_OK"+"\ninvoke ExitProcess, 0"+"\nJMP final" +
                                          "\nErrorOverflowProd:\ninvoke MessageBox, NULL, addr _ErrorOverflowProd, addr _ErrorOverflowProd, MB_OK"+"\ninvoke ExitProcess, 0"+
-                                         "\nfinal:";
+                                         "\nerror_recursion:\ninvoke MessageBox, NULL, addr _ErrorRec, addr _ErrorRec, MB_OK"+"\nfinal:";
     public static final String END_START = "END START";
 
     private final OutputManager out_assembler = new OutputManager("./Assembler.asm");
@@ -40,6 +40,7 @@ public class Estructura {
                                     "    __funcion_actual__ DD 0\n" +
                                     "   _ErrorOverflowSum DB \"Error por Overflow en una suma\", 0\n"+
                                     "   _ErrorDiv0 DB \"Error Division por Cero en ejecucion\", 0\n"+
+                                    "   _ErrorRec DB \"Error recursion en funcion\", 0\n"+
                                     "   _ErrorOverflowProd DB \"Error por Overflow en un producto\", 0\n");
         writeTs(); //.DATA
         if (!Parser.lista_funciones.isEmpty()) {
