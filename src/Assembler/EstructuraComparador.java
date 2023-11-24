@@ -17,12 +17,12 @@ public class EstructuraComparador extends Generador implements GeneradorEstructu
         Nodo subArbol2 = nodo.getDer();
 
         if (nodo.getTipo().equals("SHORT"))
-            codigo = "MOV AL, " + obtenerNombreVariable(ts, subArbol1) + "\nMOV AH, " + obtenerNombreVariable(ts,subArbol2) + "\nCMP AL, AH\n" + tipo + " etiqueta" + etiqueta;
+            codigo = "MOV AL, " + obtenerNombreVariable(ts, subArbol1) + "\nMOV AH, " + obtenerNombreVariable(ts,subArbol2) + "\nCMP AL, AH\n" + tipo + " etiqueta" + etiqueta+"\n";
 
         else if (nodo.getTipo().equals("LONG"))
-            codigo = "MOV EAX, " + subArbol1 + "\nMOV EBX, " + subArbol2 + "\nCMP EAX, EBX\n" + tipo + " etiqueta" + etiqueta;
+            codigo = "MOV EAX, " + subArbol1 + "\nMOV EBX, " + subArbol2 + "\nCMP EAX, EBX\n" + tipo + " etiqueta" + etiqueta+"\n";
         else
-            codigo = "FLD " + subArbol1 + "\nFCOM " + subArbol2 + "\nFSTSW aux_mem_2bytes\"\n" + "MOV AX, aux_mem_2bytes\n SAHF\n" + tipo + " etiqueta" + etiqueta;
+            codigo = "FLD " + subArbol1 + "\nFCOM " + subArbol2 + "\nFSTSW aux_mem_2bytes\"\n" + "MOV AX, aux_mem_2bytes\n SAHF\n" + tipo + " etiqueta" + etiqueta+"\n";
         pilaEtiquetas.add(etiqueta);
         etiqueta++;
         return codigo;

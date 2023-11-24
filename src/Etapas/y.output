@@ -71,12 +71,12 @@
   51            | comparador expresion
   52            | expresion comparador
 
-  53  sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF
-  54                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'
+  53  sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' END_IF
+  54                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}'
   55                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF
   56                     | IF '(' condicion ')' '{' bloque_ejecucion_return '}'
   57                     | IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF
-  58                     | IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF
+  58                     | IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return '}' END_IF
   59                     | IF '(' condicion ')' sentencia_ejecutable_return ',' END_IF
 
   60  sentencia_ejecutable_return : print
@@ -1165,12 +1165,12 @@ state 90
 
 
 state 91
-	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}'  (54)
 	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}' END_IF  (55)
 	sentenciaIfRetorno : IF . '(' condicion ')' '{' bloque_ejecucion_return '}'  (56)
 	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
-	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return '}' END_IF  (58)
 	sentenciaIfRetorno : IF . '(' condicion ')' sentencia_ejecutable_return ',' END_IF  (59)
 
 	'('  shift 139
@@ -1613,12 +1613,12 @@ state 138
 
 
 state 139
-	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}'  (54)
 	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}' END_IF  (55)
 	sentenciaIfRetorno : IF '(' . condicion ')' '{' bloque_ejecucion_return '}'  (56)
 	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
-	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return '}' END_IF  (58)
 	sentenciaIfRetorno : IF '(' . condicion ')' sentencia_ejecutable_return ',' END_IF  (59)
 
 	ID  shift 53
@@ -1963,12 +1963,12 @@ state 168
 
 
 state 169
-	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}'  (54)
 	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}' END_IF  (55)
 	sentenciaIfRetorno : IF '(' condicion . ')' '{' bloque_ejecucion_return '}'  (56)
 	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
-	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return '}' END_IF  (58)
 	sentenciaIfRetorno : IF '(' condicion . ')' sentencia_ejecutable_return ',' END_IF  (59)
 
 	')'  shift 185
@@ -2110,12 +2110,12 @@ state 184
 
 
 state 185
-	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}'  (54)
 	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}' END_IF  (55)
 	sentenciaIfRetorno : IF '(' condicion ')' . '{' bloque_ejecucion_return '}'  (56)
 	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
-	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return '}' END_IF  (58)
 	sentenciaIfRetorno : IF '(' condicion ')' . sentencia_ejecutable_return ',' END_IF  (59)
 
 	ID  shift 153
@@ -2237,8 +2237,8 @@ state 195
 
 
 state 196
-	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}'  (54)
 	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}' END_IF  (55)
 	sentenciaIfRetorno : IF '(' condicion ')' '{' . bloque_ejecucion_return '}'  (56)
 
@@ -2264,7 +2264,7 @@ state 196
 
 state 197
 	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' ELSE sentencia_ejecutable_return ',' END_IF  (57)
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' ELSE '{' bloque_ejecucion_return '}' END_IF  (58)
 	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return . ',' END_IF  (59)
 
 	','  shift 206
@@ -2326,8 +2326,8 @@ state 203
 
 
 state 204
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' ELSE '{' bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' ELSE '{' bloque_ejecucion_return '}'  (54)
 	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}' END_IF  (55)
 	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return . '}'  (56)
 	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (69)
@@ -2361,7 +2361,7 @@ state 205
 
 state 206
 	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . ELSE sentencia_ejecutable_return ',' END_IF  (57)
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . ELSE '{' bloque_ejecucion_return '}' END_IF  (58)
 	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' . END_IF  (59)
 
 	ELSE  shift 213
@@ -2421,8 +2421,8 @@ state 209
 
 
 state 210
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . ELSE '{' bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . ELSE '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . ELSE '{' bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . ELSE '{' bloque_ejecucion_return '}'  (54)
 	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' . END_IF  (55)
 	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' .  (56)
 
@@ -2446,7 +2446,7 @@ state 212
 
 state 213
 	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE . sentencia_ejecutable_return ',' END_IF  (57)
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE . '{' bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE . '{' bloque_ejecucion_return '}' END_IF  (58)
 
 	ID  shift 153
 	CADENA  shift 2
@@ -2511,8 +2511,8 @@ state 217
 
 
 state 218
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE . '{' bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE . '{' bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE . '{' bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE . '{' bloque_ejecucion_return '}'  (54)
 
 	'{'  shift 225
 	.  error
@@ -2531,7 +2531,7 @@ state 220
 
 
 state 221
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' . bloque_ejecucion_return ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' . bloque_ejecucion_return '}' END_IF  (58)
 
 	ID  shift 153
 	CADENA  shift 2
@@ -2575,8 +2575,8 @@ state 224
 
 
 state 225
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' . bloque_ejecucion_return ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' . bloque_ejecucion_return ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' . bloque_ejecucion_return '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' . bloque_ejecucion_return '}'  (54)
 
 	ID  shift 153
 	CADENA  shift 2
@@ -2599,7 +2599,7 @@ state 225
 
 
 state 226
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return . ',' '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return . '}' END_IF  (58)
 	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (69)
 
 	ID  shift 153
@@ -2608,7 +2608,7 @@ state 226
 	PRINT  shift 5
 	WHILE  shift 10
 	RETURN  shift 92
-	','  shift 230
+	'}'  shift 230
 	.  error
 
 	referenciaClase  goto 93
@@ -2636,8 +2636,8 @@ state 228
 
 
 state 229
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return . ',' '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return . ',' '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return . '}' END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return . '}'  (54)
 	bloque_ejecucion_return : bloque_ejecucion_return . sentencia_ejecutable_return ','  (69)
 
 	ID  shift 153
@@ -2646,7 +2646,7 @@ state 229
 	PRINT  shift 5
 	WHILE  shift 10
 	RETURN  shift 92
-	','  shift 232
+	'}'  shift 232
 	.  error
 
 	referenciaClase  goto 93
@@ -2661,9 +2661,9 @@ state 229
 
 
 state 230
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' . '}' END_IF  (58)
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return '}' . END_IF  (58)
 
-	'}'  shift 233
+	END_IF  shift 233
 	.  error
 
 
@@ -2674,39 +2674,24 @@ state 231
 
 
 state 232
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' . '}' END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' . '}'  (54)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' . END_IF  (53)
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' .  (54)
 
-	'}'  shift 234
-	.  error
-
-
-state 233
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' . END_IF  (58)
-
-	END_IF  shift 235
-	.  error
-
-
-state 234
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' . END_IF  (53)
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' .  (54)
-
-	END_IF  shift 236
+	END_IF  shift 234
 	','  reduce 54
 
 
-state 235
-	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return ',' '}' END_IF .  (58)
+state 233
+	sentenciaIfRetorno : IF '(' condicion ')' sentencia_ejecutable_return ',' ELSE '{' bloque_ejecucion_return '}' END_IF .  (58)
 
 	.  reduce 58
 
 
-state 236
-	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return ',' '}' END_IF .  (53)
+state 234
+	sentenciaIfRetorno : IF '(' condicion ')' '{' bloque_ejecucion_return '}' ELSE '{' bloque_ejecucion_return '}' END_IF .  (53)
 
 	.  reduce 53
 
 
 36 terminals, 45 nonterminals
-125 grammar rules, 237 states
+125 grammar rules, 235 states
