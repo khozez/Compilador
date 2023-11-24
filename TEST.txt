@@ -1,4 +1,9 @@
 {
-    FLOAT y,
-    y = 4_s,
+    SHORT x,
+    ULONG y,
+    FLOAT z,
+    x = 4_s,
+    y = 4_ul,
+    z = x + 4.0,
+    z = z - y,
 }

@@ -613,12 +613,15 @@ public static String variableAmbitoClase = "";
 public static String ambitoClase = ":main";
 public static final String ERROR_LEXICO = "Error_lexico";
 public static final String ERROR_SINTACTICO = "Error_sintactico";
+public static final String WARNING = "Warning";
 private static int funcLocales = 0;
 public static String claseActual = "";
 private static Boolean herencia = false;
 private static Boolean instanciaClase = false;
+private static Boolean erroresSemanticos = false;
 public static List<String> errorLexico = new ArrayList<>();
 public static List<String> errorSintactico = new ArrayList<>();
+public static List<String> warnings = new ArrayList<>();
 public static ArrayList<String> lista_variables = new ArrayList<>();
 public static ArrayList<String> variables_no_asignadas = new ArrayList<>();
 public static ArrayList<String> lista_funciones = new ArrayList<>();
@@ -634,6 +637,7 @@ public void setYylval(ParserVal yylval) {
 void yyerror(String mensaje) {
         // funcion utilizada para imprimir errores que produce yacc
         System.out.println("Error yacc: " + mensaje);
+        erroresSemanticos = true;
 }
 
 public String getTipo(String lexema){
@@ -711,7 +715,7 @@ private String validarTipos(Nodo x, Nodo obj, Nodo obj1) {
     					x.setDer(conv);
     				}else
     				{
-    					if (obj1.getTipo().equals("LONG"))
+    					if (obj1.getTipo().equals("ULONG"))
     					{
     						var conv = new Nodo("LTOF", obj1, null);
     						x.setDer(conv);
@@ -725,7 +729,7 @@ private String validarTipos(Nodo x, Nodo obj, Nodo obj1) {
                             		x.setIzq(conv);
                             	}else
                             	{
-                            		if (obj.getTipo().equals("LONG"))
+                            		if (obj.getTipo().equals("ULONG"))
                             		{
                             			var conv = new Nodo("LTOF", obj, null);
                             			x.setIzq(conv);
@@ -767,7 +771,7 @@ private String validarTiposAssign(Nodo x, Nodo izq, Nodo der) {
     				x.setDer(conv);
     			}
     			else {
-    				if (der.getTipo().equals("LONG"))
+    				if (der.getTipo().equals("ULONG"))
     				{
     					var conv = new Nodo("LTOF", der, null);
                                 	x.setDer(conv);
@@ -1083,6 +1087,9 @@ public static void anotar (String tipo, String descripcion){ // Agrega un error 
     	case "Error_sintactico":
     		errorSintactico.add(descripcion);
     		break;
+    	case "Warning":
+    		warnings.add(descripcion);
+    		break;
     }
 }
 
@@ -1109,6 +1116,7 @@ public static void main(String[] args) {
                 } catch (IOException excepcion) {
                         excepcion.printStackTrace();
                 }
+                Parser.imprimir(warnings, "Warnings:");
                 Parser.imprimir(errorLexico, "Errores Lexicos");
                 Parser.imprimir(errorSintactico, "Errores Sintacticos");
                 AnalizadorLexico.TS.limpiarTabla();
@@ -1116,7 +1124,10 @@ public static void main(String[] args) {
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
                 Estructura es = new Estructura();
-                es.generateCode(raiz);
+                if (errorLexico.isEmpty() && errorSintactico.isEmpty() && !erroresSemanticos)
+                	es.generateCode(raiz);
+                else
+                	System.out.println("\nHay errores, no se genera codigo.");
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }

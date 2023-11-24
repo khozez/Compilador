@@ -1,6 +1,23 @@
 program
 '-->sentencias null
+   |-->sentencias null
+   |  |-->sentencias null
+   |  |  |-->sentencias null
+   |  |  |  '-->Asignacion SHORT
+   |  |  |     |-->x:main SHORT
+   |  |  |     '-->4_s SHORT
+   |  |  '-->Asignacion ULONG
+   |  |     |-->y:main ULONG
+   |  |     '-->4_ul ULONG
+   |  '-->Asignacion FLOAT
+   |     |-->z:main FLOAT
+   |     '-->+ FLOAT
+   |        |-->STOF null
+   |        |  '-->x:main SHORT
+   |        '-->4.0 FLOAT
    '-->Asignacion FLOAT
-      |-->y:main FLOAT
-      '-->STOF null
-         '-->4_s SHORT
+      |-->z:main FLOAT
+      '-->- FLOAT
+         |-->z:main FLOAT
+         '-->LTOF null
+            '-->y:main ULONG

@@ -17,15 +17,42 @@ includelib \masm32\lib\masm32.lib
    ErrorDiv0 DB "Error Division por Cero en ejecucion", 0
    ErrorOverflowProd DB "Error por Overflow en un producto", 0
 
+    _x:main_ DB ?
     _y:main_ DD ?
+    _z:main_ DD ?
     @aux1_ DD ?
+    @aux3_ DD ?
+    @aux4_ DD ?
+    @aux6_ DD ?
 .CODE
 
 START:
-FILD 4_s
+MOV AL, 4
+MOV _x:main, AL
+
+
+FLD 4
+FSTP _y:main
+
+FILD _x:main
 FSTP @aux1
-FLD 
-FSTP y_main
+FLD aux1
+FLD 4.0
+FADD
+FSTP @aux3
+
+FLD @aux3
+FSTP _z:main
+
+FILD _y:main
+FSTP @aux4
+FLD z:main
+FLD aux4
+FSUB
+FSTP @aux6
+
+FLD @aux6
+FSTP _z:main
 
 
 

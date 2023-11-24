@@ -21,7 +21,7 @@ public class AS11 implements AccionSemantica{
                 truncada = true;
                 num = AnalizadorLexico.MAX_SHORT_INT;
                 //INFORMAR WARNING, SE TRUNCA A MAXIMO SHORT
-                Parser.anotar(Parser.ERROR_LEXICO, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Constante "+AnalizadorLexico.lexema+" fue truncado ya que supera el valor maximo");
+                Parser.anotar(Parser.WARNING, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Constante "+AnalizadorLexico.lexema+" fue truncado ya que supera el valor maximo");
             }
 
             AnalizadorLexico.lexema = Integer.toString(num);

@@ -12,12 +12,13 @@ public class AS1 implements AccionSemantica{
     public int ejecutar(BufferedInputStream lector, String lexema) {
         if (lexema.length() > AnalizadorLexico.MAX_LONG_ID){
             lexema = lexema.substring(0, AnalizadorLexico.MAX_LONG_ID);
-            Parser.anotar(Parser.ERROR_LEXICO, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Identificador fue truncado ya que supera la longitud maxima.");
+            Parser.anotar(Parser.WARNING, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Identificador fue truncado ya que supera la longitud maxima.");
         }
         boolean simbolo_encontrado = TablaSimbolos.obtenerSimbolo(lexema) != TablaSimbolos.NO_ENCONTRADO;
         if (!simbolo_encontrado) {
             AnalizadorLexico.TS.agregarSimbolo(lexema);
         }
+        AnalizadorLexico.lexema = lexema;
         AnalizadorLexico.out_tokens.write("Identificador: "+lexema+" ("+AnalizadorLexico.IDENTIFICADOR+")");
         return AnalizadorLexico.IDENTIFICADOR;
     }

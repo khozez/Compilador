@@ -42,6 +42,8 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
 
         switch (tipo) {
             case "SHORT":
+                subArbol1 = subArbol1.replaceAll("_s", "");
+                subArbol2 = subArbol2.replaceAll("_s", "");
                 switch (operando) {
                     case "DIV":
                         codigo = String.format("MOV AH, 0\nMOV AX, %s\nMOV BL, %s\nCMP BL, 0\nJE division_por_cero\nDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
@@ -62,6 +64,8 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                 }
                 break;
             case "ULONG":
+                subArbol1 = subArbol1.replaceAll("_ul", "");
+                subArbol2 = subArbol2.replaceAll("_ul", "");
                 switch (operando) {
                     case "DIV":
                         codigo = String.format("MOV EDX, 0\nMOV EAX, %s\nMOV EBX, %s\nCMP EBX, 0\nJE division_por_cero\nDIV BX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);

@@ -29,13 +29,16 @@ public class EstructuraAsignacion implements GeneradorEstructura {
 
         if (uso.equals("auxiliar")) {
             return "@" + subArbol.getNombre();
-        } else if (uso.equals("variable") || uso.equals("constante")) {
-            return subArbol.getNombre().replace(":", "_");
-        }else if (uso.equals("parametro"))
-        {
+        } else if (uso.equals("variable") || uso.equals("parametro")) {
             return "_"+subArbol.getNombre();
+        } else if (uso.equals("constante")) {
+            String tipo = ts.obtenerAtributo(id, "tipo");
+            if (tipo.equals("SHORT"))
+                return subArbol.getNombre().replaceAll("_s","");
+            if (tipo.equals("ULONG"))
+                return subArbol.getNombre().replaceAll("_ul","");
+            return subArbol.getNombre();
         }
-
         return "";
     }
 }
