@@ -101,7 +101,7 @@ public abstract class Generador {
         mapa.put("else", new EstructuraElse());
         mapa.put("program", noAction);
         mapa.put("STOF", nodo -> {
-            var codigo = "FILD "+ EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux"+ aux;
+            var codigo = "FILD "+ EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux"+ aux+"\n";
             nodo.setNombre("aux"+aux);
             nodo.setTipo("FLOAT");
             EstructuraOperador.agregarAuxiliar("FLOAT", nodo.getIzq());
@@ -109,7 +109,7 @@ public abstract class Generador {
             return codigo;
         });
         mapa.put("LTOF", nodo -> {
-            var codigo = "FILD "+ EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux"+ aux;
+            var codigo = "FILD "+ EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux"+ aux+"\n";
             nodo.setNombre("aux"+aux);
             nodo.setTipo("LONG");
             EstructuraOperador.agregarAuxiliar("FLOAT", nodo.getIzq());

@@ -1,0 +1,83 @@
+{
+    CLASS manejador{
+        SHORT clientes;cuotas,
+        VOID paga_cuotas (SHORT cant)
+        {
+            **FUNCION LOCAL A METODO
+            VOID cliente_menos()
+            {
+                clientes = clientes - 1_s,
+                RETURN,
+            }
+
+            IF (cant > 4_s)
+                cliente_menos(),
+            END_IF,
+        },
+    }
+
+    CLASS objeto{
+        SHORT id;cant,
+
+        VOID print_tipo(){ PRINT %OBJETO CREADO%, },
+
+        VOID set_cant(SHORT x){ cant = x, },
+    }
+
+    CLASS mueble
+    {
+        objeto,                                             **HERENCIA (NIVEL 1)
+        FLOAT porciento_uso,
+
+        VOID set_uso(FLOAT u){ porciento_uso = u, },
+    }
+
+    CLASS silla{
+        mueble,                                             **HERENCIA (NIVEL 2)
+
+        VOID print_tipo()                                   **SOBREESCRITURA DE METODO DE CLASE OBJETO
+        {
+            PRINT %OBJETO CREADO: SILLA%,
+        },
+    }
+
+    CLASS mesa{
+        silla s1;s2;s3,
+        SHORT cont,
+
+        VOID reset_cont(){ cont = 0_s, },
+
+        VOID agregar_silla(silla s){
+            IF (cont < 3_s)
+            {
+                IF (cont == 1_s)
+                    s1 = s,
+                ELSE
+                    IF (cont == 2_s)
+                        s2 = s,
+                    ELSE
+                        s3 = s,
+                    END_IF,
+                END_IF,
+            }END_IF,
+        },
+    }
+
+
+    objeto o1,
+    mueble m1,
+    silla s1,
+    o1.id = 1_s,
+    m1.id = 2_s,
+    s1.id = 3_s,
+    s1.mueble.print_tipo(),
+    m1.objeto.print_tipo(),
+    o1.print_tipo(),
+
+    s1.mueble.set_uso(95.0),
+
+    mesa m,
+    m.agregar_silla(s1),
+    m.agregar_silla(s1),
+    m.agregar_silla(s1),
+}

@@ -57,18 +57,21 @@ encabezadoClase: CLASS ID {var t = AnalizadorLexico.TS;
                           }
 ;
 
+encabezadoForward: CLASS ID {lista_clases_fd.add($2.sval+Parser.ambito);
+                            chequeoAsignacionVariables();
+                            salirAmbito();
+                            claseActual = "";
+                            ambitoClase = "";
+                            out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Forward declaración de clase.");}
+;
+
 declaracionClase: encabezadoClase '{' cuerpoClase '}'  {lista_clases_fd.remove(Parser.ambito.substring(1));
 							chequeoAsignacionVariables();
                                                         salirAmbito();
                                                         claseActual = "";
                                                         out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");
 							$$ = new ParserVal( new Nodo("Clase", (Nodo) $1.obj, (Nodo) $3.obj) );}
-		 | encabezadoClase ',' {lista_clases_fd.add(Parser.ambito.substring(1));
-		 			chequeoAsignacionVariables();
-                                        salirAmbito();
-                                        claseActual = "";
-                                        ambitoClase = "";
-                                        out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de declaración de clase.");}
+		 | encabezadoForward ','
 		 | encabezadoClase {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de linea");}
 ;
 
@@ -110,13 +113,15 @@ referenciaMetodo: ID '(' ')' {
                               variableAmbitoClase = $1.sval + variableAmbitoClase;
                               String claseBase = variableAmbitoClase.substring(variableAmbitoClase.lastIndexOf(":")+1);
                               int clave = t.obtenerSimbolo($1.sval+":"+claseBase+":main");
-                              if(chequearMetodoClase(claseBase, $1.sval, variableAmbitoClase+":main"))
-                              	    if (tieneParametrosMetodo(claseBase, $1.sval))
-                              	    	  yyerror("El metodo al que desea llamar requiere parametros");
-                              else
-                              	    yyerror("No existe el metodo al que se intenta invocar en la clase.");
                               Nodo x;
                               x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "ref"), null, null, "void"), null);
+                              if(chequearMetodoClase(claseBase, $1.sval, variableAmbitoClase+":main",x))
+                              {
+                              	    if (tieneParametrosMetodo(claseBase, $1.sval))
+                              	    	  yyerror("El metodo al que desea llamar requiere parametros");
+                              }
+                              else
+                              	    yyerror("No existe el metodo al que se intenta invocar en la clase.");
                               $$ = new ParserVal(x);
                               }
                  | ID '(' expresion ')' {
@@ -127,12 +132,16 @@ referenciaMetodo: ID '(' ')' {
                                         int clave = t.obtenerSimbolo($1.sval+":"+claseBase+":main");
                                         Nodo x;
                                         x = new Nodo("LlamadoMetodo", new Nodo(t.obtenerAtributo(clave, "ref")), (Nodo) $3.obj, "void");
-                                        if(chequearMetodoClase(claseBase, $1.sval, variableAmbitoClase+":main"))
+                                        if(chequearMetodoClase(claseBase, $1.sval, variableAmbitoClase+":main",x))
+                                        {
                                         	if (!tieneParametrosMetodo(claseBase, $1.sval))
                                                 	yyerror("El metodo al que desea llamar no acepta parametros");
                                                 else
+                                                {
                                                         if (!validarParametro(x, clave))
                                                         	yyerror("Incompatibilidad de tipos en llamado a función");
+                                                }
+                                        }
                                         else
                                                 yyerror("No existe el metodo al que se intenta invocar en la clase.");
                                         $$ = new ParserVal(x);
@@ -188,23 +197,27 @@ listaAtributos: ID ';' listaAtributos { lista_variables.add($1.sval + Parser.amb
 		| ID {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta coma (',') al final de la lista de variables.");}
 ;
 
-herenciaNombre: ID ',' { var t = AnalizadorLexico.TS;
-			 int clave = t.obtenerSimbolo($1.sval+Parser.ambito);
- 		       	 if (clave != t.NO_ENCONTRADO){
-                         	if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
-                         		t.agregarAtributo(clave, "uso", "herencia");
-                                } else {
-                                	yyerror("La variable declarada ya existe en ambito global");
-                                }
-                         } else {
-                                 t.agregarSimbolo($1.sval+Parser.ambito);
-                                 t.agregarAtributo(t.obtenerID(), "uso", "herencia");
-                         }
-                         herencia = true;
+herenciaNombre: ID ',' { if (lista_clases_fd.contains($1.sval+":main"))
+				yyerror("La clase aun no fue declarada (forward declaration)");
+			 else{
+				 var t = AnalizadorLexico.TS;
+				 int clave = t.obtenerSimbolo($1.sval+Parser.ambito);
+				 if (clave != t.NO_ENCONTRADO){
+					if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
+						t.agregarAtributo(clave, "uso", "herencia");
+					} else {
+						yyerror("La variable declarada ya existe en ambito global");
+					}
+				 } else {
+					 t.agregarSimbolo($1.sval+Parser.ambito);
+					 t.agregarAtributo(t.obtenerID(), "uso", "herencia");
+				 }
+				 herencia = true;
 
-                         if (!aplicarHerencia($1.sval, claseActual))
-                         	yyerror("No se puede sobreescribir atributos de clase.");
-			 chequearNivelesHerencia(Parser.ambito.substring(1));
+				 if (!aplicarHerencia($1.sval, claseActual))
+					yyerror("No se puede sobreescribir atributos de clase.");
+				 chequearNivelesHerencia(Parser.ambito.substring(1));
+			 }
  		       }
 ;
 
@@ -338,7 +351,7 @@ return: RETURN {$$ = new ParserVal( new Nodo($1.sval));}
 parametro: tipo ID {$$ = new ParserVal( new Nodo($2.sval, $1.sval));}
 ;
 
-encabezadoMetodo: VOID ID '(' parametro ')' {
+encabezadoMetodo: VOID ID '(' parametro ')' {		     funcLocales = 0;
                   					     var t = AnalizadorLexico.TS;
                   					     int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                                                if (clave != t.NO_ENCONTRADO)
@@ -361,7 +374,7 @@ encabezadoMetodo: VOID ID '(' parametro ')' {
                                                                parametro((Nodo) $4.obj);
                   					   }
                   		   | VOID ID '(' ID ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta el tipo asociado a los atributos");}
-                  		   | VOID ID '('')'	{
+                  		   | VOID ID '('')'	{ funcLocales = 0;
                   		   			  var t = AnalizadorLexico.TS;
                                                             int clave = t.obtenerSimbolo($2.sval + Parser.ambito);
                                                             if (clave != t.NO_ENCONTRADO)
@@ -391,8 +404,7 @@ declaracionMetodo: encabezadoMetodo '{' cuerpoMetodo '}' { out_estructura.write(
                                                                                     (Nodo) $3.obj ,
                                                                                     "void"));
                                                            chequeoAsignacionVariables();
-                                                           salirAmbito();
-                                                           funcLocales = 0;}
+                                                           salirAmbito();}
 ;
 
 encabezadoFuncion: VOID ID '(' parametro ')' {
@@ -471,7 +483,10 @@ declaracionFuncionLocal: encabezadoFuncion '{' cuerpoFuncion '}' { out_estructur
                                                                 	salirAmbito();
                                                             	}
                                                             	else
-                                                            		yyerror("En la función: '"+nombre+"' el nivel maximo de anidamiento (1) es superado.");}
+                                                            	{
+                                                            		yyerror("En la función: '"+nombre+"' el nivel maximo de anidamiento (1) es superado.");
+                                                            		salirAmbito();
+                                                            	}}
 ;
 
 cuerpoMetodo: listaSentenciasMetodo { $$ = $1; }
@@ -480,7 +495,7 @@ cuerpoMetodo: listaSentenciasMetodo { $$ = $1; }
 cuerpoFuncion:  listaSentenciasFuncion { $$ = $1; }
 ;
 
-listaSentenciasMetodo: listaSentenciasMetodo sentenciaDeclarativaMetodo
+listaSentenciasMetodo: listaSentenciasMetodo sentenciaDeclarativaMetodo {$$ = $1;}
                        	| listaSentenciasMetodo sentenciaEjecutable ',' { $$ = new ParserVal( new Nodo("sentencias", (Nodo) $1.obj, (Nodo) $2.obj));}
                        	| sentenciaDeclarativaMetodo
                        	| sentenciaEjecutable ',' { $$ = $1; }
@@ -510,7 +525,7 @@ invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(Analizado
 						if (!validarParametro(x, clave))
                                                 	yyerror("Incompatibilidad de tipos en llamado a función");
 					}
-		  | ID '(' ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a metodo de clase.");
+		  | ID '(' ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a funcion VOID.");
 		  		var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
 		  		$$ = new ParserVal(x);
 		  		if (chequearLlamadoFuncion($1.sval))
@@ -909,12 +924,23 @@ private Boolean chequearLlamadoFuncion(String funcion) {
   	return false;
 }
 
-private Boolean chequearMetodoClase(String claseBase, String metodo, String referenciaCompleta)
+private Boolean chequearMetodoClase(String claseBase, String metodo, String referenciaCompleta, Nodo x)
 {
 	var t = AnalizadorLexico.TS;
-	int entrada = t.obtenerSimbolo(metodo+claseBase+":main");
+	int entrada = t.obtenerSimbolo(metodo+":"+claseBase+":main");
 	if (entrada == TablaSimbolos.NO_ENCONTRADO)
-        	return false;
+	{
+		int clave = t.obtenerSimbolo(claseBase+":"+claseActual);
+		entrada = t.obtenerSimbolo(metodo+":"+t.obtenerAtributo(clave, "tipo")+":main");
+		if (entrada == TablaSimbolos.NO_ENCONTRADO)
+			return false;
+		else
+		{
+			String llamado = metodo+":"+t.obtenerAtributo(clave, "tipo")+":main";
+			x.setIzq(new Nodo(llamado));
+			return true;
+		}
+        }
         else
         {
         	if (t.obtenerAtributo(entrada, "herencia").equals(referenciaCompleta))
