@@ -690,7 +690,7 @@ public Boolean generarMenosMenos()
         		case("SHORT"):
         			uno = "1_s";
         			break;
-        		case("LONG"):
+        		case("ULONG"):
         			uno = "1_ul";
         			break;
         		default:
@@ -1004,7 +1004,7 @@ public static String comprobarRango(String valor){
             valor_final = Integer.toString(numero)+"_s";
             agregado = TablaSimbolos.agregarSimbolo(valor_final);
             TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
-            modificar_referencias(agregado, valor_final, "short");
+            modificar_referencias(agregado, valor_final, "SHORT");
             TablaSimbolos.eliminarAtributo(id, "valor_original");
         }
         else
@@ -1012,7 +1012,7 @@ public static String comprobarRango(String valor){
             valor_final = "-"+valor;
             agregado = TablaSimbolos.agregarSimbolo(valor_final);
             TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
-            modificar_referencias(agregado, valor_final, "short");
+            modificar_referencias(agregado, valor_final, "SHORT");
         }
 	}
 
@@ -1020,15 +1020,15 @@ public static String comprobarRango(String valor){
 		valor_final = "-"+valor;
         	agregado = TablaSimbolos.agregarSimbolo(valor_final);
         	TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
-        	modificar_referencias(agregado, valor_final, "float");
+        	modificar_referencias(agregado, valor_final, "FLOAT");
 	}
 
-    if (tipo.equals("LONG")){
+    if (tipo.equals("ULONG")){
         anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
         valor_final = "0_ul";
         agregado = TablaSimbolos.agregarSimbolo(valor_final);
         TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");
-        modificar_referencias(agregado, valor_final, "long");
+        modificar_referencias(agregado, valor_final, "ULONG");
     }
 
     if (!(referencias-1 > 0))
