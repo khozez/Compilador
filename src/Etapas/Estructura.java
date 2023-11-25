@@ -38,6 +38,7 @@ public class Estructura {
         this.out_assembler.write(DATA);
         this.out_assembler.write("   aux_mem_2bytes DW ?\n" +
                                     "    __funcion_actual__ DD 0\n" +
+                                    "    __aux_conv DW ?\n"+
                                     "   _ErrorOverflowSum DB \"Error por Overflow en una suma\", 0\n"+
                                     "   _ErrorDiv0 DB \"Error Division por Cero en ejecucion\", 0\n"+
                                     "   _ErrorRec DB \"Error recursion en funcion\", 0\n"+

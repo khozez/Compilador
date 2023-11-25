@@ -1,16 +1,12 @@
 {
-    SHORT x,
-    x = 4_s,
+        CLASS objeto{
+            SHORT id;cant,
 
-    VOID func(SHORT y)
-    {
-        IF (y > 4_s)
-            PRINT %HOLA%,
-        ELSE
-            PRINT %CHAU%,
-        END_IF,
-        RETURN,
-    }
+            VOID print_tipo(){ PRINT %OBJETO CREADO%, },
 
-    func(4_s),
+            VOID set_cant(SHORT x){ cant = x, },
+        }
+
+        objeto o1,
+        o1.print_tipo(),
 }

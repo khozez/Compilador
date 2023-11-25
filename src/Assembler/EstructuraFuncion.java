@@ -14,9 +14,9 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
 
         if (!parametro.isEmpty()) {
             if (subArbol.getTipo().equals("SHORT") || subArbol.getTipo().equals("LONG")) {
-                codigo = codigo + "MOV "+nombreParametro.replaceAll(":","_")+", " + parametro + "\n";
+                codigo = codigo + "MOV AL, "+parametro+"\nMOV "+nombreParametro.replaceAll(":","_")+", AL\n";
             } else {
-                codigo = codigo + "FLD " + parametro + "\n"+"FSTP "+nombreParametro+"\n";
+                codigo = codigo + "FLD " + parametro.replaceAll(":","_") + "\n"+"FSTP "+parametro.replaceAll(":","_")+"\n";
             }
         }
 
@@ -30,7 +30,7 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
             String uso = ts.obtenerAtributo(id, "uso");
 
             if (uso.equals("auxiliar")) {
-                return "@" + subArbol.getNombre()+"_";
+                return "@" + subArbol.getNombre();
             } else if (uso.equals("variable") || uso.equals("parametro")) {
                 return "_"+subArbol.getNombre().replaceAll(":","_")+"_";
             } else if (uso.equals("constante")) {

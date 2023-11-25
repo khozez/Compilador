@@ -32,8 +32,12 @@ public abstract class Generador {
                     if (isFunctionEmpty()) {
                         escribirWhile(outAssembler);
                     }
-                    else
-                        escribirWhile(outFunciones);
+                    else {
+                        String codigo = "etiqueta" + etiqueta + ":";
+                        pilaEtiquetas.add(etiqueta);
+                        etiqueta++;
+                        WriteFunc(codigo);
+                    }
                 }
 
             if (padre.getIzq() != null)
@@ -102,7 +106,7 @@ public abstract class Generador {
         mapa.put("program", noAction);
         mapa.put("STOF", nodo -> {
             String var = EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq());
-            var codigo = "MOV AL, "+var+"\nCBW+\nCWD\nFILD AX"+"\nFSTP @aux"+ aux+"\n";
+            var codigo = "MOV AL, "+var+"\nCBW" +"\nMOV __aux_conv, AX\nFILD __aux_conv"+"\nFSTP @aux"+ aux+"\n";
             nodo.setNombre("aux"+aux);
             nodo.setTipo("FLOAT");
             EstructuraOperador.agregarAuxiliar("FLOAT", nodo.getIzq());

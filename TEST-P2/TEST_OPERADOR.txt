@@ -6,6 +6,6 @@
                               **x = x - 1_s = 3_s
 
     IF (x == 3_s)
-        PRINT %X ES 3%,
+        PRINT %X ES 3%,         **IMPRIME X ES 3
     END_IF,
 }

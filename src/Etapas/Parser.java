@@ -901,8 +901,10 @@ private Boolean chequearMetodoClase(String claseBase, String metodo, String refe
         }
         else
         {
-        	if (t.obtenerAtributo(entrada, "herencia").equals(referenciaCompleta))
+        	if (t.obtenerAtributo(entrada, "herencia").equals(referenciaCompleta) || t.obtenerAtributo(entrada, "ref").equals(referenciaCompleta)){
+        		x.setIzq(new Nodo(t.obtenerAtributo(entrada, "ref")));
         		return true;
+        	}
         	return false;
         }
 }
@@ -910,7 +912,7 @@ private Boolean chequearMetodoClase(String claseBase, String metodo, String refe
 private Boolean tieneParametrosMetodo(String claseBase, String metodo)
 {
 	var t = AnalizadorLexico.TS;
-        int entrada = t.obtenerSimbolo(metodo+claseBase+":main");
+        int entrada = t.obtenerSimbolo(metodo+":"+claseBase+":main");
         if (t.obtenerAtributo(entrada, "parametro").equals(t.NO_ENCONTRADO_MESSAGE))
         	return false;
         return true;
@@ -1042,19 +1044,26 @@ private static Boolean validarParametro (Nodo funcion, int clave_funcion)
 			return false;
 	}else
 	{
-		if (!tipo_parametro_func.equals(tipo) && tipo_parametro_func.equals("FLOAT"))
+		if (!tipo_parametro_func.equals(tipo))
                 {
-                	if (tipo.equals("SHORT"))
+                	if (tipo_parametro_func.equals("FLOAT"))
                 	{
-                		var x = new Nodo("STOF", parametro, null);
-                		funcion.setDer(x);
-                	}else{
-                		var x = new Nodo("LTOF", parametro, null);
-                		funcion.setDer(x);
-                	}
-                	return true;
+				if (tipo.equals("SHORT"))
+				{
+					var x = new Nodo("STOF", parametro, null);
+					funcion.setDer(x);
+				}else{
+					var x = new Nodo("LTOF", parametro, null);
+					funcion.setDer(x);
+				}
+				return true;
+			}
+			else
+			{
+				return false;
+			}
                	}else
-               		return false;
+               		return true;
 	}
 }
 
@@ -1186,7 +1195,7 @@ public static void main(String[] args) {
                 System.out.println("No se especifico el archivo a compilar");
         }
 }
-//#line 1118 "Parser.java"
+//#line 1127 "Parser.java"
 //###############################################################
 // method: yylexdebug : check lexer state
 //###############################################################
@@ -1497,7 +1506,7 @@ case 22:
                                                 else
                                                 {
                                                         if (!validarParametro(x, clave))
-                                                        	yyerror("Incompatibilidad de tipos en llamado a función");
+                                                        	yyerror("Incompatibilidad de tipos en llamado a metodo");
                                                 }
                                         }
                                         else
@@ -2200,13 +2209,13 @@ case 123:
 break;
 case 124:
 //#line 632 "gramatica.y"
-{ yyval = new ParserVal("<"); }
+{ yyval = new ParserVal(">"); }
 break;
 case 125:
 //#line 633 "gramatica.y"
 {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal escrito el comparador ==");}
 break;
-//#line 2133 "Parser.java"
+//#line 2142 "Parser.java"
 //########## END OF USER-SUPPLIED ACTIONS ##########
     }//switch
     //#### Now let's reduce... ####

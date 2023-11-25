@@ -48,7 +48,7 @@
         VOID reset_cont(){ cont = 0_s, },
 
         VOID agregar_silla(silla s){
-            IF (cont < 3_s)
+            IF (cont < 2_s)
             {
                 IF (cont == 1_s)
                     s1 = s,
@@ -59,6 +59,10 @@
                         s3 = s,
                     END_IF,
                 END_IF,
+                cont = cont + 1_s,
+            }ELSE
+            {
+                PRINT %CANT SILLAS SUPERADAS%,
             }END_IF,
         },
     }
@@ -70,9 +74,9 @@
     o1.id = 1_s,
     m1.id = 2_s,
     s1.id = 3_s,
-    s1.mueble.print_tipo(),
-    m1.objeto.print_tipo(),
-    o1.print_tipo(),
+    **s1.mueble.print_tipo(),         **IMPRIME OBJETO CREADO:SILLA (POR SOBREESCRITURA)
+    **m1.objeto.print_tipo(),         **IMPRIME OBJETO CREADO (METODO DE OBJETO)
+    **o1.print_tipo(),                **IMPRIME OBJETO CREADO
 
     s1.mueble.set_uso(95.0),
 

@@ -137,7 +137,7 @@ referenciaMetodo: ID '(' ')' {
                                                 else
                                                 {
                                                         if (!validarParametro(x, clave))
-                                                        	yyerror("Incompatibilidad de tipos en llamado a función");
+                                                        	yyerror("Incompatibilidad de tipos en llamado a metodo");
                                                 }
                                         }
                                         else
@@ -629,7 +629,7 @@ comparador: MAYORIGUAL   { $$ = new ParserVal(">="); }
 	    | IGUAL    { $$ = new ParserVal("=="); }
 	    | DISTINTO { $$ = new ParserVal("!!"); }
             | '<'  { $$ = new ParserVal("<"); }
-	    | '>'  { $$ = new ParserVal("<"); }
+	    | '>'  { $$ = new ParserVal(">"); }
 	    | '=' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Mal escrito el comparador ==");}
 ;
 
@@ -942,8 +942,10 @@ private Boolean chequearMetodoClase(String claseBase, String metodo, String refe
         }
         else
         {
-        	if (t.obtenerAtributo(entrada, "herencia").equals(referenciaCompleta))
+        	if (t.obtenerAtributo(entrada, "herencia").equals(referenciaCompleta) || t.obtenerAtributo(entrada, "ref").equals(referenciaCompleta)){
+        		x.setIzq(new Nodo(t.obtenerAtributo(entrada, "ref")));
         		return true;
+        	}
         	return false;
         }
 }
@@ -951,7 +953,7 @@ private Boolean chequearMetodoClase(String claseBase, String metodo, String refe
 private Boolean tieneParametrosMetodo(String claseBase, String metodo)
 {
 	var t = AnalizadorLexico.TS;
-        int entrada = t.obtenerSimbolo(metodo+claseBase+":main");
+        int entrada = t.obtenerSimbolo(metodo+":"+claseBase+":main");
         if (t.obtenerAtributo(entrada, "parametro").equals(t.NO_ENCONTRADO_MESSAGE))
         	return false;
         return true;
@@ -1083,19 +1085,26 @@ private static Boolean validarParametro (Nodo funcion, int clave_funcion)
 			return false;
 	}else
 	{
-		if (!tipo_parametro_func.equals(tipo) && tipo_parametro_func.equals("FLOAT"))
+		if (!tipo_parametro_func.equals(tipo))
                 {
-                	if (tipo.equals("SHORT"))
+                	if (tipo_parametro_func.equals("FLOAT"))
                 	{
-                		var x = new Nodo("STOF", parametro, null);
-                		funcion.setDer(x);
-                	}else{
-                		var x = new Nodo("LTOF", parametro, null);
-                		funcion.setDer(x);
-                	}
-                	return true;
+				if (tipo.equals("SHORT"))
+				{
+					var x = new Nodo("STOF", parametro, null);
+					funcion.setDer(x);
+				}else{
+					var x = new Nodo("LTOF", parametro, null);
+					funcion.setDer(x);
+				}
+				return true;
+			}
+			else
+			{
+				return false;
+			}
                	}else
-               		return false;
+               		return true;
 	}
 }
 

@@ -1,37 +1,259 @@
  (123) --> {
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: manejador
+ (123) --> {
  (266) --> Palabra reservada: SHORT
- (257) --> Identificador: x
- (44) --> ,
- (257) --> Identificador: x
- (61) --> =
- (258) --> Constante entera: 4_s
+ (257) --> Identificador: clientes
+ (59) --> ;
+ (257) --> Identificador: cuotas
  (44) --> ,
  (265) --> Palabra reservada: VOID
- (257) --> Identificador: func
+ (257) --> Identificador: paga_cuotas
  (40) --> (
  (266) --> Palabra reservada: SHORT
- (257) --> Identificador: y
+ (257) --> Identificador: cant
  (41) --> )
  (123) --> {
- (261) --> Palabra reservada: IF
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: cliente_menos
  (40) --> (
- (257) --> Identificador: y
- (62) --> >
- (258) --> Constante entera: 4_s
  (41) --> )
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (262) --> Palabra reservada: ELSE
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (263) --> Palabra reservada: END_IF
+ (123) --> {
+ (257) --> Identificador: clientes
+ (61) --> =
+ (257) --> Identificador: clientes
+ (45) --> -
+ (258) --> Constante entera: 1_s
  (44) --> ,
  (270) --> Palabra reservada: RETURN
  (44) --> ,
  (125) --> }
- (257) --> Identificador: func
+ (261) --> Palabra reservada: IF
  (40) --> (
+ (257) --> Identificador: cant
+ (62) --> >
  (258) --> Constante entera: 4_s
+ (41) --> )
+ (257) --> Identificador: cliente_menos
+ (40) --> (
+ (41) --> )
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: objeto
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: id
+ (59) --> ;
+ (257) --> Identificador: cant
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: print_tipo
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set_cant
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: x
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: cant
+ (61) --> =
+ (257) --> Identificador: x
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: mueble
+ (123) --> {
+ (257) --> Identificador: objeto
+ (44) --> ,
+ (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: porciento_uso
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set_uso
+ (40) --> (
+ (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: u
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: porciento_uso
+ (61) --> =
+ (257) --> Identificador: u
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: silla
+ (123) --> {
+ (257) --> Identificador: mueble
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: print_tipo
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: mesa
+ (123) --> {
+ (257) --> Identificador: silla
+ (257) --> Identificador: s1
+ (59) --> ;
+ (257) --> Identificador: s2
+ (59) --> ;
+ (257) --> Identificador: s3
+ (44) --> ,
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cont
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: reset_cont
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: cont
+ (61) --> =
+ (258) --> Constante entera: 0_s
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: agregar_silla
+ (40) --> (
+ (257) --> Identificador: silla
+ (257) --> Identificador: s
+ (41) --> )
+ (123) --> {
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: cont
+ (60) --> <
+ (258) --> Constante entera: 2_s
+ (41) --> )
+ (123) --> {
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: cont
+ (-1
+ (258) --> Constante entera: 1_s
+ (41) --> )
+ (257) --> Identificador: s1
+ (61) --> =
+ (257) --> Identificador: s
+ (44) --> ,
+ (262) --> Palabra reservada: ELSE
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: cont
+ (-1
+ (258) --> Constante entera: 2_s
+ (41) --> )
+ (257) --> Identificador: s2
+ (61) --> =
+ (257) --> Identificador: s
+ (44) --> ,
+ (262) --> Palabra reservada: ELSE
+ (257) --> Identificador: s3
+ (61) --> =
+ (257) --> Identificador: s
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (257) --> Identificador: cont
+ (61) --> =
+ (257) --> Identificador: cont
+ (43) --> +
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (125) --> }
+ (262) --> Palabra reservada: ELSE
+ (123) --> {
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (125) --> }
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (257) --> Identificador: objeto
+ (257) --> Identificador: o1
+ (44) --> ,
+ (257) --> Identificador: mueble
+ (257) --> Identificador: m1
+ (44) --> ,
+ (257) --> Identificador: silla
+ (257) --> Identificador: s1
+ (44) --> ,
+ (257) --> Identificador: o1
+ (46) --> .
+ (257) --> Identificador: id
+ (61) --> =
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (257) --> Identificador: m1
+ (46) --> .
+ (257) --> Identificador: id
+ (61) --> =
+ (258) --> Constante entera: 2_s
+ (44) --> ,
+ (257) --> Identificador: s1
+ (46) --> .
+ (257) --> Identificador: id
+ (61) --> =
+ (258) --> Constante entera: 3_s
+ (44) --> ,
+ (257) --> Identificador: s1
+ (46) --> .
+ (257) --> Identificador: mueble
+ (46) --> .
+ (257) --> Identificador: set_uso
+ (40) --> (
+ (258) --> Constante float: 95.0
+ (41) --> )
+ (44) --> ,
+ (257) --> Identificador: mesa
+ (257) --> Identificador: m
+ (44) --> ,
+ (257) --> Identificador: m
+ (46) --> .
+ (257) --> Identificador: agregar_silla
+ (40) --> (
+ (257) --> Identificador: s1
+ (41) --> )
+ (44) --> ,
+ (257) --> Identificador: m
+ (46) --> .
+ (257) --> Identificador: agregar_silla
+ (40) --> (
+ (257) --> Identificador: s1
+ (41) --> )
+ (44) --> ,
+ (257) --> Identificador: m
+ (46) --> .
+ (257) --> Identificador: agregar_silla
+ (40) --> (
+ (257) --> Identificador: s1
  (41) --> )
  (44) --> ,
  (125) --> }

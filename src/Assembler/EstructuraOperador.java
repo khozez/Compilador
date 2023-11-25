@@ -52,11 +52,11 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "SUB":
-                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nSUB AL, BL\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nSUB AL, BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "MUL":
-                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nMUL AL, BL\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nMUL AL, BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                 }
@@ -72,11 +72,11 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "SUB":
-                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nSUB EAX, EBX\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nSUB EAX, EBX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "MUL":
-                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nMUL EAX, EBX\nMOV @aux%d\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nMUL EAX, EBX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                 }
