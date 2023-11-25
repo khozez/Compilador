@@ -13,7 +13,7 @@ public class EstructuraFuncion extends Generador implements GeneradorEstructura 
         String parametro = obtenerNombreVariable(ts, subArbol);
 
         if (!parametro.isEmpty()) {
-            if (subArbol.getTipo().equals("SHORT") || subArbol.getTipo().equals("LONG")) {
+            if (subArbol.getTipo().equals("SHORT") || subArbol.getTipo().equals("ULONG")) {
                 codigo = codigo + "MOV AL, "+parametro+"\nMOV "+nombreParametro.replaceAll(":","_")+", AL\n";
             } else {
                 codigo = codigo + "FLD " + parametro.replaceAll(":","_") + "\n"+"FSTP "+parametro.replaceAll(":","_")+"\n";

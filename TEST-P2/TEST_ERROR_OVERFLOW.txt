@@ -1,6 +1,12 @@
 {
     SHORT x;z,
-    x = 120_s,   
+    x = 120_s,
+    z = 0_s,
 
-    z = x + 120_s,
+    ULONG p;q,
+    p = 4294967295_ul,
+    q = 1_ul,
+
+    **z = x + 120_s,           **ERROR OVERFLOW EN SUMA SHORT
+    q = p + 4294967295_ul,   **ERROR OVERFLOW EN SUMA ULONG
 }

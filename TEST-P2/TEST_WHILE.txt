@@ -1,0 +1,27 @@
+{
+    SHORT i;x,
+    i = 4_s,
+    x = 0_s,                        **CAMBIANDO ESTE VALOR SE OBTIENE UNA SALIDA POR PANTALLA DISTINTA
+
+    IF (x > 1_s)
+    {
+        WHILE (i !! 0_s) DO
+        {
+            i = i - 1_s,
+            IF (i == 0_s)
+                PRINT %FIN DE ITERACION - X = 0_S%,
+            END_IF,
+        },
+    }
+    ELSE
+    {
+        WHILE (i !! 8_s) DO
+        {
+            i = i + 1_s,
+            IF (i == 8_s)
+                PRINT %FIN DE ITERACION - X = 8_s%,
+            END_IF,
+        },
+    }END_IF,
+
+}

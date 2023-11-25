@@ -68,7 +68,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
-                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nADD EAX, EBX\nMOV @aux%d, EAX\nJO ErrorOverflowSum\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nADD EAX, EBX\nMOV @aux%d, EAX\nJC ErrorOverflowSum\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "SUB":

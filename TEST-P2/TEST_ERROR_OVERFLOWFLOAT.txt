@@ -3,6 +3,6 @@
     x = 3.4E+38,
     y = 3.4E+38,
 
-    z = x * y,
+    z = x * y,                  **ERROR OVERFLOW EN PRODUCTO FLOAT
                             
 }

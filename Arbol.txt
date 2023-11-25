@@ -4,149 +4,20 @@ program
    |  |-->sentencias null
    |  |  |-->sentencias null
    |  |  |  |-->sentencias null
-   |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |-->Clase null
-   |  |  |  |  |  |  |  |  |  |  |  |-->EncabezadoClase null
-   |  |  |  |  |  |  |  |  |  |  |  |  '-->manejador:main null
-   |  |  |  |  |  |  |  |  |  |  |  '-->cuerpoClase null
-   |  |  |  |  |  |  |  |  |  |  |     '-->MetodoClase void
-   |  |  |  |  |  |  |  |  |  |  |        |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |  |        |  |-->paga_cuotas:manejador:main null
-   |  |  |  |  |  |  |  |  |  |  |        |  '-->cant:paga_cuotas:manejador:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |        '-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |           |-->Funcion void
-   |  |  |  |  |  |  |  |  |  |  |           |  |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |  |           |  |  '-->cliente_menos:paga_cuotas:manejador:main null
-   |  |  |  |  |  |  |  |  |  |  |           |  '-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |           |     |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |           |     |  '-->Asignacion SHORT
-   |  |  |  |  |  |  |  |  |  |  |           |     |     |-->clientes:manejador:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |           |     |     '-->- SHORT
-   |  |  |  |  |  |  |  |  |  |  |           |     |        |-->clientes:manejador:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |           |     |        '-->1_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |           |     '-->RETURN null
-   |  |  |  |  |  |  |  |  |  |  |           '-->if null
-   |  |  |  |  |  |  |  |  |  |  |              |-->> SHORT
-   |  |  |  |  |  |  |  |  |  |  |              |  |-->cant:paga_cuotas:manejador:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |              |  '-->4_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |              '-->cuerpoIf null
-   |  |  |  |  |  |  |  |  |  |  |                 |-->then null
-   |  |  |  |  |  |  |  |  |  |  |                 |  '-->LlamadaFuncion void
-   |  |  |  |  |  |  |  |  |  |  |                 |     '-->cliente_menos:paga_cuotas:manejador:main null
-   |  |  |  |  |  |  |  |  |  |  |                 '-->else null
-   |  |  |  |  |  |  |  |  |  |  '-->Clase null
-   |  |  |  |  |  |  |  |  |  |     |-->EncabezadoClase null
-   |  |  |  |  |  |  |  |  |  |     |  '-->objeto:main null
-   |  |  |  |  |  |  |  |  |  |     '-->cuerpoClase null
-   |  |  |  |  |  |  |  |  |  |        |-->cuerpoClase null
-   |  |  |  |  |  |  |  |  |  |        |  '-->MetodoClase void
-   |  |  |  |  |  |  |  |  |  |        |     |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |        |     |  '-->print_tipo:objeto:main null
-   |  |  |  |  |  |  |  |  |  |        |     '-->Print STRING
-   |  |  |  |  |  |  |  |  |  |        |        '-->Cadena0 STRING
-   |  |  |  |  |  |  |  |  |  |        '-->MetodoClase void
-   |  |  |  |  |  |  |  |  |  |           |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |           |  |-->set_cant:objeto:main null
-   |  |  |  |  |  |  |  |  |  |           |  '-->x:set_cant:objeto:main SHORT
-   |  |  |  |  |  |  |  |  |  |           '-->Asignacion SHORT
-   |  |  |  |  |  |  |  |  |  |              |-->cant:objeto:main SHORT
-   |  |  |  |  |  |  |  |  |  |              '-->x:set_cant:objeto:main SHORT
-   |  |  |  |  |  |  |  |  |  '-->Clase null
-   |  |  |  |  |  |  |  |  |     |-->EncabezadoClase null
-   |  |  |  |  |  |  |  |  |     |  '-->mueble:main null
-   |  |  |  |  |  |  |  |  |     '-->cuerpoClase null
-   |  |  |  |  |  |  |  |  |        '-->MetodoClase void
-   |  |  |  |  |  |  |  |  |           |-->Encabezado void
-   |  |  |  |  |  |  |  |  |           |  |-->set_uso:mueble:main null
-   |  |  |  |  |  |  |  |  |           |  '-->u:set_uso:mueble:main FLOAT
-   |  |  |  |  |  |  |  |  |           '-->Asignacion FLOAT
-   |  |  |  |  |  |  |  |  |              |-->porciento_uso:mueble:main FLOAT
-   |  |  |  |  |  |  |  |  |              '-->u:set_uso:mueble:main FLOAT
-   |  |  |  |  |  |  |  |  '-->Clase null
-   |  |  |  |  |  |  |  |     |-->EncabezadoClase null
-   |  |  |  |  |  |  |  |     |  '-->silla:main null
-   |  |  |  |  |  |  |  |     '-->cuerpoClase null
-   |  |  |  |  |  |  |  |        '-->MetodoClase void
-   |  |  |  |  |  |  |  |           |-->Encabezado void
-   |  |  |  |  |  |  |  |           |  '-->print_tipo:silla:main null
-   |  |  |  |  |  |  |  |           '-->Print STRING
-   |  |  |  |  |  |  |  |              '-->Cadena1 STRING
-   |  |  |  |  |  |  |  '-->Clase null
-   |  |  |  |  |  |  |     |-->EncabezadoClase null
-   |  |  |  |  |  |  |     |  '-->mesa:main null
-   |  |  |  |  |  |  |     '-->cuerpoClase null
-   |  |  |  |  |  |  |        |-->cuerpoClase null
-   |  |  |  |  |  |  |        |  '-->MetodoClase void
-   |  |  |  |  |  |  |        |     |-->Encabezado void
-   |  |  |  |  |  |  |        |     |  '-->reset_cont:mesa:main null
-   |  |  |  |  |  |  |        |     '-->Asignacion SHORT
-   |  |  |  |  |  |  |        |        |-->cont:mesa:main SHORT
-   |  |  |  |  |  |  |        |        '-->0_s SHORT
-   |  |  |  |  |  |  |        '-->MetodoClase void
-   |  |  |  |  |  |  |           |-->Encabezado void
-   |  |  |  |  |  |  |           |  |-->agregar_silla:mesa:main null
-   |  |  |  |  |  |  |           |  '-->s:agregar_silla:mesa:main silla
-   |  |  |  |  |  |  |           '-->if null
-   |  |  |  |  |  |  |              |-->< SHORT
-   |  |  |  |  |  |  |              |  |-->cont:mesa:main SHORT
-   |  |  |  |  |  |  |              |  '-->2_s SHORT
-   |  |  |  |  |  |  |              '-->cuerpoIf null
-   |  |  |  |  |  |  |                 |-->then null
-   |  |  |  |  |  |  |                 |  '-->sentencias null
-   |  |  |  |  |  |  |                 |     |-->if null
-   |  |  |  |  |  |  |                 |     |  |-->== SHORT
-   |  |  |  |  |  |  |                 |     |  |  |-->cont:mesa:main SHORT
-   |  |  |  |  |  |  |                 |     |  |  '-->1_s SHORT
-   |  |  |  |  |  |  |                 |     |  '-->cuerpoIf null
-   |  |  |  |  |  |  |                 |     |     |-->then null
-   |  |  |  |  |  |  |                 |     |     |  '-->Asignacion silla
-   |  |  |  |  |  |  |                 |     |     |     |-->s1:mesa:main silla
-   |  |  |  |  |  |  |                 |     |     |     '-->s:agregar_silla:mesa:main silla
-   |  |  |  |  |  |  |                 |     |     '-->else null
-   |  |  |  |  |  |  |                 |     |        '-->if null
-   |  |  |  |  |  |  |                 |     |           |-->== SHORT
-   |  |  |  |  |  |  |                 |     |           |  |-->cont:mesa:main SHORT
-   |  |  |  |  |  |  |                 |     |           |  '-->2_s SHORT
-   |  |  |  |  |  |  |                 |     |           '-->cuerpoIf null
-   |  |  |  |  |  |  |                 |     |              |-->then null
-   |  |  |  |  |  |  |                 |     |              |  '-->Asignacion silla
-   |  |  |  |  |  |  |                 |     |              |     |-->s2:mesa:main silla
-   |  |  |  |  |  |  |                 |     |              |     '-->s:agregar_silla:mesa:main silla
-   |  |  |  |  |  |  |                 |     |              '-->else null
-   |  |  |  |  |  |  |                 |     |                 '-->Asignacion silla
-   |  |  |  |  |  |  |                 |     |                    |-->s3:mesa:main silla
-   |  |  |  |  |  |  |                 |     |                    '-->s:agregar_silla:mesa:main silla
-   |  |  |  |  |  |  |                 |     '-->Asignacion SHORT
-   |  |  |  |  |  |  |                 |        |-->cont:mesa:main SHORT
-   |  |  |  |  |  |  |                 |        '-->+ SHORT
-   |  |  |  |  |  |  |                 |           |-->cont:mesa:main SHORT
-   |  |  |  |  |  |  |                 |           '-->1_s SHORT
-   |  |  |  |  |  |  |                 '-->else null
-   |  |  |  |  |  |  |                    '-->Print STRING
-   |  |  |  |  |  |  |                       '-->Cadena2 STRING
-   |  |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |     |-->id:objeto:main SHORT
-   |  |  |  |  |  |     '-->1_s SHORT
-   |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |     |-->id:mueble:main SHORT
-   |  |  |  |  |     '-->2_s SHORT
    |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |     |-->id:silla:main SHORT
-   |  |  |  |     '-->3_s SHORT
-   |  |  |  '-->LlamadoMetodo void
-   |  |  |     |-->set_uso:mueble:main null
-   |  |  |     '-->95.0 FLOAT
-   |  |  '-->LlamadoMetodo void
-   |  |     |-->agregar_silla:mesa:main null
-   |  |     '-->s1:main silla
-   |  '-->LlamadoMetodo void
-   |     |-->agregar_silla:mesa:main null
-   |     '-->s1:main silla
-   '-->LlamadoMetodo void
-      |-->agregar_silla:mesa:main null
-      '-->s1:main silla
+   |  |  |  |     |-->x:main SHORT
+   |  |  |  |     '-->120_s SHORT
+   |  |  |  '-->Asignacion SHORT
+   |  |  |     |-->z:main SHORT
+   |  |  |     '-->0_s SHORT
+   |  |  '-->Asignacion ULONG
+   |  |     |-->p:main ULONG
+   |  |     '-->4294967295_ul ULONG
+   |  '-->Asignacion ULONG
+   |     |-->q:main ULONG
+   |     '-->1_ul ULONG
+   '-->Asignacion ULONG
+      |-->q:main ULONG
+      '-->+ ULONG
+         |-->p:main ULONG
+         '-->4294967295_ul ULONG

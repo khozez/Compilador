@@ -49,17 +49,16 @@ public class Estructura {
             Parser.lista_funciones.forEach(x -> this.out_assembler.write("   __"+x+"__" + " DD " + x.hashCode()));
         }
         this.out_assembler.write(CODE);
-        Generador.outFunciones.WriteFile();// --ERROR PISA EL ARCIVHO -- Ni idea porque
+        Generador.outFunciones.WriteFile();
         this.out_assembler.write(START);
             // Código intermedio
-        Generador.outAssembler.WriteFile(); //--ERROR PISA EL ARCIVHO
+        Generador.outAssembler.WriteFile();
         this.out_assembler.write(ERRORES);
         this.out_assembler.write(END_START);
     }
 
 
-    public void writeTs(){ //VARIOS ERRORES, CON LAS CLASES POR EJEMPLO TIRA PUNTERO EN NULL
-        //List<EntradaTablaSimbolos> tsList = this.tablaToList();
+    public void writeTs(){
         List<Map<String, String>> tsList = new ArrayList<Map<String, String>>(TablaSimbolos.getElementos());
 
         for(Map<String, String> fila : tsList) {
@@ -81,7 +80,7 @@ public class Estructura {
                         else
                             directiva = "    _";
 
-                        if (fila.get("tipo").equals("SHORT")) {  //POR QUE SOLO SHORT? Indica que la cantidad de bytes es corta
+                        if (fila.get("tipo").equals("SHORT")) {
 
                             directiva += var1 + " DB " + "?";
                             this.out_assembler.write(directiva.replaceAll(":", "_"));
