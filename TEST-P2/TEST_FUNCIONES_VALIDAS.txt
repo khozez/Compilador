@@ -9,6 +9,8 @@
     VOID set_y (FLOAT valor)
     {
         y = valor,
+        SHORT cuotas,                   **VARIABLE CON UN MISMO NOMBRE, EN DISTINTO AMBITO
+        cuotas = 4_s,
         RETURN,
     }
 

@@ -114,7 +114,13 @@ public abstract class Generador {
             return codigo;
         });
         mapa.put("LTOF", nodo -> {
-            var codigo = "FILD "+ EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux"+ aux+"\n";
+            String codigo;
+            if (EstructuraAsignacion.obtenerUsoVariable(ts, nodo.getIzq()).equals("constante")) {
+                codigo = "MOV __aux_conv, " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFILD __aux_conv" + "\nFSTP @aux" + aux + "\n";
+            }
+            else {
+                codigo = "FILD " + EstructuraAsignacion.obtenerNombreVariable(ts, nodo.getIzq()) + "\nFSTP @aux" + aux + "\n";
+            }
             nodo.setNombre("aux"+aux);
             nodo.setTipo("LONG");
             EstructuraOperador.agregarAuxiliar("FLOAT", nodo.getIzq());

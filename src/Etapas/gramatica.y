@@ -659,6 +659,7 @@ public static ArrayList<String> lista_clases_fd = new ArrayList<>();
 public static OutputManager out_arbol = new OutputManager("./Arbol.txt");
 public static OutputManager out_estructura = new OutputManager("./Estructura.txt");
 public static OutputManager out_errores = new OutputManager("./Errores.txt");
+public static OutputManager out_tabla = new OutputManager("./Tabla_Simbolos.txt");
 
 public void setYylval(ParserVal yylval) {
 	this.yylval = yylval;
@@ -1206,6 +1207,41 @@ public static void imprimir(List<String> lista, String cabecera) {
         }
 }
 
+static void generarAssembler()
+{
+	  String rutaBatch = System.getProperty("user.dir")+"/build.bat";
+	  ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", "/B", "\"\"", rutaBatch);
+	  pb.inheritIO();
+
+	  // Iniciar el proceso
+	  try {
+	    Process proceso = pb.start();
+	  } catch (IOException e) {
+	    throw new RuntimeException(e);
+	  }
+}
+
+static void imprimirResultados()
+{
+	  Parser.imprimir(warnings, "Warnings:");
+	  Parser.imprimir(errorLexico, "Errores Lexicos");
+	  Parser.imprimir(errorSintactico, "Errores Sintacticos");
+	  Parser.imprimir(errorSemantico, "Errores Semanticos");
+	  ArrayList<String> t = AnalizadorLexico.TS.imprimirTabla();
+	  for (String x: t)
+	  {
+	    out_tabla.write(x);
+	  }
+	  String rutaBatch = System.getProperty("user.dir")+"/resultado.bat";
+	  ProcessBuilder pb = new ProcessBuilder("cmd", "/c", "start", "\"\"", rutaBatch);
+	  pb.redirectErrorStream(true);
+	  try {
+	    Process proceso = pb.start();
+	  } catch (IOException e) {
+	    throw new RuntimeException(e);
+	  }
+}
+
 public static void main(String[] args) {
         if (args.length >= 1) {
                 String archivo = args[0];
@@ -1219,19 +1255,20 @@ public static void main(String[] args) {
                 } catch (IOException excepcion) {
                         excepcion.printStackTrace();
                 }
-                Parser.imprimir(warnings, "Warnings:");
-                Parser.imprimir(errorLexico, "Errores Lexicos");
-                Parser.imprimir(errorSintactico, "Errores Sintacticos");
-                Parser.imprimir(errorSemantico, "Errores Semanticos");
                 AnalizadorLexico.TS.limpiarTabla();
-                AnalizadorLexico.TS.imprimirTabla();
                 ArbolSintactico as = new ArbolSintactico(Parser.raiz);
                 as.print(Parser.out_arbol);
                 Estructura es = new Estructura();
                 if (errorLexico.isEmpty() && errorSintactico.isEmpty() && errorSemantico.isEmpty())
+                {
                 	es.generateCode(raiz);
+                	generarAssembler();
+               	}
                 else
+                {
                 	System.out.println("\nHay errores, no se genera codigo.");
+                }
+                imprimirResultados();
         } else {
                 System.out.println("No se especifico el archivo a compilar");
         }

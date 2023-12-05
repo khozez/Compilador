@@ -46,4 +46,11 @@ public class EstructuraAsignacion implements GeneradorEstructura {
         }
         return "";
     }
+
+    public static String obtenerUsoVariable(TablaSimbolos ts, Nodo subArbol)
+    {
+        int id = ts.obtenerSimbolo(subArbol.getNombre());
+        String uso = ts.obtenerAtributo(id, "uso");
+        return uso;
+    }
 }

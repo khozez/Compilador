@@ -79,6 +79,11 @@
         },
     }
 
+    CLASS xp {
+        cc,                 **Error: se quiere heredar de una clase que no está declarada
+        SHORT p,
+    }
+
     CLASS cc {                          **forward declaration para clase cc
         SHORT z,
         VOID p() {

@@ -128,19 +128,20 @@ public class TablaSimbolos {
         return null;
     }
 
-    public static void imprimirTabla() {
-        System.out.println("\nEtapas.TablaSimbolos:");
+    public static ArrayList<String> imprimirTabla() {
+        ArrayList<String> t = new ArrayList<>();
+        String x;
 
         for (Map.Entry<Integer, Map<String, String>> entrada: simbolos.entrySet()) {
             Map<String, String> atributos = entrada.getValue();
-            System.out.print(entrada.getKey() + ": ");
+            x = entrada.getKey() + ": ";
 
             for (Map.Entry<String, String> atributo: atributos.entrySet()) {
-                System.out.print("(" + atributo.getKey() + ": " + atributo.getValue() + ") ");
+                x = x + ("(" + atributo.getKey() + ": " + atributo.getValue() + ") ");
             }
-
-            System.out.println();
+            t.add(x);
         }
+        return t;
     }
 
     public static void limpiarTabla()

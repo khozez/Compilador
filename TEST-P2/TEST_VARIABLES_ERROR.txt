@@ -2,10 +2,19 @@
     SHORT x;y;z,              **ERROR: La variable y nunca es usada en el ambito "main"
     x = 4_s,
     y = 9_s,
+    FLOAT VARIABLE,           **WARNING: Identificador en mayusculas, se lo pasa a minusculas
+    SHORT z,                  **ERROR: La variable ya existe en el ambito declarado
 
     VOID func()
     {
         SHORT h,            **ERROR: La variable h nunca es usada en el ambito "func:main"
+        q = 4_s,            **ERROR: No existe la variable q en un ambito adecuado
+        RETURN,
+    }
+
+    VOID func()             **ERROR: Ya existe una funcion con ese nombre en el ambito
+    {
+        SHORT n,
         RETURN,
     }
 

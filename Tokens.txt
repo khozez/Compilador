@@ -1,34 +1,202 @@
  (123) --> {
  (266) --> Palabra reservada: SHORT
- (257) --> Identificador: x
+ (257) --> Identificador: cuotas
  (59) --> ;
- (257) --> Identificador: z
+ (257) --> Identificador: pagas
+ (59) --> ;
+ (257) --> Identificador: deuda
  (44) --> ,
- (257) --> Identificador: x
+ (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: y
+ (44) --> ,
+ (257) --> Identificador: y
  (61) --> =
- (258) --> Constante entera: 120_s
+ (258) --> Constante float: 1.0
  (44) --> ,
- (257) --> Identificador: z
+ (257) --> Identificador: cuotas
  (61) --> =
  (258) --> Constante entera: 0_s
  (44) --> ,
- (267) --> Palabra reservada: ULONG
- (257) --> Identificador: p
- (59) --> ;
- (257) --> Identificador: q
- (44) --> ,
- (257) --> Identificador: p
+ (257) --> Identificador: pagas
  (61) --> =
- (258) --> Constante entera long: 4294967295_ul
+ (258) --> Constante entera: 0_s
  (44) --> ,
- (257) --> Identificador: q
+ (257) --> Identificador: deuda
  (61) --> =
- (258) --> Constante entera long: 1_ul
+ (258) --> Constante entera: 0_s
  (44) --> ,
- (257) --> Identificador: q
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set_y
+ (40) --> (
+ (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: valor
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: y
  (61) --> =
- (257) --> Identificador: p
+ (257) --> Identificador: valor
+ (44) --> ,
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cuotas
+ (44) --> ,
+ (257) --> Identificador: cuotas
+ (61) --> =
+ (258) --> Constante entera: 4_s
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set_cuotas
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cant
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: cuotas
+ (61) --> =
+ (257) --> Identificador: cant
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: aumentar_cuota
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: cuotas
+ (61) --> =
+ (257) --> Identificador: cuotas
  (43) --> +
- (258) --> Constante entera long: 4294967295_ul
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: aumentar_cuotas
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cant
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: cuotas
+ (61) --> =
+ (257) --> Identificador: cuotas
+ (43) --> +
+ (257) --> Identificador: cant
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: pagar_cuotas
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cant
+ (41) --> )
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: deuda
+ (44) --> ,
+ (257) --> Identificador: deuda
+ (61) --> =
+ (257) --> Identificador: cuotas
+ (-1
+ (44) --> ,
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: cant
+ (62) --> >
+ (258) --> Constante entera: 3_s
+ (41) --> )
+ (123) --> {
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (257) --> Identificador: aumentar_cuotas
+ (40) --> (
+ (258) --> Constante entera: 2_s
+ (41) --> )
+ (44) --> ,
+ (125) --> }
+ (262) --> Palabra reservada: ELSE
+ (123) --> {
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (257) --> Identificador: aumentar_cuota
+ (40) --> (
+ (41) --> )
+ (44) --> ,
+ (125) --> }
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (257) --> Identificador: pagas
+ (61) --> =
+ (257) --> Identificador: pagas
+ (43) --> +
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: manejador
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: clientes
+ (59) --> ;
+ (257) --> Identificador: cuotas
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: paga_cuotas
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cant
+ (41) --> )
+ (123) --> {
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: cliente_menos
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: clientes
+ (61) --> =
+ (257) --> Identificador: clientes
+ (45) --> -
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: cant
+ (62) --> >
+ (258) --> Constante entera: 4_s
+ (41) --> )
+ (257) --> Identificador: cliente_menos
+ (40) --> (
+ (41) --> )
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (257) --> Identificador: set_y
+ (40) --> (
+ (257) --> Identificador: cuotas
+ (41) --> )
+ (44) --> ,
+ (257) --> Identificador: set_cuotas
+ (40) --> (
+ (258) --> Constante entera: 20_s
+ (41) --> )
+ (44) --> ,
+ (257) --> Identificador: pagar_cuotas
+ (40) --> (
+ (258) --> Constante entera: 2_s
+ (41) --> )
  (44) --> ,
  (125) --> }

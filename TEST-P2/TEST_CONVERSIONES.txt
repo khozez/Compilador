@@ -3,23 +3,9 @@
     ULONG y,
     FLOAT z,
 
-    VOID set_z(FLOAT num)
-    {
-        z = num,
-        RETURN,
-    }
-
-
-    x = 4_s,
-    set_z(x),       **LLAMADO A FUNCION CON CONVERSION STOF
-    y = 88_ul,
-    set_z(y),       **LLAMADO A FUNCION CON CONVERSION LTOF
-    z = 4.0,
-
-    z = x,          **STOF
-    z = y,          **LTOF
-    z = z + 4_s,    **STOF
-    z = z + 11_ul,  **LTOF
+    x = 12_s,
+    y = 11_ul,
+    z = 11.0,
 
     IF (x > 11.0)               **STOF
         PRINT %X MAYOR A 11.0%,
