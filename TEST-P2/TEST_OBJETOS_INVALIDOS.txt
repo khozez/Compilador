@@ -84,6 +84,12 @@
         SHORT p,
     }
 
+    CLASS xd {
+        SHORT n,
+        ca,
+        cn,                 **Error: una clase no puede heredar de mas de una clase
+    }
+
     CLASS cc {                          **forward declaration para clase cc
         SHORT z,
         VOID p() {

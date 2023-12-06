@@ -1,0 +1,9 @@
+Errores Semanticos:
+LINEA: 17 ERROR SEMANTICO! En la función: 'cliente_mas:paga_cuotas:manejador:main' el nivel maximo de anidamiento (1) es superado.
+LINEA: 36 ERROR SEMANTICO! No se puede sobreescribir atributos de clase.
+LINEA: 56 ERROR SEMANTICO! El nombre de la clase sillon ya fue utilizado en este ambito
+LINEA: 77 ERROR SEMANTICO! No existe el metodo al que se intenta invocar en la clase.
+LINEA: 83 ERROR SEMANTICO! La clase aun no fue declarada (forward declaration)
+LINEA: 90 ERROR SEMANTICO! Una clase no puede heredar de más de una clase
+
+

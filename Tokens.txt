@@ -1,23 +1,257 @@
  (123) --> {
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: manejador
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: clientes
+ (59) --> ;
+ (257) --> Identificador: cuotas
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: paga_cuotas
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cant
+ (41) --> )
+ (123) --> {
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: cliente_menos
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: clientes
+ (61) --> =
+ (257) --> Identificador: clientes
+ (45) --> -
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: cliente_mas
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: clientes
+ (61) --> =
+ (257) --> Identificador: clientes
+ (43) --> +
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: cant
+ (62) --> >
+ (258) --> Constante entera: 4_s
+ (41) --> )
+ (257) --> Identificador: cliente_menos
+ (40) --> (
+ (41) --> )
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: objeto
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: id
+ (59) --> ;
+ (257) --> Identificador: cant
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: print_tipo
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set_cant
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: x
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: cant
+ (61) --> =
+ (257) --> Identificador: x
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: mueble
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: id
+ (44) --> ,
+ (257) --> Identificador: objeto
+ (44) --> ,
  (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: porciento_uso
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set_uso
+ (40) --> (
+ (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: u
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: porciento_uso
+ (61) --> =
+ (257) --> Identificador: u
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: silla
+ (123) --> {
+ (257) --> Identificador: mueble
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: print_tipo
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: sillon
+ (123) --> {
+ (267) --> Palabra reservada: ULONG
+ (257) --> Identificador: ancho
+ (44) --> ,
+ (257) --> Identificador: silla
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: sillon
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: h
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: cn
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: l
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: n
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: l
+ (61) --> =
+ (258) --> Constante entera: 0_s
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: ca
+ (123) --> {
+ (257) --> Identificador: cn
+ (44) --> ,
+ (266) --> Palabra reservada: SHORT
  (257) --> Identificador: x
- (59) --> ;
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: m
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: x
+ (61) --> =
+ (258) --> Constante entera: 0_s
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: cc
+ (44) --> ,
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: cd
+ (123) --> {
+ (257) --> Identificador: cc
+ (257) --> Identificador: c1
+ (44) --> ,
+ (257) --> Identificador: ca
+ (257) --> Identificador: a1
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: j
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: c1
+ (46) --> .
+ (257) --> Identificador: p
+ (40) --> (
+ (41) --> )
+ (44) --> ,
+ (257) --> Identificador: a1
+ (46) --> .
+ (257) --> Identificador: cn
+ (46) --> .
+ (257) --> Identificador: n
+ (40) --> (
+ (41) --> )
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: xp
+ (123) --> {
+ (257) --> Identificador: cc
+ (44) --> ,
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: p
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: xd
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: n
+ (44) --> ,
+ (257) --> Identificador: ca
+ (44) --> ,
+ (257) --> Identificador: cn
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: cc
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
  (257) --> Identificador: z
- (59) --> ;
- (257) --> Identificador: y
  (44) --> ,
- (257) --> Identificador: x
- (61) --> =
- (258) --> Constante float: 3.4E+38
- (44) --> ,
- (257) --> Identificador: y
- (61) --> =
- (258) --> Constante float: 3.4E+38
- (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: p
+ (40) --> (
+ (41) --> )
+ (123) --> {
  (257) --> Identificador: z
  (61) --> =
- (257) --> Identificador: x
- (42) --> *
- (257) --> Identificador: y
+ (258) --> Constante entera: 0_s
  (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
  (125) --> }

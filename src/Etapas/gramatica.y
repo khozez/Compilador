@@ -53,6 +53,7 @@ encabezadoClase: CLASS ID {var t = AnalizadorLexico.TS;
                            lista_clases.add($2.sval + Parser.ambito.replace(':','_'));
                            claseActual = $2.sval;
                            ambitoClase = Parser.ambito;
+                           cantHerencias = 0;
                            agregarAmbito(claseActual);
                           }
 ;
@@ -77,7 +78,6 @@ cuerpoClase: cuerpoClase seccionAtributos {$$ = $1;}
 	     | cuerpoClase declaracionMetodo ',' { $$ = new ParserVal( new Nodo("cuerpoClase", (Nodo) $1.obj, (Nodo) $2.obj));}
 	     | declaracionMetodo ','  { $$ = $1; }
 	     | seccionAtributos
-	     | herenciaNombre
 ;
 
 
@@ -188,6 +188,7 @@ seccionAtributos: tipo listaAtributos
                                                      });
                                                  lista_variables.clear();
                           		}
+                 | herenciaNombre
 ;
 
 listaAtributos: ID ';' listaAtributos { lista_variables.add($1.sval + Parser.ambito); }
@@ -198,23 +199,31 @@ listaAtributos: ID ';' listaAtributos { lista_variables.add($1.sval + Parser.amb
 herenciaNombre: ID ',' { if (lista_clases_fd.contains($1.sval+":main"))
 				yyerror("La clase aun no fue declarada (forward declaration)");
 			 else{
-				 var t = AnalizadorLexico.TS;
-				 int clave = t.obtenerSimbolo($1.sval+Parser.ambito);
-				 if (clave != t.NO_ENCONTRADO){
-					if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
-						t.agregarAtributo(clave, "uso", "herencia");
-					} else {
-						yyerror("La variable declarada ya existe en ambito global");
-					}
-				 } else {
-					 t.agregarSimbolo($1.sval+Parser.ambito);
-					 t.agregarAtributo(t.obtenerID(), "uso", "herencia");
-				 }
-				 herencia = true;
+			 	 cantHerencias = cantHerencias+1;
+			 	 if (cantHerencias > 1)
+			 	 {
+			 	 	yyerror("Una clase no puede heredar de más de una clase");
+			 	 }
+			 	 else
+			 	 {
+					 var t = AnalizadorLexico.TS;
+					 int clave = t.obtenerSimbolo($1.sval+Parser.ambito);
+					 if (clave != t.NO_ENCONTRADO){
+						if (t.obtenerAtributo(clave, "tipo") == t.NO_ENCONTRADO_MESSAGE) {
+							t.agregarAtributo(clave, "uso", "herencia");
+						} else {
+							yyerror("La variable declarada ya existe en ambito global");
+						}
+					 } else {
+						 t.agregarSimbolo($1.sval+Parser.ambito);
+						 t.agregarAtributo(t.obtenerID(), "uso", "herencia");
+					 }
+					 herencia = true;
 
-				 if (!aplicarHerencia($1.sval, claseActual))
-					yyerror("No se puede sobreescribir atributos de clase.");
-				 chequearNivelesHerencia(Parser.ambito.substring(1));
+					 if (!aplicarHerencia($1.sval, claseActual))
+						yyerror("No se puede sobreescribir atributos de clase.");
+					 chequearNivelesHerencia(Parser.ambito.substring(1));
+				}
 			 }
  		       }
 ;
@@ -644,6 +653,7 @@ public static final String ERROR_LEXICO = "Error_lexico";
 public static final String ERROR_SINTACTICO = "Error_sintactico";
 public static final String WARNING = "Warning";
 private static int funcLocales = 0;
+private static int cantHerencias = 0;
 public static String claseActual = "";
 private static Boolean herencia = false;
 private static Boolean instanciaClase = false;
