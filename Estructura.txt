@@ -1,31 +1,4 @@
+LINEA 3: Asignación
 LINEA 4: Asignación
-LINEA 5: Asignación
 LINEA 6: Asignación
-LINEA 7: Asignación
-LINEA 11: Asignación
-LINEA 13: Asignación
-LINEA 15: Fin de declaración de función VOID.
-LINEA 19: Asignación
-LINEA 21: Fin de declaración de función VOID.
-LINEA 25: Asignación
-LINEA 27: Fin de declaración de función VOID.
-LINEA 31: Asignación
-LINEA 33: Fin de declaración de función VOID.
-LINEA 38: Asignación
-LINEA 41: Fin de cadena.
-LINEA 42: Invocación a funcion VOID.
-LINEA 46: Fin de cadena.
-LINEA 47: Invocación a funcion VOID.
-LINEA 48: Fin de sentencia IF
-LINEA 49: Asignación
-LINEA 51: Fin de declaración de función VOID.
-LINEA 60: Asignación
-LINEA 62: Fin de declaración de función VOID local a metodo.
-LINEA 65: Invocación a funcion VOID.
-LINEA 66: Fin de sentencia IF
-LINEA 67: Fin de declaración de metodo.
-LINEA 68: Fin de declaración de clase.
-LINEA 70: Invocación a funcion VOID.
-LINEA 71: Invocación a funcion VOID.
-LINEA 73: Invocación a funcion VOID.
-LINEA 74: Fin de programa
+LINEA 8: Fin de programa

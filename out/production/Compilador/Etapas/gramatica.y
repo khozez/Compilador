@@ -77,6 +77,7 @@ cuerpoClase: cuerpoClase seccionAtributos {$$ = $1;}
 	     | cuerpoClase declaracionMetodo ',' { $$ = new ParserVal( new Nodo("cuerpoClase", (Nodo) $1.obj, (Nodo) $2.obj));}
 	     | declaracionMetodo ','  { $$ = $1; }
 	     | seccionAtributos
+	     | herenciaNombre
 ;
 
 
@@ -187,7 +188,6 @@ seccionAtributos: tipo listaAtributos
                                                      });
                                                  lista_variables.clear();
                           		}
-                 | herenciaNombre
 ;
 
 listaAtributos: ID ';' listaAtributos { lista_variables.add($1.sval + Parser.ambito); }
