@@ -1,7 +1,11 @@
 {
     SHORT x;z;y,
     x = 4_s,
-    y = 0_s,
-    z = x/y,             **ERROR OVERFLOW EN DIV POR CERO EN ENTEROS
+    y = 4_s,
+    WHILE (x !! 0_s) DO
+    {
+        x = x - 1_s,
+    },
 
+    z = y/x,                    **ERROR: Div por cero
 }

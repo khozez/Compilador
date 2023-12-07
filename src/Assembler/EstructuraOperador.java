@@ -44,7 +44,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             case "SHORT":
                 switch (operando) {
                     case "DIV":
-                        codigo = String.format("MOV AH, 0\nMOV AL, %s\nMOV BL, %s\nCMP BL, 0\nJE ErrorDiv0\nDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AH, 0\nMOV AL, %s\nMOV BL, %s\nCBW\nCMP BL, 0\nJE ErrorDiv0\nIDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
@@ -56,7 +56,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "MUL":
-                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nMUL AL, BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AL, %s\nMOV BL, %s\nIMUL BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                 }
@@ -76,7 +76,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "MUL":
-                        codigo = String.format("MOV EAX, %s\nMOV EBX, %s\nMUL EAX, EBX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("MOV AX, %s\nMOV BX, %s\nMUL BX\nMOV @aux%d, AX\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                 }
@@ -84,7 +84,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             case "FLOAT":
                 switch (operando) {
                     case "DIV":
-                        codigo = String.format("FLD %s\nFLD %s\nFLDZ\nFCOM\nFSTSW aux_mem_2bytes\nSAHF\nJE ErrorDiv0\nFDIV\nFSTP @aux%d\n", subArbol1, subArbol2, aux);
+                        codigo = String.format("FLD %s\nFLD %s\nFTST\nFSTSW aux_mem_2bytes\nMOV AX, aux_mem_2bytes\nSAHF\nJE ErrorDiv0\nFDIV\nFSTP @aux%d\n", subArbol1, subArbol2, aux);
                         agregarAuxiliar(tipo, nodo);
                         break;
                     case "ADD":
@@ -123,6 +123,7 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             else {
                 String f = subArbol.getNombre().replaceAll("E", "e");
                 f = f.replace("+", "");
+                f = f.replace(".", "");
                 return "__"+f;
             }
         }

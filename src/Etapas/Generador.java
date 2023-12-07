@@ -15,7 +15,6 @@ public abstract class Generador {
     public static final OutputManager outFunciones = new OutputManager("./Assembler.asm");
 
     public static final Stack<StringBuilder> pilaFuncion = new Stack<>(); //Guarda el ambito de la funciones
-    public static final Stack<StringBuilder> pilaClases = new Stack<>();
 
 
     public static String GenerarCodigoArbol(Nodo padre){
@@ -98,7 +97,7 @@ public abstract class Generador {
         mapa.put("if", noAction);
         mapa.put("Print", nodo -> {
             String variable_string = nodo.getIzq().getNombre();
-            String aux = "invoke MessageBox, NULL, addr "+ variable_string +", addr "+ variable_string +", MB_OK\ninvoke ExitProcess, 0\n";
+            String aux = "invoke MessageBox, NULL, addr "+ variable_string +", addr "+ variable_string +", MB_OK\n";
             return  aux + noAction.generar(nodo);
         });
         mapa.put("then", new EstructuraIf());

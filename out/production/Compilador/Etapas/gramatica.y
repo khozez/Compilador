@@ -59,7 +59,6 @@ encabezadoClase: CLASS ID {var t = AnalizadorLexico.TS;
 ;
 
 encabezadoForward: CLASS ID {lista_clases_fd.add($2.sval+Parser.ambito);
-                            salirAmbito();
                             claseActual = "";
                             ambitoClase = "";
                             out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Forward declaración de clase.");}
@@ -137,7 +136,7 @@ referenciaMetodo: ID '(' ')' {
                                                 	yyerror("El metodo al que desea llamar no acepta parametros");
                                                 else
                                                 {
-                                                        if (!validarParametro(x, clave))
+                                                        if (!validarParametro(x))
                                                         	yyerror("Incompatibilidad de tipos en llamado a metodo");
                                                 }
                                         }
@@ -526,7 +525,7 @@ invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(Analizado
 					if (!chequearLlamadoFuncion($1.sval))
 						yyerror("La funcion a la que se desea llamar no acepta parametros.");
 					else
-						if (!validarParametro(x, clave))
+						if (!validarParametro(x))
                                                 	yyerror("Incompatibilidad de tipos en llamado a función");
 					}
 		  | ID '(' ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a funcion VOID.");
@@ -940,7 +939,7 @@ private Boolean chequearMetodoClase(String claseBase, String metodo, String refe
 	int entrada = t.obtenerSimbolo(metodo+":"+claseBase+":main");
 	if (entrada == TablaSimbolos.NO_ENCONTRADO)
 	{
-		int clave = t.obtenerSimbolo(claseBase+":"+claseActual);
+		int clave = t.obtenerSimbolo(claseBase+":"+claseActual+":main");
 		entrada = t.obtenerSimbolo(metodo+":"+t.obtenerAtributo(clave, "tipo")+":main");
 		if (entrada == TablaSimbolos.NO_ENCONTRADO)
 			return false;
@@ -966,7 +965,12 @@ private Boolean tieneParametrosMetodo(String claseBase, String metodo)
 	var t = AnalizadorLexico.TS;
         int entrada = t.obtenerSimbolo(metodo+":"+claseBase+":main");
         if (t.obtenerAtributo(entrada, "parametro").equals(t.NO_ENCONTRADO_MESSAGE))
-        	return false;
+        {
+        	int clave = t.obtenerSimbolo(claseBase+":"+claseActual+":main");
+                entrada = t.obtenerSimbolo(metodo+":"+t.obtenerAtributo(clave, "tipo")+":main");
+                if (t.obtenerAtributo(entrada, "parametro").equals(t.NO_ENCONTRADO_MESSAGE))
+        		return false;
+        }
         return true;
 }
 
@@ -1078,10 +1082,12 @@ private static Boolean chequearReferencia(String atributo, String claseBase, Str
 	return false;
 }
 
-private static Boolean validarParametro (Nodo funcion, int clave_funcion)
+private static Boolean validarParametro (Nodo funcion)
 {
 	var t = AnalizadorLexico.TS;
 	Nodo parametro = funcion.getDer();
+	Nodo fun = funcion.getIzq();
+	int clave_funcion = t.obtenerSimbolo(fun.getNombre());
 	int clave_atributo = t.obtenerSimbolo(parametro.getNombre());
 	String tipo = t.obtenerAtributo(clave_atributo, "tipo");
 	String uso = t.obtenerAtributo(clave_atributo, "uso");
