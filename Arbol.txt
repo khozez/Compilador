@@ -2,181 +2,26 @@ program
 '-->sentencias null
    |-->sentencias null
    |  |-->sentencias null
-   |  |  |-->sentencias null
-   |  |  |  |-->sentencias null
-   |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |  |  |-->Clase null
-   |  |  |  |  |  |  |  |  |  |  |  |  |  |-->EncabezadoClase null
-   |  |  |  |  |  |  |  |  |  |  |  |  |  |  '-->a:main null
-   |  |  |  |  |  |  |  |  |  |  |  |  |  '-->cuerpoClase null
-   |  |  |  |  |  |  |  |  |  |  |  |  |     '-->MetodoClase void
-   |  |  |  |  |  |  |  |  |  |  |  |  |        |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |  |  |  |        |  |-->set:a:main null
-   |  |  |  |  |  |  |  |  |  |  |  |  |        |  '-->y:set:a:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |  |        '-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |  |  |           |-->Asignacion SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |  |           |  |-->x:a:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |  |           |  '-->+ SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |  |           |     |-->y:set:a:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |  |           |     '-->1_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |  |           '-->Print STRING
-   |  |  |  |  |  |  |  |  |  |  |  |  |              '-->Cadena0 STRING
-   |  |  |  |  |  |  |  |  |  |  |  |  '-->Clase null
-   |  |  |  |  |  |  |  |  |  |  |  |     |-->EncabezadoClase null
-   |  |  |  |  |  |  |  |  |  |  |  |     |  '-->b:main null
-   |  |  |  |  |  |  |  |  |  |  |  |     '-->cuerpoClase null
-   |  |  |  |  |  |  |  |  |  |  |  |        |-->cuerpoClase null
-   |  |  |  |  |  |  |  |  |  |  |  |        |  '-->MetodoClase void
-   |  |  |  |  |  |  |  |  |  |  |  |        |     |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |  |  |        |     |  |-->set:b:main null
-   |  |  |  |  |  |  |  |  |  |  |  |        |     |  '-->y:set:b:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |        |     '-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |  |        |        |-->Asignacion SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |        |        |  |-->x:b:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |        |        |  '-->+ SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |        |        |     |-->y:set:b:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |        |        |     '-->3_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |        |        '-->Print STRING
-   |  |  |  |  |  |  |  |  |  |  |  |        |           '-->Cadena1 STRING
-   |  |  |  |  |  |  |  |  |  |  |  |        '-->MetodoClase void
-   |  |  |  |  |  |  |  |  |  |  |  |           |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |  |  |           |  |-->chequear:b:main null
-   |  |  |  |  |  |  |  |  |  |  |  |           |  '-->y:chequear:b:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |           '-->if null
-   |  |  |  |  |  |  |  |  |  |  |  |              |-->== SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |              |  |-->y:chequear:b:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |              |  '-->1_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |              '-->cuerpoIf null
-   |  |  |  |  |  |  |  |  |  |  |  |                 |-->then null
-   |  |  |  |  |  |  |  |  |  |  |  |                 |  '-->Print STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                 |     '-->Cadena2 STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                 '-->else null
-   |  |  |  |  |  |  |  |  |  |  |  |                    '-->if null
-   |  |  |  |  |  |  |  |  |  |  |  |                       |-->== SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                       |  |-->y:chequear:b:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                       |  '-->2_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                       '-->cuerpoIf null
-   |  |  |  |  |  |  |  |  |  |  |  |                          |-->then null
-   |  |  |  |  |  |  |  |  |  |  |  |                          |  '-->Print STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                          |     '-->Cadena3 STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                          '-->else null
-   |  |  |  |  |  |  |  |  |  |  |  |                             '-->if null
-   |  |  |  |  |  |  |  |  |  |  |  |                                |-->== SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                                |  |-->y:chequear:b:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                                |  '-->3_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                                '-->cuerpoIf null
-   |  |  |  |  |  |  |  |  |  |  |  |                                   |-->then null
-   |  |  |  |  |  |  |  |  |  |  |  |                                   |  '-->Print STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                                   |     '-->Cadena4 STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                                   '-->else null
-   |  |  |  |  |  |  |  |  |  |  |  |                                      '-->if null
-   |  |  |  |  |  |  |  |  |  |  |  |                                         |-->== SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                                         |  |-->y:chequear:b:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                                         |  '-->4_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |  |                                         '-->cuerpoIf null
-   |  |  |  |  |  |  |  |  |  |  |  |                                            |-->then null
-   |  |  |  |  |  |  |  |  |  |  |  |                                            |  '-->Print STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                                            |     '-->Cadena5 STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                                            '-->else null
-   |  |  |  |  |  |  |  |  |  |  |  |                                               '-->Print STRING
-   |  |  |  |  |  |  |  |  |  |  |  |                                                  '-->Cadena6 STRING
-   |  |  |  |  |  |  |  |  |  |  |  '-->Clase null
-   |  |  |  |  |  |  |  |  |  |  |     |-->EncabezadoClase null
-   |  |  |  |  |  |  |  |  |  |  |     |  '-->c:main null
-   |  |  |  |  |  |  |  |  |  |  |     '-->cuerpoClase null
-   |  |  |  |  |  |  |  |  |  |  |        '-->MetodoClase void
-   |  |  |  |  |  |  |  |  |  |  |           |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |  |           |  '-->suma:c:main null
-   |  |  |  |  |  |  |  |  |  |  |           '-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |              |-->Funcion void
-   |  |  |  |  |  |  |  |  |  |  |              |  |-->Encabezado void
-   |  |  |  |  |  |  |  |  |  |  |              |  |  '-->aumenta:suma:c:main null
-   |  |  |  |  |  |  |  |  |  |  |              |  '-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |              |     |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |              |     |  |-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |              |     |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |  |  |  |  |  |              |     |  |     |-->i:c:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |              |     |  |     '-->+ SHORT
-   |  |  |  |  |  |  |  |  |  |  |              |     |  |        |-->i:c:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |              |     |  |        '-->1_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |              |     |  '-->LlamadoMetodo void
-   |  |  |  |  |  |  |  |  |  |  |              |     |     |-->chequear:b:main null
-   |  |  |  |  |  |  |  |  |  |  |              |     |     '-->i:c:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |              |     '-->RETURN null
-   |  |  |  |  |  |  |  |  |  |  |              '-->while null
-   |  |  |  |  |  |  |  |  |  |  |                 |-->!! SHORT
-   |  |  |  |  |  |  |  |  |  |  |                 |  |-->i:c:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |                 |  '-->5_s SHORT
-   |  |  |  |  |  |  |  |  |  |  |                 '-->sentencias null
-   |  |  |  |  |  |  |  |  |  |  |                    |-->LlamadoMetodo void
-   |  |  |  |  |  |  |  |  |  |  |                    |  |-->set:b:main null
-   |  |  |  |  |  |  |  |  |  |  |                    |  '-->i:c:main SHORT
-   |  |  |  |  |  |  |  |  |  |  |                    '-->LlamadaFuncion void
-   |  |  |  |  |  |  |  |  |  |  |                       '-->aumenta:suma:c:main null
-   |  |  |  |  |  |  |  |  |  |  '-->LlamadoMetodo null
-   |  |  |  |  |  |  |  |  |  |     '-->suma:c:main null
-   |  |  |  |  |  |  |  |  |  '-->Print STRING
-   |  |  |  |  |  |  |  |  |     '-->Cadena7 STRING
-   |  |  |  |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |  |  |     |-->x:main SHORT
-   |  |  |  |  |  |  |  |     '-->15_s SHORT
-   |  |  |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |  |     |-->y:main SHORT
-   |  |  |  |  |  |  |     '-->-15_s SHORT
-   |  |  |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |  |  |     |-->z:main SHORT
-   |  |  |  |  |  |     '-->+ SHORT
-   |  |  |  |  |  |        |-->x:main SHORT
-   |  |  |  |  |  |        '-->y:main SHORT
-   |  |  |  |  |  '-->if null
-   |  |  |  |  |     |-->== SHORT
-   |  |  |  |  |     |  |-->z:main SHORT
-   |  |  |  |  |     |  '-->0_s SHORT
-   |  |  |  |  |     '-->cuerpoIf null
-   |  |  |  |  |        |-->then null
-   |  |  |  |  |        |  '-->Print STRING
-   |  |  |  |  |        |     '-->Cadena8 STRING
-   |  |  |  |  |        '-->else null
-   |  |  |  |  |           '-->Print STRING
-   |  |  |  |  |              '-->Cadena9 STRING
-   |  |  |  |  '-->Asignacion SHORT
-   |  |  |  |     |-->z:main SHORT
-   |  |  |  |     '-->+ SHORT
-   |  |  |  |        |-->z:main SHORT
-   |  |  |  |        '-->5_s SHORT
-   |  |  |  '-->Asignacion FLOAT
-   |  |  |     |-->f:main FLOAT
-   |  |  |     '-->STOF null
-   |  |  |        '-->* SHORT
-   |  |  |           |-->z:main SHORT
-   |  |  |           '-->x:main SHORT
-   |  |  '-->if null
-   |  |     |-->== FLOAT
-   |  |     |  |-->f:main FLOAT
-   |  |     |  '-->75.0 FLOAT
-   |  |     '-->cuerpoIf null
-   |  |        |-->then null
-   |  |        |  '-->Print STRING
-   |  |        |     '-->Cadena10 STRING
-   |  |        '-->else null
-   |  '-->Asignacion FLOAT
-   |     |-->f:main FLOAT
-   |     '-->/ FLOAT
-   |        |-->f:main FLOAT
-   |        '-->2.0 FLOAT
+   |  |  '-->Asignacion SHORT
+   |  |     |-->x:main SHORT
+   |  |     '-->4_s SHORT
+   |  '-->sentencias null
+   |     |-->Asignacion SHORT
+   |     |  |-->z:main SHORT
+   |     |  '-->+ SHORT
+   |     |     |-->x:main SHORT
+   |     |     '-->1_s SHORT
+   |     '-->Asignacion SHORT
+   |        |-->x:main SHORT
+   |        '-->- SHORT
+   |           |-->x:main SHORT
+   |           '-->1_s SHORT
    '-->if null
-      |-->== FLOAT
-      |  |-->f:main FLOAT
-      |  '-->37.5 FLOAT
+      |-->== SHORT
+      |  |-->x:main SHORT
+      |  '-->3_s SHORT
       '-->cuerpoIf null
          |-->then null
          |  '-->Print STRING
-         |     '-->Cadena11 STRING
+         |     '-->Cadena0 STRING
          '-->else null

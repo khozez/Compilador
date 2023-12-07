@@ -1,43 +1,5 @@
-LINEA 6: Asignación
-LINEA 7: Fin de cadena.
-LINEA 8: Fin de declaración de metodo.
-LINEA 9: Fin de declaración de clase.
-LINEA 11: Forward declaración de clase.
-LINEA 19: Asignación
-LINEA 20: Fin de cadena.
-LINEA 21: Fin de declaración de metodo.
-LINEA 26: Fin de cadena.
-LINEA 29: Fin de cadena.
-LINEA 32: Fin de cadena.
-LINEA 35: Fin de cadena.
-LINEA 37: Fin de cadena.
-LINEA 38: Fin de sentencia IF
-LINEA 39: Fin de sentencia IF
-LINEA 40: Fin de sentencia IF
-LINEA 41: Fin de sentencia IF
-LINEA 42: Fin de declaración de metodo.
-LINEA 43: Fin de declaración de clase.
-LINEA 53: Asignación
-LINEA 54: Llamado a metodo de clase
-LINEA 56: Fin de declaración de función VOID local a metodo.
-LINEA 60: Llamado a metodo de clase
-LINEA 61: Invocación a funcion VOID.
-LINEA 62: Fin de sentencia WHILE
-LINEA 63: Fin de declaración de metodo.
-LINEA 64: Fin de declaración de clase.
-LINEA 67: Llamado a metodo de clase
-LINEA 69: Fin de cadena.
-LINEA 74: Asignación
-LINEA 75: Asignación
-LINEA 76: Asignación
-LINEA 79: Fin de cadena.
-LINEA 81: Fin de cadena.
-LINEA 82: Fin de sentencia IF
-LINEA 84: Asignación
-LINEA 85: Asignación
-LINEA 88: Fin de cadena.
-LINEA 89: Fin de sentencia IF
-LINEA 91: Asignación
-LINEA 94: Fin de cadena.
-LINEA 95: Fin de sentencia IF
-LINEA 96: Fin de programa
+LINEA 3: Asignación
+LINEA 5: Asignación
+LINEA 9: Fin de cadena.
+LINEA 10: Fin de sentencia IF
+LINEA 11: Fin de programa
