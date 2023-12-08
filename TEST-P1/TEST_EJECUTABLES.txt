@@ -8,18 +8,20 @@ VOID f1(SHORT x)
 	}
 
 **OPERACIONES ENTRE CONSTANTES
-ULONG suma = 1_ul + 7_ul,
-SHORT resta = 6_s - 4_s,
-SHORT mult = 2_s * 3_s,
-SHORT div = 10_s / 5_s,
+SHORT resta;mult;div;mm1;mm2;x4,
+ULONG suma;_lim,
+suma = 1_ul + 7_ul,
+resta = 6_s - 4_s,
+mult = 2_s * 3_s,
+div = 10_s / 5_s,
 
 f1(resta),
 f1(mult + div),
 
-SHORT mm1 = mult---resta--,
-SHORT mm2 = mult-- * div,                **Tema 10: usar el operador -- en una expresion y asignacion
+mm1 = mult---resta--,
+mm2 = mult-- * div,                **Tema 10: usar el operador -- en una expresion y asignacion
 
-ULONG _lim = 2_ul,
+_lim = 2_ul,
 
 IF (suma-- > resta)                      **Tema 10, usar el operador -- en una comparacion
 	{
@@ -30,7 +32,7 @@ END_IF,
 
 
 f1(resta = 4_s),                         **ERROR: No se puede invocar metodo con una asignación
-f1(SHORT x1 = 4_s),                      **ERROR: No se puede invocar metodo con una declaración
+f1(x1 = 4_s),                      **ERROR: No se puede invocar metodo con una declaración
 
 IF (suma-- > 4_ul)                       **ERROR: Falta END_IF
 	{
@@ -38,6 +40,6 @@ IF (suma-- > 4_ul)                       **ERROR: Falta END_IF
 	    resta = 10_s,
 	},
 
-SHORT x4 == 5_s,                         **ERROR: Una asignación no se debe hacer con ==
+x4 == 5_s,                         **ERROR: Una asignación no se debe hacer con ==
 
 }

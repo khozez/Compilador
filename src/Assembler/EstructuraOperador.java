@@ -121,10 +121,15 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
             if (tipo.equals("ULONG"))
                 return subArbol.getNombre().replaceAll("_ul","");
             else {
-                String f = subArbol.getNombre().replaceAll("E", "e");
+                String f = subArbol.getNombre().replace(".", "");
                 f = f.replace("+", "");
-                f = f.replace(".", "");
-                return "__"+f;
+                if (f.charAt(0) == '-') {
+                    f = f.replaceAll("-", "");
+                    return "__n" + f;
+                }else {
+                    f = f.replaceAll("-", "");
+                    return "__" + f;
+                }
             }
         }
         return "";

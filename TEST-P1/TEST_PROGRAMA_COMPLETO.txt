@@ -10,7 +10,8 @@
 
     VOID func1 (SHORT x)
         {
-            SHORT y = 11_s,
+            SHORT y,
+            y = 11_s,
             x = y,
             RETURN,
         }
@@ -43,7 +44,8 @@
         VOID f1()
             {
                 cc c1,
-                ULONG _i7 = 119_ul,
+                ULONG _i7
+                _i7 = 119_ul,
                 c1.p(),
             },
     }
@@ -53,7 +55,8 @@
         FLOAT b,
         VOID f2()
             {
-                SHORT _ss = -5_s,
+                SHORT _ss,
+                _ss = -5_s,
             },
         ca,
     }
@@ -61,7 +64,8 @@
     CLASS cc{
         SHORT x1,
         VOID p(){
-            SHORT x2 = 2_s,
+            SHORT x2,
+            x2 = 2_s,
         },
     }
 

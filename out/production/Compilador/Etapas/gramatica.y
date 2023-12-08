@@ -33,6 +33,7 @@ cuerpoPrograma: sentencia {$$ = $1;}
 
 sentencia: sentenciaDeclarativa {$$ = new ParserVal( $1.obj);}
 		| sentenciaEjecutable ','  {$$ = new ParserVal( $1.obj);}
+		| sentenciaEjecutable {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la coma ',' al final de la sentencia.");}
 ;
 
 encabezadoClase: CLASS ID {var t = AnalizadorLexico.TS;
@@ -238,6 +239,7 @@ sentenciaEjecutable: asignacion {$$ = new ParserVal( $1.obj);}
 sentenciaDeclarativa: declaracionFuncion {$$ = new ParserVal($1.obj);}
 			| declaracion ',' {$$ = new ParserVal(null);}
 			| declaracionClase {$$ = new ParserVal($1.obj);}
+			| declaracion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Falta la coma ',' al final de la declaracion.");}
 ;
 
 sentenciaDeclarativaMetodo: declaracionFuncionLocal
@@ -511,28 +513,47 @@ listaSentenciasFuncion: listaSentenciasFuncion sentenciaDeclarativaMetodo {$$ = 
 ;
 
 invocacionMetodo: ID '(' expresion ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a funcion VOID.");
-					int clave = AnalizadorLexico.TS.obtenerSimbolo(getVariableConAmbitoTS($1.sval));
-					var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), (Nodo) $3.obj, "void");
-					if (generarMenosMenos())
+					String fun = getTipoVariableConAmbitoTS($1.sval);
+                                        Nodo x;
+                                        if (fun != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
                                         {
-						$$ = new ParserVal( new Nodo("sentencias", x, menosMenos));
-						menosMenos = null;
+						x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), (Nodo) $3.obj, "void");
+						if (generarMenosMenos())
+                                                {
+                                                	$$ = new ParserVal( new Nodo("sentencias", x, menosMenos));
+                                                	menosMenos = null;
+                                                }
+                                                else
+                                                {
+                                                        $$ = new ParserVal(x);
+                                                }
+
+                                                if (!chequearLlamadoFuncion($1.sval))
+                                                	yyerror("La funcion a la que se desea llamar no acepta parametros.");
+                                                else
+                                                	if (!validarParametro(x))
+                                                        	yyerror("Incompatibilidad de tipos en llamado a función");
                                         }
-                                        else
-                                        {
-                                        	$$ = new ParserVal(x);
+                                        else{
+                                                x = new Nodo("LlamadaFuncion", new Nodo("Funcion no encontrada"), null, "void");
+                                                yyerror("No se encontro la función en un ambito adecuado");
                                         }
-					if (!chequearLlamadoFuncion($1.sval))
-						yyerror("La funcion a la que se desea llamar no acepta parametros.");
-					else
-						if (!validarParametro(x))
-                                                	yyerror("Incompatibilidad de tipos en llamado a función");
 					}
 		  | ID '(' ')' {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Invocación a funcion VOID.");
-		  		var x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
+		  		String fun = getTipoVariableConAmbitoTS($1.sval);
+		  		Nodo x;
+                                if (fun != TablaSimbolos.NO_ENCONTRADO_MESSAGE)
+                                {
+                                	x = new Nodo("LlamadaFuncion", new Nodo(getVariableConAmbitoTS($1.sval)), null, "void");
+                                	if (chequearLlamadoFuncion($1.sval))
+                                        	yyerror("La funcion a la que se desea llamar tiene parametro.");
+                                }
+                                else{
+                                	x = new Nodo("LlamadaFuncion", new Nodo("Funcion no encontrada"), null, "void");
+                                        yyerror("No se encontro la función en un ambito adecuado");
+                                }
+
 		  		$$ = new ParserVal(x);
-		  		if (chequearLlamadoFuncion($1.sval))
-		  			yyerror("La funcion a la que se desea llamar tiene parametro.");
 		  		}
 		  | ID '(' asignacion ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una asignación como parametro.");}
 		  | ID '(' tipo asignacion ')' {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! No se puede invocar una funcion con una declaración como parametro.");}
@@ -1013,7 +1034,7 @@ public static String comprobarRango(String valor){
             //LA CONSTANTE FUE TRUNCADA, RECUPERAMOS VALOR ORIGINAL
             int numero = -Integer.parseInt(original);
             if (numero < AnalizadorLexico.MIN_SHORT_INT){
-                anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante entera negativa -"+original+"_s por ser inferior al valor minimo.");
+                anotar(WARNING, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante entera negativa -"+original+"_s por ser inferior al valor minimo.");
                 numero = AnalizadorLexico.MIN_SHORT_INT;
             }
             valor_final = Integer.toString(numero)+"_s";
@@ -1039,7 +1060,7 @@ public static String comprobarRango(String valor){
 	}
 
     if (tipo.equals("ULONG")){
-        anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
+        anotar(WARNING, "LINEA "+(AnalizadorLexico.getCantLineas())+": WARNING! Se truncó la constante long -"+valor+" ya que no se aceptan valores negativos.");
         valor_final = "0_ul";
         agregado = TablaSimbolos.agregarSimbolo(valor_final);
         TablaSimbolos.agregarAtributo(TablaSimbolos.obtenerID(), "uso", "constante");

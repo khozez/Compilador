@@ -45,8 +45,13 @@ public class EstructuraComparador extends Generador implements GeneradorEstructu
             else {
                 String f = subArbol.getNombre().replace(".", "");
                 f = f.replace("+", "");
-                f = f.replaceAll("-", "");
-                return "__"+f;
+                if (f.charAt(0) == '-') {
+                    f = f.replaceAll("-", "");
+                    return "__n" + f;
+                }else {
+                    f = f.replaceAll("-", "");
+                    return "__" + f;
+                }
             }
         }
         return "";

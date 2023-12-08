@@ -1,26 +1,29 @@
 {
 **Tipos de datos dentro del rango
-SHORT num1 = -128_s,				            **CONSTANTE SHORT EN EL LIMITE INFERIOR
-SHORT num2 = 127_s,				                **CONSTANTE SHORT EN EL LIMITE SUPERIOR
+SHORT num1;num2;num3;num4,
+num1 = -128_s,				                    **CONSTANTE SHORT EN EL LIMITE INFERIOR
+num2 = 127_s,				                    **CONSTANTE SHORT EN EL LIMITE SUPERIOR
 
-ULONG num5 = 0_ul,				                **CONSTANTE ULONG EN EL LIMITE INFERIOR
-ULONG num6 = 4294967295_ul,			            **CONSTANTE ULONG EN EL LMITE SUPERIOR
+ULONG num5;num6;num7;num8,
+num5 = 0_ul,				                    **CONSTANTE ULONG EN EL LIMITE INFERIOR
+num6 = 4294967295_ul,			                **CONSTANTE ULONG EN EL LMITE SUPERIOR
 
-FLOAT _f1spe = .4,                              **FLOAT SIN PARTE ENTERA
-FLOAT _f2spd = 1.,                              **FLOAT SIN PARTE DECIMAL
-FLOAT _f3cpe = 2.79,				            **FLOAT CON PARTE ENTERA Y DECIMAL
-FLOAT _f4cexp = .5E+10,				            **FLOAT SIN PARTE ENTERA CON EXPONENTE
-FLOAT _f5cexn = 1.7E-5,				            **FLOAT CON EXPONENTE NEGATIVO
+FLOAT _f1spe;_f2spd;_f3cpe;_f4cexp;_f5cexn;f6;f7;f8,
+_f1spe = .4,                                    **FLOAT SIN PARTE ENTERA
+_f2spd = 1.,                                    **FLOAT SIN PARTE DECIMAL
+_f3cpe = 2.79,				                    **FLOAT CON PARTE ENTERA Y DECIMAL
+_f4cexp = .5E+10,				                **FLOAT SIN PARTE ENTERA CON EXPONENTE
+_f5cexn = 1.7E-5,				                **FLOAT CON EXPONENTE NEGATIVO
 
 
 **Tipos de datos fuera del rango
-SHORT num3 = -129_s,                            **CONSTATE SHORT FUERA DE RANGO INFERIOR (se trunca)
-SHORT num4 = 129_s,                             **CONSTATE SHORT FUERA DE RANGO SUPERIOR (se trunca)
+num3 = -129_s,                                  **CONSTATE SHORT FUERA DE RANGO INFERIOR (se trunca)
+num4 = 129_s,                                   **CONSTATE SHORT FUERA DE RANGO SUPERIOR (se trunca)
 
-ULONG num7 = -2_ul,                             **CONSTATE LONG FUERA DE RANGO INFERIOR (se trunca)
-ULONG num8 = 4294967296_ul,                     **CONSTATE LONG FUERA DE RANGO SUPERIOR (se trunca)
+num7 = -2_ul,                                   **CONSTATE LONG FUERA DE RANGO INFERIOR (se trunca)
+num8 = 4294967296_ul,                           **CONSTATE LONG FUERA DE RANGO SUPERIOR (se trunca)
 
-FLOAT f6 = 3.50282347E+38,                      **CONSTATE FLOAT FUERA DE RANGO SUPERIOR (se trunca)
-FLOAT f7 = -3.60282347E+38,                     **CONSTATE FLOAT FUERA DE RANGO INFERIOR (se trunca)
-FLOAT f8 = 2.E35,                               **CONSTATE FLOAT SIN SIGNO EXP (lexico considera positivo)
+f6 = 3.50282347E+38,                            **CONSTATE FLOAT FUERA DE RANGO SUPERIOR (se trunca)
+f7 = -3.60282347E+38,                           **CONSTATE FLOAT FUERA DE RANGO INFERIOR (se trunca)
+f8 = 2.E35,                                     **CONSTATE FLOAT SIN SIGNO EXP (lexico considera positivo)
 }

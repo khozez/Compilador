@@ -51,4 +51,6 @@
     set_cuotas(),                                           **ERROR: llamado a función que espera parametros
     aumentar_cuota(4_s),                                    **ERROR: llamado a función que no espera parametros
     resetear_cuota(),                                       **ERROR: llamado a función que no existe
+    SHORT res                                               **ERROR: falta la coma al final de la declaracion
+    aumentar_cuotas(4_s)                                    **ERROR: falta la coma al final de la sentencia
 }

@@ -98,7 +98,10 @@ public class Estructura {
                             var1 = var1.replace(".", "");
                             var1 = var1.replace("+", "");
                             var1 = var1.replaceAll("-", "");
-                            var1 = "    __" + var1 + " DD " + fila.get("lexema");
+                            if (fila.get("lexema").charAt(0) == '-')
+                                var1 = "    __n" + var1 + " DD " + fila.get("lexema");
+                            else
+                                var1 = "    __" + var1 + " DD " + fila.get("lexema");
                             this.out_assembler.write(var1);
                         }
                     }

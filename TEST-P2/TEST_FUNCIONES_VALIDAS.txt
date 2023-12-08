@@ -69,6 +69,6 @@
 
     set_y(cuotas),                                      **LLAMADO A FUNCION CON CONVERSION DE PARAMETRO
     set_cuotas(20_s),
-    **pagar_cuotas(4_s),                                  **IMPRIME CANT MAYOR A 3
+    pagar_cuotas(4_s),                                  **IMPRIME CANT MAYOR A 3
     pagar_cuotas(2_s),                                  **IMPRIME CANT MENOR A 3
 }

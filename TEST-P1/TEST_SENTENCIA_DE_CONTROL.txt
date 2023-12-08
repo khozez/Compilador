@@ -1,5 +1,6 @@
 {
-    ULONG _i = 1_ul,
+    ULONG _i,
+    _i = 1_ul,
 
     WHILE (_i < 10_ul) DO
         {
@@ -15,7 +16,8 @@
         {
             VOID f1()
                 {
-                    SHORT _x1 = 23_s,
+                    SHORT _x1,
+                    x1 = 23_s,
                     RETURN,
                 }
         },

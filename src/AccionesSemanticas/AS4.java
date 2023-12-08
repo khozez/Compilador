@@ -9,6 +9,8 @@ public class AS4 implements AccionSemantica{
     @Override
     public int ejecutar(BufferedInputStream lector, String lexema) {
         double valor = Double.parseDouble(lexema);
+        if (AnalizadorLexico.lexema.charAt(0) == '.')
+            AnalizadorLexico.lexema = "0"+AnalizadorLexico.lexema;
         if (valor <= Double.parseDouble(AnalizadorLexico.MIN_FLOAT_VALUE)){
             //INFORMAR WARNING, SE TRUNCA AL MENOR VALOR.
             Parser.anotar(Parser.WARNING, "LINEA "+AnalizadorLexico.getCantLineas()+": WARNING! Constante "+lexema+" fue truncado ya que es inferior al valor minimo");
