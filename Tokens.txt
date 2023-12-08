@@ -1,256 +1,230 @@
  (123) --> {
- (260) --> Palabra reservada: CLASS
- (257) --> Identificador: a
- (123) --> {
  (266) --> Palabra reservada: SHORT
- (257) --> Identificador: x
+ (257) --> Identificador: cuotas
+ (59) --> ;
+ (257) --> Identificador: pagas
+ (59) --> ;
+ (257) --> Identificador: deuda
+ (44) --> ,
+ (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: y
+ (44) --> ,
+ (257) --> Identificador: y
+ (61) --> =
+ (258) --> Constante float: 1.0
+ (44) --> ,
+ (257) --> Identificador: cuotas
+ (61) --> =
+ (258) --> Constante entera: 0_s
+ (44) --> ,
+ (257) --> Identificador: pagas
+ (61) --> =
+ (258) --> Constante entera: 0_s
+ (44) --> ,
+ (257) --> Identificador: deuda
+ (61) --> =
+ (258) --> Constante entera: 0_s
  (44) --> ,
  (265) --> Palabra reservada: VOID
- (257) --> Identificador: set
+ (257) --> Identificador: set_y
  (40) --> (
- (266) --> Palabra reservada: SHORT
- (257) --> Identificador: y
+ (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: valor
  (41) --> )
  (123) --> {
- (257) --> Identificador: x
- (61) --> =
  (257) --> Identificador: y
+ (61) --> =
+ (257) --> Identificador: valor
+ (44) --> ,
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cuotas
+ (44) --> ,
+ (257) --> Identificador: cuotas
+ (61) --> =
+ (258) --> Constante entera: 4_s
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set_cuotas
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cant
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: cuotas
+ (61) --> =
+ (257) --> Identificador: cant
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: aumentar_cuota
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: cuotas
+ (61) --> =
+ (257) --> Identificador: cuotas
  (43) --> +
  (258) --> Constante entera: 1_s
  (44) --> ,
- (264) --> Palabra reservada: PRINT
+ (270) --> Palabra reservada: RETURN
  (44) --> ,
  (125) --> }
- (44) --> ,
- (125) --> }
- (260) --> Palabra reservada: CLASS
- (257) --> Identificador: c
- (44) --> ,
- (260) --> Palabra reservada: CLASS
- (257) --> Identificador: b
- (123) --> {
- (257) --> Identificador: a
- (44) --> ,
- (257) --> Identificador: c
- (257) --> Identificador: c2
- (44) --> ,
  (265) --> Palabra reservada: VOID
- (257) --> Identificador: set
+ (257) --> Identificador: aumentar_cuotas
  (40) --> (
  (266) --> Palabra reservada: SHORT
- (257) --> Identificador: y
+ (257) --> Identificador: cant
  (41) --> )
  (123) --> {
- (257) --> Identificador: x
+ (257) --> Identificador: cuotas
  (61) --> =
- (257) --> Identificador: y
+ (257) --> Identificador: cuotas
  (43) --> +
+ (257) --> Identificador: cant
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: pagar_cuotas
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cant
+ (41) --> )
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: deuda
+ (44) --> ,
+ (257) --> Identificador: deuda
+ (61) --> =
+ (257) --> Identificador: cuotas
+ (-1
+ (44) --> ,
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: cant
+ (62) --> >
  (258) --> Constante entera: 3_s
- (44) --> ,
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (125) --> }
- (44) --> ,
- (265) --> Palabra reservada: VOID
- (257) --> Identificador: chequear
- (40) --> (
- (266) --> Palabra reservada: SHORT
- (257) --> Identificador: y
  (41) --> )
  (123) --> {
- (261) --> Palabra reservada: IF
- (40) --> (
- (257) --> Identificador: y
- (-1
- (258) --> Constante entera: 1_s
- (41) --> )
  (264) --> Palabra reservada: PRINT
  (44) --> ,
- (262) --> Palabra reservada: ELSE
- (261) --> Palabra reservada: IF
+ (257) --> Identificador: aumentar_cuotas
  (40) --> (
- (257) --> Identificador: y
- (-1
  (258) --> Constante entera: 2_s
  (41) --> )
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (262) --> Palabra reservada: ELSE
- (261) --> Palabra reservada: IF
- (40) --> (
- (257) --> Identificador: y
- (-1
- (258) --> Constante entera: 3_s
- (41) --> )
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (262) --> Palabra reservada: ELSE
- (261) --> Palabra reservada: IF
- (40) --> (
- (257) --> Identificador: y
- (-1
- (258) --> Constante entera: 4_s
- (41) --> )
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (262) --> Palabra reservada: ELSE
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (263) --> Palabra reservada: END_IF
- (44) --> ,
- (263) --> Palabra reservada: END_IF
- (44) --> ,
- (263) --> Palabra reservada: END_IF
- (44) --> ,
- (263) --> Palabra reservada: END_IF
  (44) --> ,
  (125) --> }
+ (262) --> Palabra reservada: ELSE
+ (123) --> {
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (257) --> Identificador: aumentar_cuota
+ (40) --> (
+ (41) --> )
  (44) --> ,
  (125) --> }
- (260) --> Palabra reservada: CLASS
- (257) --> Identificador: c
- (123) --> {
- (257) --> Identificador: b
- (257) --> Identificador: b1
+ (263) --> Palabra reservada: END_IF
  (44) --> ,
- (266) --> Palabra reservada: SHORT
- (257) --> Identificador: i
- (44) --> ,
- (265) --> Palabra reservada: VOID
- (257) --> Identificador: suma
- (40) --> (
- (41) --> )
- (123) --> {
- (265) --> Palabra reservada: VOID
- (257) --> Identificador: aumenta
- (40) --> (
- (41) --> )
- (123) --> {
- (257) --> Identificador: i
+ (257) --> Identificador: pagas
  (61) --> =
- (257) --> Identificador: i
+ (257) --> Identificador: pagas
  (43) --> +
  (258) --> Constante entera: 1_s
  (44) --> ,
- (257) --> Identificador: b1
- (46) --> .
- (257) --> Identificador: chequear
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: manejador
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: clientes
+ (59) --> ;
+ (257) --> Identificador: cuotas
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: paga_cuotas
  (40) --> (
- (257) --> Identificador: i
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: cant
+ (41) --> )
+ (123) --> {
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: cliente_menos
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: clientes
+ (61) --> =
+ (257) --> Identificador: clientes
+ (45) --> -
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: cant
+ (62) --> >
+ (258) --> Constante entera: 4_s
+ (41) --> )
+ (257) --> Identificador: cliente_menos
+ (40) --> (
+ (41) --> )
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: recursiva
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: r
+ (44) --> ,
+ (257) --> Identificador: r
+ (61) --> =
+ (258) --> Constante entera: 4_s
+ (44) --> ,
+ (257) --> Identificador: recursiva
+ (40) --> (
  (41) --> )
  (44) --> ,
  (270) --> Palabra reservada: RETURN
  (44) --> ,
  (125) --> }
- (269) --> Palabra reservada: WHILE
+ (257) --> Identificador: set_y
  (40) --> (
- (257) --> Identificador: i
- (-1
- (258) --> Constante entera: 5_s
- (41) --> )
- (276) --> Palabra reservada: DO
- (123) --> {
- (257) --> Identificador: b1
- (46) --> .
- (257) --> Identificador: set
- (40) --> (
- (257) --> Identificador: i
+ (257) --> Identificador: cuotas
  (41) --> )
  (44) --> ,
- (257) --> Identificador: aumenta
+ (257) --> Identificador: set_cuotas
  (40) --> (
+ (258) --> Constante entera: 20_s
  (41) --> )
  (44) --> ,
- (125) --> }
- (44) --> ,
- (125) --> }
- (44) --> ,
- (125) --> }
- (257) --> Identificador: c
- (257) --> Identificador: c1
- (44) --> ,
- (257) --> Identificador: c1
- (46) --> .
- (257) --> Identificador: suma
+ (257) --> Identificador: pagar_cuotas
  (40) --> (
+ (258) --> Constante entera: 4_s
  (41) --> )
  (44) --> ,
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (266) --> Palabra reservada: SHORT
- (257) --> Identificador: x
- (59) --> ;
- (257) --> Identificador: y
- (59) --> ;
- (257) --> Identificador: z
- (44) --> ,
- (268) --> Palabra reservada: FLOAT
- (257) --> Identificador: f
- (44) --> ,
- (257) --> Identificador: x
- (61) --> =
- (258) --> Constante entera: 15_s
- (44) --> ,
- (257) --> Identificador: y
- (61) --> =
- (45) --> -
- (258) --> Constante entera: 15_s
- (44) --> ,
- (257) --> Identificador: z
- (61) --> =
- (257) --> Identificador: x
- (43) --> +
- (257) --> Identificador: y
- (44) --> ,
- (261) --> Palabra reservada: IF
+ (257) --> Identificador: pagar_cuotas
  (40) --> (
- (257) --> Identificador: z
- (-1
- (258) --> Constante entera: 0_s
+ (258) --> Constante entera: 2_s
  (41) --> )
- (264) --> Palabra reservada: PRINT
  (44) --> ,
- (262) --> Palabra reservada: ELSE
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (263) --> Palabra reservada: END_IF
- (44) --> ,
- (257) --> Identificador: z
- (61) --> =
- (257) --> Identificador: z
- (43) --> +
- (258) --> Constante entera: 5_s
- (44) --> ,
- (257) --> Identificador: f
- (61) --> =
- (257) --> Identificador: z
- (42) --> *
- (257) --> Identificador: x
- (44) --> ,
- (261) --> Palabra reservada: IF
+ (257) --> Identificador: recursiva
  (40) --> (
- (257) --> Identificador: f
- (-1
- (258) --> Constante float: 75.0
  (41) --> )
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (263) --> Palabra reservada: END_IF
- (44) --> ,
- (257) --> Identificador: f
- (61) --> =
- (257) --> Identificador: f
- (47) --> /
- (258) --> Constante float: 2.0
- (44) --> ,
- (261) --> Palabra reservada: IF
- (40) --> (
- (257) --> Identificador: f
- (-1
- (258) --> Constante float: 37.5
- (41) --> )
- (264) --> Palabra reservada: PRINT
- (44) --> ,
- (263) --> Palabra reservada: END_IF
  (44) --> ,
  (125) --> }
