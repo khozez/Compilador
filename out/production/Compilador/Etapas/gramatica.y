@@ -9,7 +9,7 @@
 %}
 
 
-%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS DO
+%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE RETURN MAYORIGUAL MENORIGUAL IGUAL MASIGUAL DISTINTO MENOSMENOS DO
 %left '+' '-'
 %left '*' '/'
 
@@ -263,6 +263,21 @@ asignacion: ID '=' expresion {
                               }
 			      variables_no_asignadas.remove($1.sval + Parser.ambito);}
 	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
+	   | ID MASIGUAL expresion {
+	   		out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignacion");
+	   		Nodo variable = new Nodo(getVariableConAmbitoTS($1.sval), getTipoVariableConAmbitoTS($1.sval));
+          	Nodo suma = new Nodo("+", variable, (Nodo) $3.obj);
+          	var x = new Nodo("Asignacion", izquierda, suma);
+          	x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
+
+	          if (generarMenosMenos()) {
+	              $$ = new ParserVal(new Nodo("sentencias", x, menosMenos));
+	              menosMenos = null;
+	          } else {
+	              $$ = new ParserVal(x);
+	          }
+	          variables_no_asignadas.remove($1.sval + Parser.ambito);
+	      }	
 ;
 
 sentenciaIf: IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");

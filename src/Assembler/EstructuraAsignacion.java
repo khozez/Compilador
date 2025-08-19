@@ -10,6 +10,30 @@ public class EstructuraAsignacion implements GeneradorEstructura {
     public String generar(Nodo nodo) {
         String codigo;
         var ts = AnalizadorLexico.TS;
+        
+        // "x += 5"
+        Nodo variable = nodo.getIzq();
+        Nodo expresion = nodo.getDer();
+        
+        if (expresion.getNombre().equals("+")) {
+            Nodo sumaIzq = expresion.getIzq();
+            Nodo sumaDer = expresion.getDer();
+
+            // Si coincide variable = variable + expresion
+            if (sumaIzq.getNombre().equals(variable.getNombre())) {
+                String var = obtenerNombreVariable(ts, variable);
+                String op2 = obtenerNombreVariable(ts, sumaDer);
+
+                if (nodo.getTipo().equals("SHORT")) {
+                    return "MOV AL, " + var + "\nADD AL, " + op2 + "\nMOV " + var + ", AL\n";
+                } else if (nodo.getTipo().equals("ULONG")) {
+                    return "MOV EAX, " + var + "\nADD EAX, " + op2 + "\nMOV " + var + ", EAX\n";
+                } else {
+                    return "FLD " + var + "\nFADD " + op2 + "\nFSTP " + var + "\n";
+                }
+            }
+        }
+        
         String variable1 = obtenerNombreVariable(ts, nodo.getIzq());
         String variable2 = obtenerNombreVariable(ts, nodo.getDer());
 

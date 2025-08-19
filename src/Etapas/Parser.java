@@ -648,6 +648,7 @@ public static String ambitoClase = ":main";
 public static final String ERROR_LEXICO = "Error_lexico";
 public static final String ERROR_SINTACTICO = "Error_sintactico";
 public static final String WARNING = "Warning";
+public static final int MASIGUAL = 300;
 private static int funcLocales = 0;
 private static int cantHerencias = 0;
 public static String claseActual = "";

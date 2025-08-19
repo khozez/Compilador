@@ -161,7 +161,26 @@ public class AnalizadorLexico {
                 id_columna = 28;
                 break;
         }
-
+        
+        if (c == '+') {
+            lector.mark(1);  // marco la posición para poder volver atras si no encuentro un '='
+            int siguiente = -1;
+            try {
+                siguiente = lector.read();
+            } catch (IOException e) {  // hay que catchear porque se hace E/S
+                e.printStackTrace();
+            }
+            if (siguiente == '=') {
+                lexema = "+=";
+                return Parser.MASIGUAL;
+            } else {
+                try {
+                    lector.reset();  // reseteamos la posicion
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
         //System.out.println("Caracter:"+c+" - Estado:"+estado+" id_c:"+id_columna);
         AccionSemantica as = mas.action_matrix[estado][id_columna];
         int id_token = as.ejecutar(lector, lexema);
