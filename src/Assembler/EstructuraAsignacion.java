@@ -1,6 +1,7 @@
 package Assembler;
 
 import Etapas.AnalizadorLexico;
+
 import Etapas.GeneradorEstructura;
 import Etapas.Nodo;
 import Etapas.TablaSimbolos;
@@ -8,7 +9,7 @@ import Etapas.TablaSimbolos;
 public class EstructuraAsignacion implements GeneradorEstructura {
 
     public String generar(Nodo nodo) {
-        String codigo;
+        String codigo = "";
         var ts = AnalizadorLexico.TS;
         
         // "x += 5"
@@ -25,15 +26,20 @@ public class EstructuraAsignacion implements GeneradorEstructura {
                 String op2 = obtenerNombreVariable(ts, sumaDer);
 
                 if (nodo.getTipo().equals("SHORT")) {
-                    return "MOV AL, " + var + "\nADD AL, " + op2 + "\nMOV " + var + ", AL\n";
+                    codigo = "MOV AL, " + var + "\nADD AL, " + op2 + "\nMOV " + var + ", AL\n";
                 } else if (nodo.getTipo().equals("ULONG")) {
-                    return "MOV EAX, " + var + "\nADD EAX, " + op2 + "\nMOV " + var + ", EAX\n";
+                    codigo = "MOV EAX, " + var + "\nADD EAX, " + op2 + "\nMOV " + var + ", EAX\n";
                 } else {
-                    return "FLD " + var + "\nFADD " + op2 + "\nFSTP " + var + "\n";
+                    codigo = "FLD " + var + "\nFADD " + op2 + "\nFSTP " + var + "\n";
                 }
+                // No puede ser constante si es +=
+                int idVar = ts.obtenerSimbolo(variable.getNombre());
+                ts.modificarAtributo(idVar, "constanteVigente", "false");
+                ts.modificarAtributo(idVar, "valorConstante", "");
+                return codigo;
             }
+            
         }
-        
         String variable1 = obtenerNombreVariable(ts, nodo.getIzq());
         String variable2 = obtenerNombreVariable(ts, nodo.getDer());
 
@@ -43,6 +49,17 @@ public class EstructuraAsignacion implements GeneradorEstructura {
             codigo = "MOV EAX, " + variable2 + "\nMOV " + variable1 + ", EAX\n";
         else
             codigo = "FLD " + variable2.replaceAll(":","_") + "\nFSTP " + variable1.replaceAll(":","_")+"\n";
+        
+        // update de atributos de constantes
+        int idVariable = ts.obtenerSimbolo(variable.getNombre());
+        int idExpresion = ts.obtenerSimbolo(expresion.getNombre());
+        if (expresion.esHoja() && ts.obtenerAtributo(idExpresion, "uso").equals("constante")) { // la asignacion es una constante
+        	ts.modificarAtributo(idVariable, TablaSimbolos.VIGENTE, "True");
+        	ts.modificarAtributo(idVariable, TablaSimbolos.VALOR, expresion.getNombre());
+        } else {  // otro tipo de asignaciones, no se puede propagar o seguir propagando
+        	ts.modificarAtributo(idVariable, TablaSimbolos.VIGENTE, "False");
+        	ts.modificarAtributo(idVariable, TablaSimbolos.VALOR, "");
+        }
 
         return codigo;
     }
@@ -54,6 +71,11 @@ public class EstructuraAsignacion implements GeneradorEstructura {
         if (uso.equals("auxiliar")) {
             return "@" + subArbol.getNombre();
         } else if (uso.equals("variable") || uso.equals("parametro")) {
+        	String vigente = ts.obtenerAtributo(id, "constanteVigente");
+            String valor = ts.obtenerAtributo(id, "valorConstante");
+            if ("true".equals(vigente) && valor != null) {
+                return valor; // propago directamente por valor de la constante
+            }
             return "_"+subArbol.getNombre().replaceAll(":", "_")+"_";
         } else if (uso.equals("constante")) {
             String tipo = ts.obtenerAtributo(id, "tipo");

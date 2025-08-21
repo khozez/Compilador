@@ -16,6 +16,8 @@ public class TablaSimbolos {
     public static final int NO_ENCONTRADO = -1;
     public static final String NO_ENCONTRADO_MESSAGE = "No encontrado";
     public static final String LEXEMA = "lexema";
+    public static final String VIGENTE = "constanteVigente";
+    public static final String VALOR = "constanteValor";
     public static Set<Integer> obtenerConjuntoPunteros() {
         return simbolos.keySet();
     }
@@ -27,6 +29,8 @@ public class TablaSimbolos {
         if (obtenerSimbolo(simbolo_nuevo) == NO_ENCONTRADO) {
             Map<String, String> atributos = new HashMap<>();
             atributos.put(LEXEMA, simbolo_nuevo);
+            atributos.put(VIGENTE, "False");
+            atributos.put(VALOR, "");
             simbolos.put(identificador_siguiente, atributos);
             ++identificador_siguiente;
             return true;

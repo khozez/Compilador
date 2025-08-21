@@ -60,6 +60,8 @@ public abstract class Generador {
     public static String GenerarCodigo(Nodo padre){
         if (mapa.isEmpty())
             generarMapa();
+        
+        propagarConstantes(padre);  // reviso los hijos tiene una constante que puede propagarse
         if (mapa.get(padre.getNombre()) != null){
             if(!pilaFuncion.isEmpty()){
                 WriteFunc(mapa.get(padre.getNombre()).generar(padre));
@@ -152,5 +154,29 @@ public abstract class Generador {
     public static void WriteFunc(String S){
         if (!pilaFuncion.isEmpty())
             pilaFuncion.peek().append(S);
+    }
+    
+    public static void propagarConstantes(Nodo padre) {
+    	if (padre == null) {  // Nada que procesar
+    		return;
+    	}
+    	
+    	TablaSimbolos ts = AnalizadorLexico.TS;
+    	if (padre.getIzq() != null && padre.getIzq().esHoja()) {
+            int idIzq = ts.obtenerSimbolo(padre.getIzq().getNombre());
+            if (idIzq != -1 && (ts.obtenerAtributo(idIzq, "constanteVigente").equals("True"))) {
+                String valor = ts.obtenerAtributo(idIzq, "valorConstante");
+                padre.setIzq(new Nodo(valor, "constante"));
+            }
+        }
+
+        if (padre.getDer() != null && padre.getDer().esHoja()) {
+            int idDer = ts.obtenerSimbolo(padre.getDer().getNombre());
+            if (idDer != -1 && (ts.obtenerAtributo(idDer, "constanteVigente").equals("True"))) {
+                String valor = ts.obtenerAtributo(idDer, "valorConstante");
+                padre.setDer(new Nodo(valor, "constante"));
+            }
+        }
+    	
     }
 }
