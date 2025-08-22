@@ -11,10 +11,14 @@ import Etapas.TablaSimbolos;
 public class Estructura {
     public static final String MODEL = ".386\n.MODEL flat, stdcall\noption casemap :none";
     public static final String INCLUDE =
-            "include \\masm32\\include\\windows.inc\n" + "include \\masm32\\include\\kernel32.inc\n"
-            +"include \\masm32\\include\\masm32.inc\n" +"include \\masm32\\include\\user32.inc\n"
-                    + "includelib \\masm32\\lib\\kernel32.lib\n" + "includelib \\masm32\\lib\\masm32.lib\n"
-                    +"includelib \\masm32\\lib\\user32.lib\n";
+            "include C:\\masm32\\include\\windows.inc\n" +
+                    "include C:\\masm32\\include\\kernel32.inc\n" +
+                    "include C:\\masm32\\include\\masm32.inc\n" +
+                    "include C:\\masm32\\include\\user32.inc\n" +
+                    "includelib C:\\masm32\\lib\\kernel32.lib\n" +
+                    "includelib C:\\masm32\\lib\\masm32.lib\n" +
+                    "includelib C:\\masm32\\lib\\user32.lib\n";
+
     public static final String STACK = ".STACK 200h";
     public static final String DATA = ".DATA";
     public static final String CODE = ".CODE";
