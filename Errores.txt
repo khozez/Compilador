@@ -1,10 +1,5 @@
-Warnings::
-LINEA 5: WARNING! Constante 129_s fue truncado ya que supera el valor maximo
-LINEA 8: WARNING! Se truncó la constante long -44_ul ya que no se aceptan valores negativos.
-
-
 Errores Semanticos:
-LINEA: 27 ERROR SEMANTICO! syntax error
-LINEA: 27 ERROR SEMANTICO! stack underflow. aborting...
+LINEA: 58 ERROR SEMANTICO! syntax error
+LINEA: 58 ERROR SEMANTICO! stack underflow. aborting...
 
 

@@ -1,72 +1,95 @@
  (123) --> {
- (266) --> Palabra reservada: SHORT
- (257) --> Identificador: num1
- (59) --> ;
- (257) --> Identificador: num2
- (59) --> ;
- (257) --> Identificador: num3
- (59) --> ;
- (257) --> Identificador: num4
- (44) --> ,
- (267) --> Palabra reservada: ULONG
- (257) --> Identificador: num5
- (59) --> ;
- (257) --> Identificador: num6
- (59) --> ;
- (257) --> Identificador: num7
- (59) --> ;
- (257) --> Identificador: num8
- (59) --> ;
- (257) --> Identificador: aux
- (44) --> ,
- (257) --> Identificador: num1
- (61) --> =
- (258) --> Constante entera: 127_s
- (44) --> ,
- (257) --> Identificador: num2
- (61) --> =
- (45) --> -
- (258) --> Constante entera: 55_s
- (44) --> ,
- (257) --> Identificador: num3
- (61) --> =
- (258) --> Constante entera: 127_s
- (44) --> ,
- (257) --> Identificador: num5
- (61) --> =
- (45) --> -
- (258) --> Constante entera long: 44_ul
- (44) --> ,
- (257) --> Identificador: num6
- (61) --> =
- (258) --> Constante entera long: 4294967295_ul
- (44) --> ,
- (265) --> Palabra reservada: VOID
- (257) --> Identificador: func1
- (40) --> (
- (266) --> Palabra reservada: SHORT
- (257) --> Identificador: x
- (41) --> )
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: a
  (123) --> {
  (266) --> Palabra reservada: SHORT
- (257) --> Identificador: y
+ (257) --> Identificador: x
  (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
  (257) --> Identificador: y
- (61) --> =
- (258) --> Constante entera: 11_s
- (44) --> ,
+ (41) --> )
+ (123) --> {
  (257) --> Identificador: x
  (61) --> =
  (257) --> Identificador: y
+ (43) --> +
+ (258) --> Constante entera: 1_s
  (44) --> ,
- (270) --> Palabra reservada: RETURN
+ (264) --> Palabra reservada: PRINT
  (44) --> ,
  (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: c
+ (44) --> ,
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: b
+ (123) --> {
+ (257) --> Identificador: a
+ (44) --> ,
+ (257) --> Identificador: c
+ (257) --> Identificador: c2
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: set
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: y
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: x
+ (61) --> =
+ (257) --> Identificador: y
+ (43) --> +
+ (258) --> Constante entera: 3_s
+ (44) --> ,
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: chequear
+ (40) --> (
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: y
+ (41) --> )
+ (123) --> {
  (261) --> Palabra reservada: IF
  (40) --> (
- (257) --> Identificador: num1
+ (257) --> Identificador: y
  (-1
- (257) --> Identificador: num3
+ (258) --> Constante entera: 1_s
+ (41) --> )
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (262) --> Palabra reservada: ELSE
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: y
+ (-1
+ (258) --> Constante entera: 2_s
+ (41) --> )
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (262) --> Palabra reservada: ELSE
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: y
+ (-1
+ (258) --> Constante entera: 3_s
+ (41) --> )
+ (264) --> Palabra reservada: PRINT
+ (44) --> ,
+ (262) --> Palabra reservada: ELSE
+ (261) --> Palabra reservada: IF
+ (40) --> (
+ (257) --> Identificador: y
+ (-1
+ (258) --> Constante entera: 4_s
  (41) --> )
  (264) --> Palabra reservada: PRINT
  (44) --> ,
@@ -75,7 +98,51 @@
  (44) --> ,
  (263) --> Palabra reservada: END_IF
  (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (263) --> Palabra reservada: END_IF
+ (44) --> ,
+ (125) --> }
+ (44) --> ,
+ (125) --> }
+ (260) --> Palabra reservada: CLASS
+ (257) --> Identificador: c
+ (123) --> {
+ (257) --> Identificador: b
+ (257) --> Identificador: b1
+ (44) --> ,
+ (266) --> Palabra reservada: SHORT
+ (257) --> Identificador: i
+ (44) --> ,
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: suma
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (265) --> Palabra reservada: VOID
+ (257) --> Identificador: aumenta
+ (40) --> (
+ (41) --> )
+ (123) --> {
+ (257) --> Identificador: i
+ (61) --> =
+ (257) --> Identificador: i
+ (43) --> +
+ (258) --> Constante entera: 1_s
+ (44) --> ,
+ (257) --> Identificador: b1
+ (46) --> .
+ (257) --> Identificador: chequear
+ (40) --> (
+ (257) --> Identificador: i
+ (41) --> )
+ (44) --> ,
+ (270) --> Palabra reservada: RETURN
+ (44) --> ,
+ (125) --> }
  (269) --> Palabra reservada: WHILE
  (40) --> (
- (257) --> Identificador: num1
+ (257) --> Identificador: i
  (-1
