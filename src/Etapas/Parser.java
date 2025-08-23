@@ -800,7 +800,7 @@ private String validarTiposAssign(Nodo x, Nodo izq, Nodo der) {
           	return "obj1 type is null";
 
 
-    	if (izq.getTipo() == "Error" || (der.getTipo() == "Error")){
+    	if (izq.getTipo().equals("Error") || (der.getTipo().equals("Error"))){
        		return "Error";
     	}
 

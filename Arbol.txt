@@ -1,1 +1,35 @@
-
+program
+'-->sentencias null
+   |-->sentencias null
+   |  |-->sentencias null
+   |  |  |-->sentencias null
+   |  |  |  |-->sentencias null
+   |  |  |  |  |-->sentencias null
+   |  |  |  |  |  |-->sentencias null
+   |  |  |  |  |  |  |-->sentencias null
+   |  |  |  |  |  |  |  '-->Asignacion SHORT
+   |  |  |  |  |  |  |     |-->x:main SHORT
+   |  |  |  |  |  |  |     '-->5_s SHORT
+   |  |  |  |  |  |  '-->Asignacion SHORT
+   |  |  |  |  |  |     |-->y:main SHORT
+   |  |  |  |  |  |     '-->x:main SHORT
+   |  |  |  |  |  '-->Asignacion FLOAT
+   |  |  |  |  |     |-->i:main FLOAT
+   |  |  |  |  |     '-->2.3 FLOAT
+   |  |  |  |  '-->Asignacion FLOAT
+   |  |  |  |     |-->j:main FLOAT
+   |  |  |  |     '-->i:main FLOAT
+   |  |  |  '-->Asignacion SHORT
+   |  |  |     |-->x:main SHORT
+   |  |  |     '-->7_s SHORT
+   |  |  '-->Asignacion SHORT
+   |  |     |-->z:main SHORT
+   |  |     '-->x:main SHORT
+   |  '-->Asignacion SHORT
+   |     |-->x:main SHORT
+   |     '-->+ SHORT
+   |        |-->x:main SHORT
+   |        '-->y:main SHORT
+   '-->Asignacion SHORT
+      |-->w:main SHORT
+      '-->x:main SHORT

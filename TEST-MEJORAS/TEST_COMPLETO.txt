@@ -6,14 +6,17 @@
     num2 = 3_s,
     counter = 0_ul,
 
-    VOID sumar(SHORT a, SHORT b)
-    {
-        SHORT res,
-        res = a + b,
-        PRINT %RESULTADO%,
-    }
+    VOID sumar (SHORT a)
+    	{
+    		SHORT b,
+    		b = 3_s,
+        	SHORT res,
+        	res = a + b,
+        	PRINT %RESULTADO%,
+        	RETURN,
+    	}
 
-    CLASS A {
+    CLASS a {
         SHORT value,
         VOID incrementar() {
             value += 1_s,
@@ -21,12 +24,12 @@
         },
     }
 
-    A obj,
+    a obj,
     obj.value = num1,
     obj.incrementar(),
     obj.incrementar(),
 
-    num2 += obj.value,
+    num2 += 10_s,
 
-    PRINT %FIN DE TEST COMPLEJO%,
+    PRINT %FIN DE TEST COMPLETO%,
 }

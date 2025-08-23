@@ -1,5 +1,5 @@
 {
-    SHORT x, y,
+    SHORT x; y,
     ULONG z,
 
     x = 5_s,

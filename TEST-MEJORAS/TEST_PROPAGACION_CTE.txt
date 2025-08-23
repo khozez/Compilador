@@ -1,6 +1,6 @@
 {
-    SHORT a, b, c,
-    ULONG u, v,
+    SHORT a; b; c,
+    ULONG u; v,
 
     a = 5_s,
     b = a,

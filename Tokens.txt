@@ -1,16 +1,50 @@
  (123) --> {
  (266) --> Palabra reservada: SHORT
- (257) --> Identificador: num1
+ (257) --> Identificador: x
  (59) --> ;
- (257) --> Identificador: num2
+ (257) --> Identificador: y
+ (59) --> ;
+ (257) --> Identificador: z
+ (59) --> ;
+ (257) --> Identificador: w
  (44) --> ,
- (257) --> Identificador: num1
+ (268) --> Palabra reservada: FLOAT
+ (257) --> Identificador: i
+ (59) --> ;
+ (257) --> Identificador: j
+ (44) --> ,
+ (257) --> Identificador: x
  (61) --> =
- (258) --> Constante entera: 10_s
+ (258) --> Constante entera: 5_s
  (44) --> ,
- (257) --> Identificador: num2
+ (257) --> Identificador: y
  (61) --> =
- (257) --> Identificador: num1
+ (257) --> Identificador: x
  (44) --> ,
- (257) --> Identificador: num2
+ (257) --> Identificador: i
+ (61) --> =
+ (258) --> Constante float: 2.3
+ (44) --> ,
+ (257) --> Identificador: j
+ (61) --> =
+ (257) --> Identificador: i
+ (44) --> ,
+ (257) --> Identificador: x
+ (61) --> =
+ (258) --> Constante entera: 7_s
+ (44) --> ,
+ (257) --> Identificador: z
+ (61) --> =
+ (257) --> Identificador: x
+ (44) --> ,
+ (257) --> Identificador: x
+ (61) --> =
+ (257) --> Identificador: x
  (43) --> +
+ (257) --> Identificador: y
+ (44) --> ,
+ (257) --> Identificador: w
+ (61) --> =
+ (257) --> Identificador: x
+ (44) --> ,
+ (125) --> }
