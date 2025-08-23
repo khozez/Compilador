@@ -1,0 +1,15 @@
+{
+SHORT num1;num2;num3;num4,                              **Definicion de identificadores en masa
+
+                                                        **Definicion de identificadores de a uno
+ULONG num5,
+ULONG num6,
+ULONG _num7,
+
+
+SHORT _id_que_se_trunca_por_aca_esto_no_pasa,           **Identificadores con mas de 25 caracteres: se trunca
+ULONG IDENTIFICADOR,                                    **Identificadores en mayusculas son pasados a minuscula
+
+
+ulong num8,                                             **Palabras reservadas en minuscula: considerada como identificador
+}

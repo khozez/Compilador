@@ -5,16 +5,20 @@ import Etapas.*;
 public class EstructuraOperador extends Generador implements GeneradorEstructura {
 
     private String operando;
+    private TablaSimbolos ts;
 
     public EstructuraOperador(String operando) {
         this.operando = operando;
+        this.ts = AnalizadorLexico.TS;
     }
 
     public String generar(Nodo nodo) {
         var ts = AnalizadorLexico.TS;
         String codigo = "";
-        String subArbol1 = obtenerNombreVariable(ts, nodo.getIzq());
-        String subArbol2 = obtenerNombreVariable(ts, nodo.getDer());
+        Nodo nodoIzq = nodo.getIzq();
+        Nodo nodoDer = nodo.getDer();
+        String subArbol1 = obtenerNombreVariable(ts, nodoIzq);
+        String subArbol2 = obtenerNombreVariable(ts, nodoDer);
         String tipo = nodo.getTipo();
 
         switch (operando) {
@@ -39,9 +43,23 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
 
     private String generarOperacion(String tipo, String operando, String subArbol1, String subArbol2, Nodo nodo) {
         String codigo = "";
+        Nodo nodoIzq = nodo.getIzq();
+        Nodo nodoDer = nodo.getDer();
+        int idIzq = ts.obtenerSimbolo(nodoIzq.getNombre());
+        int idDer = ts.obtenerSimbolo(nodoDer.getNombre());
+        String constVigenteIzq = ts.obtenerAtributo(idIzq, "constanteVigente");
+        String constValorIzq = ts.obtenerAtributo(idIzq, "valorConstante");
+        String constVigenteDer = ts.obtenerAtributo(idDer, "constanteVigente");
+        String constValorDer = ts.obtenerAtributo(idDer, "valorConstante");
 
         switch (tipo) {
             case "SHORT":
+            	if (constVigenteIzq.equals("True")) {
+            		subArbol1 = constValorIzq;
+            	}
+            	if (constVigenteDer.equals("True")) {
+            		subArbol2 = constValorDer;
+            	}
                 switch (operando) {
                     case "DIV":
                         codigo = String.format("MOV AH, 0\nMOV AL, %s\nMOV BL, %s\nCBW\nCMP BL, 0\nJE ErrorDiv0\nIDIV BL\nMOV @aux%d, AL\n", subArbol1, subArbol2, aux);
@@ -62,6 +80,12 @@ public class EstructuraOperador extends Generador implements GeneradorEstructura
                 }
                 break;
             case "ULONG":
+            	if (constVigenteIzq.equals("True")) {
+            		subArbol1 = constValorIzq;
+            	}
+            	if (constVigenteDer.equals("True")) {
+            		subArbol2 = constValorDer;
+            	}
                 switch (operando) {
                     case "DIV":
                         codigo = String.format("MOV EDX, 0\nMOV EAX, %s\nMOV EBX, %s\nCMP EBX, 0\nJE ErrorDiv0\nDIV BX\nMOV @aux%d, EAX\n", subArbol1, subArbol2, aux);

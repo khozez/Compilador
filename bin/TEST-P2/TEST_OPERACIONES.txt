@@ -1,0 +1,28 @@
+{
+    SHORT x;y;z,
+    x = 2_s,
+    y = -3_s,
+    z = x*y,
+
+    IF (z == -6_s)
+        PRINT %Z = -6%,
+    END_IF,
+
+    z = z/2_s,
+
+    IF (z == -3_s)
+        PRINT %Z = -3%,
+    END_IF,
+
+    z = z + 3_s,
+
+    IF (z == 0_s)
+        PRINT %Z CERO%,
+    END_IF,
+
+    z = z + -4_s,
+
+    IF (z == -4_s)
+        PRINT %Z ES -4%,
+    END_IF,
+}

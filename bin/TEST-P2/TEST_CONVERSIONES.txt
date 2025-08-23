@@ -1,0 +1,17 @@
+{
+    SHORT x,
+    ULONG y,
+    FLOAT z,
+
+    x = 12_s,
+    y = 11_ul,
+    z = 11.0,
+
+    IF (x > 11.0)               **STOF
+        PRINT %X MAYOR A 11.0%,
+    END_IF,
+
+    IF (y < 11.0)               **LTOF
+            PRINT %Y MAYOR A 11.0%,
+    END_IF,
+}

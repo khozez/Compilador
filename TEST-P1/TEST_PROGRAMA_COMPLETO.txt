@@ -50,7 +50,7 @@
             },
     }
 
-    CLASS cb{
+    CLASS cb {
         FLOAT a,
         FLOAT b,
         VOID f2()

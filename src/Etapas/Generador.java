@@ -61,7 +61,7 @@ public abstract class Generador {
         if (mapa.isEmpty())
             generarMapa();
         
-        propagarConstantes(padre);  // reviso los hijos tiene una constante que puede propagarse
+        //propagarConstantes(padre);  // reviso los hijos tiene una constante que puede propagarse
         if (mapa.get(padre.getNombre()) != null){
             if(!pilaFuncion.isEmpty()){
                 WriteFunc(mapa.get(padre.getNombre()).generar(padre));
@@ -159,8 +159,7 @@ public abstract class Generador {
     public static void propagarConstantes(Nodo padre) {
     	if (padre == null) {  // Nada que procesar
     		return;
-    	}
-    	
+    	}    	
     	TablaSimbolos ts = AnalizadorLexico.TS;
     	if (padre.getIzq() != null && padre.getIzq().esHoja()) {
             int idIzq = ts.obtenerSimbolo(padre.getIzq().getNombre());

@@ -9,7 +9,7 @@
 %}
 
 
-%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE RETURN MAYORIGUAL MENORIGUAL IGUAL MASIGUAL DISTINTO MENOSMENOS DO
+%token ID CTE CADENA CLASS IF ELSE END_IF PRINT VOID SHORT ULONG FLOAT WHILE RETURN MAYORIGUAL MENORIGUAL IGUAL DISTINTO MENOSMENOS DO MASIGUAL
 %left '+' '-'
 %left '*' '/'
 
@@ -267,7 +267,7 @@ asignacion: ID '=' expresion {
 	   		out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignacion");
 	   		Nodo variable = new Nodo(getVariableConAmbitoTS($1.sval), getTipoVariableConAmbitoTS($1.sval));
           	Nodo suma = new Nodo("+", variable, (Nodo) $3.obj);
-          	var x = new Nodo("Asignacion", izquierda, suma);
+          	var x = new Nodo("Asignacion", variable, suma);
           	x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
 
 	          if (generarMenosMenos()) {

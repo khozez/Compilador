@@ -1,0 +1,83 @@
+{
+    SHORT cuotas;pagas;deuda,
+    FLOAT y,
+    y = 1.0,
+    cuotas = 0_s,
+    pagas = 0_s,
+    deuda = 0_s,
+
+    VOID set_y (FLOAT valor)
+    {
+        y = valor,
+        SHORT cuotas,                   **VARIABLE CON UN MISMO NOMBRE, EN DISTINTO AMBITO
+        cuotas = 4_s,
+        RETURN,
+    }
+
+    VOID set_cuotas (SHORT cant)
+    {
+        cuotas = cant,
+        RETURN,
+    }
+
+    VOID aumentar_cuota()
+    {
+        cuotas = cuotas + 1_s,
+        RETURN,
+    }
+
+    VOID aumentar_cuotas(SHORT cant)
+    {
+        cuotas = cuotas + cant,
+        RETURN,
+    }
+
+    VOID pagar_cuotas(SHORT cant)
+    {
+        SHORT deuda,
+        deuda = cuotas--,
+        IF (cant > 3_s){
+            PRINT %CANTIDAD DE DEUDAS MAYOR A 3
+                   SE AUMENTAN 2 CUOTAS%,
+            aumentar_cuotas(2_s),
+        }ELSE
+        {
+            PRINT %CANTIDAD DE DEUDAS MENOR A 3
+                   SE AUMENTA 1 CUOTAS%,
+            aumentar_cuota(),
+        }END_IF,
+        pagas = pagas + 1_s,
+        RETURN,
+    }
+
+    CLASS manejador{
+        SHORT clientes;cuotas,
+        VOID paga_cuotas (SHORT cant)
+        {
+            **FUNCION LOCAL A METODO
+            VOID cliente_menos()
+            {
+                clientes = clientes - 1_s,
+                RETURN,
+            }
+
+            IF (cant > 4_s)
+                cliente_menos(),
+            END_IF,
+        },
+    }
+
+    VOID recursiva()
+    {
+        SHORT r,
+        r = 4_s,
+        recursiva(),
+        RETURN,
+    }
+
+    set_y(cuotas),                                      **LLAMADO A FUNCION CON CONVERSION DE PARAMETRO
+    set_cuotas(20_s),
+    pagar_cuotas(4_s),                                  **IMPRIME CANT MAYOR A 3
+    pagar_cuotas(2_s),                                  **IMPRIME CANT MENOR A 3
+    recursiva(),                                        **ERROR EN EJECUCIÓN: LLAMADO RECURSIVO
+}

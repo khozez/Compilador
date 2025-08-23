@@ -1,0 +1,7 @@
+{
+    FLOAT x;y;z,
+    x = 3.4E+38,
+    y = 0.0,
+
+    z = x/y,           **ERROR OVERFLOW EN DIV CERO FLOAT
+}

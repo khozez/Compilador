@@ -1,0 +1,82 @@
+{
+    SHORT num1;num2;num3;num4,
+    ULONG num5;num6;num7;num8;aux,
+
+    num1 = 129_s,
+    num2 = -55_s,
+    num3 = 127_s,
+    num5 = -44_ul,
+    num6 = 4294967295_ul,
+
+    VOID func1 (SHORT x)
+        {
+            SHORT y,
+            y = 11_s,
+            x = y,
+            RETURN,
+        }
+
+    IF (num1 == num3)
+        PRINT %CONSTANTES TRUNCADAS%,
+    ELSE
+        PRINT %CONSTANTES NO TRUNCADAS%,
+    END_IF,
+
+
+    WHILE (num1 !! 45_s) DO
+        num1 = num1 - 1_s,
+
+
+    IF (num5-- > 0_ul)
+    {
+        IF (num6 < 5_ul)
+        {
+            aux = num6-- - num7,
+            num6 = aux,
+        }END_IF,
+    }END_IF,
+
+
+    CLASS cc,
+
+    CLASS ca {
+        SHORT a;c,
+        VOID f1()
+            {
+                cc c1,
+                ULONG _i7
+                _i7 = 119_ul,
+                c1.p(),
+            },
+    }
+
+    CLASS cb{
+        FLOAT a,
+        FLOAT b,
+        VOID f2()
+            {
+                SHORT _ss
+                _ss = -5_s,
+            },
+        ca,
+    }
+
+    CLASS cc{
+        SHORT x1,
+        VOID p(){
+            SHORT x2,
+            x2 = 2_s,
+        },
+    }
+
+    ca a1; a2,
+    cb b1; b2; b3,
+
+    a1.a = 3_s,
+    b1.ca.a = 4_s,
+    b1.a = 2.3,
+    b1.b = 1.2,
+    b1.ca.c = 1_s,
+    b1.ca.f1(),
+    b1.f2(),
+}

@@ -1,0 +1,96 @@
+{
+    CLASS a{
+        SHORT x,
+        VOID set(SHORT y)
+        {
+            x = y + 1_s,
+            PRINT %SE AUMENTA EN 1%,
+        },
+    }
+
+    CLASS c,                                **FORWARD DECLARATION
+
+    CLASS b{
+        a,                                  **HERENCIA
+        c c2,
+
+        VOID set(SHORT y)                   **SOBREESCRITURA DE METODO
+        {
+            x = y + 3_s,
+            PRINT %SE AUMENTA EN 3%,
+        },
+
+        VOID chequear(SHORT y)
+        {
+            IF (y == 1_s)
+                PRINT %SUMA 1%,
+            ELSE
+                IF (y == 2_s)
+                    PRINT %SUMA 2%,
+                ELSE
+                    IF (y == 3_s)
+                        PRINT %SUMA 3%,
+                    ELSE
+                        IF (y == 4_s)
+                            PRINT %SUMA 4%,
+                        ELSE
+                            PRINT %SUMA 5%,
+                        END_IF,
+                    END_IF,
+                END_IF,
+            END_IF,
+        },
+    }
+
+    CLASS c{
+        b b1,
+        SHORT i,
+
+        VOID suma()
+        {
+            VOID aumenta()
+            {
+                i = i + 1_s,
+                b1.chequear(i),
+                RETURN,
+            }
+
+            WHILE (i !! 5_s) DO
+            {
+                b1.set(i),
+                aumenta(),
+            },
+        },
+    }
+
+    c c1,
+    c1.suma(),
+
+    PRINT %FINALIZA LLAMADO A C%,
+
+    SHORT x;y;z,
+    FLOAT f,
+
+    x = 15_s,
+    y = -15_s,
+    z = x + y,
+
+    IF (z == 0_s)
+        PRINT %SUMA CERO%,
+    ELSE
+        PRINT %NO FUNCIONA SUMA CON SIGNO%,
+    END_IF,
+
+    z = z + 5_s,
+    f = z * x,                          **CONVERSION IMPLICITA
+
+    IF (f == 75.0)
+        PRINT %F IGUAL A 75.0%,
+    END_IF,
+
+    f = f / 2.0,
+
+    IF (f == 37.5)
+        PRINT %F IGUAL A 37.5%,
+    END_IF,
+}

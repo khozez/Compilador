@@ -1,0 +1,18 @@
+{
+    SHORT x;y;z;w,
+    FLOAT i;j,
+
+    x = 5_s,           ** Caso 1: asignación constante
+    y = x,             ** Debería propagarse → y = 5_s
+	
+	i = 2.3,
+	j = i,
+
+    x = 7_s,           ** Caso 2: redefinición con otra constante
+    z = x,             ** Debería propagarse → z = 7_s
+
+
+    x = x + y,         ** Caso 3: redefinición no constante (x = 7 + 5 = 12 en ejecución, pero no propagable)
+    w = x,             ** NO debería propagarse, se deja w = x
+
+}

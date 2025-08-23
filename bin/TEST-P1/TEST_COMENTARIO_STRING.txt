@@ -1,0 +1,10 @@
+{
+SHORT num1,   **Declaracion de variable (ejemplo de comentario)
+
+PRINT %Cadena multilinea            **CADENA MULTILINEA SIN ERROR
+escrita
+correctamente%,
+
+%Cadena                             **CADENA MULTILINEA CON ERROR SINTACTICO
+multilinea mal escrita%,
+}
