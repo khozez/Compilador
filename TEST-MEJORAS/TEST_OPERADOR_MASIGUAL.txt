@@ -1,0 +1,14 @@
+{
+    SHORT x, y,
+    ULONG z,
+
+    x = 5_s,
+    y = 10_s,
+    z = 100_ul,
+
+    x += 3_s,
+    y += x,
+    z += 4294967295_ul,
+
+    PRINT %TEST += COMPLETADO%,
+}

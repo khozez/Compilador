@@ -264,20 +264,31 @@ asignacion: ID '=' expresion {
 			      variables_no_asignadas.remove($1.sval + Parser.ambito);}
 	   | ID IGUAL expresion {anotar(ERROR_SINTACTICO, "LINEA "+(AnalizadorLexico.getCantLineas())+": ERROR! Una asignación no se debe realizar con ==");}
 	   | ID MASIGUAL expresion {
-	   		out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignacion");
-	   		Nodo variable = new Nodo(getVariableConAmbitoTS($1.sval), getTipoVariableConAmbitoTS($1.sval));
-          	Nodo suma = new Nodo("+", variable, (Nodo) $3.obj);
-          	var x = new Nodo("Asignacion", variable, suma);
-          	x.setTipo(validarTiposAssign(x, x.getIzq(), x.getDer()));
+				    out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Asignacion");
+				
+				    Nodo variable = new Nodo(getVariableConAmbitoTS($1.sval),
+				                             getTipoVariableConAmbitoTS($1.sval));
+				
+				    Nodo variableAux = new Nodo(getVariableConAmbitoTS($1.sval),
+				                                 getTipoVariableConAmbitoTS($1.sval));
+				
+				    Nodo suma = new Nodo("+", variableAux, (Nodo) $3.obj);
+				
+				    Nodo x = new Nodo("Asignacion", variable, suma);
+				
+				    // ⚠️ validamos contra la expresión, no contra el nodo suma
+				    x.setTipo(validarTiposAssign(x, variable, (Nodo) $3.obj));
+				
+				    if (generarMenosMenos()) {
+				        $$ = new ParserVal(new Nodo("sentencias", x, menosMenos));
+				        menosMenos = null;
+				    } else {
+				        $$ = new ParserVal(x);
+				    }
+				
+				    variables_no_asignadas.remove($1.sval + Parser.ambito);
+				}
 
-	          if (generarMenosMenos()) {
-	              $$ = new ParserVal(new Nodo("sentencias", x, menosMenos));
-	              menosMenos = null;
-	          } else {
-	              $$ = new ParserVal(x);
-	          }
-	          variables_no_asignadas.remove($1.sval + Parser.ambito);
-	      }	
 ;
 
 sentenciaIf: IF '(' condicion ')' '{' bloque_ejecucion '}' ELSE '{' bloque_ejecucion '}' END_IF {out_estructura.write("LINEA "+(AnalizadorLexico.getCantLineas())+": Fin de sentencia IF");
@@ -833,7 +844,7 @@ private String validarTiposAssign(Nodo x, Nodo izq, Nodo der) {
           	return "obj1 type is null";
 
 
-    	if (izq.getTipo() == "Error" || (der.getTipo() == "Error")){
+    	if (izq.getTipo().equals("Error") || (der.getTipo().equals("Error"))){
        		return "Error";
     	}
 

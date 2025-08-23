@@ -1,0 +1,7 @@
+{
+    SHORT num1;num2,
+    num1 = 10_s,
+    num2 = num1,
+    num2 += 5_s,
+    PRINT %TEST COMBINADO%,
+}

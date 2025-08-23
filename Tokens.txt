@@ -1,39 +1,16 @@
  (123) --> {
  (266) --> Palabra reservada: SHORT
- (257) --> Identificador: x
+ (257) --> Identificador: num1
  (59) --> ;
- (257) --> Identificador: y
- (59) --> ;
- (257) --> Identificador: z
+ (257) --> Identificador: num2
  (44) --> ,
- (257) --> Identificador: x
+ (257) --> Identificador: num1
  (61) --> =
  (258) --> Constante entera: 10_s
  (44) --> ,
- (257) --> Identificador: y
+ (257) --> Identificador: num2
  (61) --> =
- (258) --> Constante entera: 5_s
+ (257) --> Identificador: num1
  (44) --> ,
- (257) --> Identificador: z
- (61) --> =
- (257) --> Identificador: x
+ (257) --> Identificador: num2
  (43) --> +
- (257) --> Identificador: y
- (44) --> ,
- (257) --> Identificador: z
- (61) --> =
- (257) --> Identificador: z
- (43) --> +
- (258) --> Constante entera: 2_s
- (44) --> ,
- (257) --> Identificador: y
- (61) --> =
- (258) --> Constante entera: 6_s
- (44) --> ,
- (257) --> Identificador: x
- (61) --> =
- (257) --> Identificador: z
- (45) --> -
- (257) --> Identificador: y
- (44) --> ,
- (125) --> }

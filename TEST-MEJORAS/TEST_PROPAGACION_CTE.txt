@@ -1,0 +1,12 @@
+{
+    SHORT a, b, c,
+    ULONG u, v,
+
+    a = 5_s,
+    b = a,
+    c = b,
+    u = 44_ul,
+    v = u,
+
+    PRINT %PROPAGACION CORRECTA%,
+}

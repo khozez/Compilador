@@ -1,0 +1,5 @@
+Errores Semanticos:
+LINEA: 5 ERROR SEMANTICO! syntax error
+LINEA: 5 ERROR SEMANTICO! stack underflow. aborting...
+
+

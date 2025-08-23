@@ -1,0 +1,32 @@
+{
+    SHORT num1;num2,
+    ULONG counter,
+
+    num1 = 2_s,
+    num2 = 3_s,
+    counter = 0_ul,
+
+    VOID sumar(SHORT a, SHORT b)
+    {
+        SHORT res,
+        res = a + b,
+        PRINT %RESULTADO%,
+    }
+
+    CLASS A {
+        SHORT value,
+        VOID incrementar() {
+            value += 1_s,
+            counter += 1_ul,
+        },
+    }
+
+    A obj,
+    obj.value = num1,
+    obj.incrementar(),
+    obj.incrementar(),
+
+    num2 += obj.value,
+
+    PRINT %FIN DE TEST COMPLEJO%,
+}
