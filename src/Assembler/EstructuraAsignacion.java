@@ -36,7 +36,7 @@ public class EstructuraAsignacion implements GeneradorEstructura {
             
         }
         
-     // adelanto la optimizacion para la primer constante
+        // adelanto la optimizacion para la primer constante
         int idExpr = ts.obtenerSimbolo(expresion.getNombre());
         String constVigente = ts.obtenerAtributo(idExpr, "constanteVigente");
         String constValor = ts.obtenerAtributo(idExpr, "valorConstante");

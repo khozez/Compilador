@@ -15,12 +15,26 @@ public class EstructuraComparador extends Generador implements GeneradorEstructu
         var ts = AnalizadorLexico.TS;
         Nodo subArbol1 = nodo.getIzq();
         Nodo subArbol2 = nodo.getDer();
+        int idIzq = ts.obtenerSimbolo(subArbol1.getNombre());
+        int idDer = ts.obtenerSimbolo(subArbol2.getNombre());
+        String constVigenteIzq = ts.obtenerAtributo(idIzq, "constanteVigente");
+        String constValorIzq = ts.obtenerAtributo(idIzq, "valorConstante");
+        String constVigenteDer = ts.obtenerAtributo(idDer, "constanteVigente");
+        String constValorDer = ts.obtenerAtributo(idDer, "valorConstante");
+        String variableSubArbol1 = obtenerNombreVariable(ts, subArbol1);
+        String variableSubArbol2 = obtenerNombreVariable(ts,subArbol2);
+        if (constVigenteIzq.equals("True")) {
+    		variableSubArbol1 = constValorIzq;
+    	}
+    	if (constVigenteDer.equals("True")) {
+    		variableSubArbol2 = constValorDer;
+    	}
 
         if (nodo.getTipo().equals("SHORT"))
-            codigo = "MOV AL, " + obtenerNombreVariable(ts, subArbol1) + "\nMOV AH, " + obtenerNombreVariable(ts,subArbol2) + "\nCMP AL, AH\n" + tipo + " etiqueta" + etiqueta+"\n";
+            codigo = "MOV AL, " + variableSubArbol1 + "\nMOV AH, " + variableSubArbol2 + "\nCMP AL, AH\n" + tipo + " etiqueta" + etiqueta+"\n";
 
         else if (nodo.getTipo().equals("ULONG"))
-            codigo = "MOV EAX, " + obtenerNombreVariable(ts, subArbol1) + "\nMOV EBX, " + obtenerNombreVariable(ts,subArbol2) + "\nCMP EAX, EBX\n" + tipo + " etiqueta" + etiqueta+"\n";
+            codigo = "MOV EAX, " + variableSubArbol1 + "\nMOV EBX, " + variableSubArbol2 + "\nCMP EAX, EBX\n" + tipo + " etiqueta" + etiqueta+"\n";
         else
             codigo = "FLD " + obtenerNombreVariable(ts, subArbol1) + "\nFCOM " + obtenerNombreVariable(ts,subArbol2) + "\nFSTSW aux_mem_2bytes\n" + "MOV AX, aux_mem_2bytes\n SAHF\n" + tipo + " etiqueta" + etiqueta+"\n";
         pilaEtiquetas.add(etiqueta);
